@@ -163,12 +163,30 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Input.GetButton("Jump"))
+        switch (_inputType)
         {
-            if (_characterController.isGrounded == true)
-            {
-                _vectorDirection.y = _jumpForce;
-            }
+            case InputMode.Standard:
+                if (Input.GetButton("Jump"))
+                {
+                    if (_characterController.isGrounded == true)
+                    {
+                        _vectorDirection.y = _jumpForce;
+                    }
+                }
+                break;
+            case InputMode.CrossPlatform:
+                if (CrossPlatformInputManager.GetButton("Jump"))
+                {
+                    if (_showDebugMessages) Debug.Log("Jumping with crossplatform input");
+
+                    if (_characterController.isGrounded == true)
+                    {
+                        _vectorDirection.y = _jumpForce;
+                    }
+                }
+                break;
+            default:
+                break;
         }
 
         _vectorDirection.y -= _jumpGravity * Time.deltaTime;
