@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoStolenMyCarrot", "Assembly-CSharp.csproj", "{3AB554D2-C68E-3B0B-1F06-D74A50D094C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoStolenMyCarrot", "Assembly-CSharp-firstpass.csproj", "{629D9798-58E7-C004-BC1A-A92AAE210303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoStolenMyCarrot", "Assembly-CSharp-Editor.csproj", "{96DAFFEF-E84F-E767-9191-D48315001EEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AB554D2-C68E-3B0B-1F06-D74A50D094C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB554D2-C68E-3B0B-1F06-D74A50D094C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB554D2-C68E-3B0B-1F06-D74A50D094C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB554D2-C68E-3B0B-1F06-D74A50D094C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629D9798-58E7-C004-BC1A-A92AAE210303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629D9798-58E7-C004-BC1A-A92AAE210303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629D9798-58E7-C004-BC1A-A92AAE210303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629D9798-58E7-C004-BC1A-A92AAE210303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96DAFFEF-E84F-E767-9191-D48315001EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96DAFFEF-E84F-E767-9191-D48315001EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96DAFFEF-E84F-E767-9191-D48315001EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96DAFFEF-E84F-E767-9191-D48315001EEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

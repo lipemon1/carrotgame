@@ -112,10 +112,9 @@ public class PlayerMovement : MonoBehaviour
                 //    forward = directionOnPlane.normalized;
                 //}
 
-                //new and maybe wrong but better
-                float distance = 1;
+                //new and better
                 Vector3 directionOnScreen = new Vector3(_horizontalCrossPlatform, _verticalCrossPlatform);
-                Vector3 directionOnWorld = Camera.main.ScreenPointToRay(directionOnScreen).GetPoint(distance) - Camera.main.ScreenPointToRay(Vector2.zero).GetPoint(distance);
+                Vector3 directionOnWorld = Camera.main.ScreenToWorldPoint(directionOnScreen + Vector3.forward) - Camera.main.ScreenToWorldPoint(Vector3.forward);
                 Vector3 directionOnPlane = Vector3.ProjectOnPlane(directionOnWorld, Vector3.up);
                 directionToMove = directionOnPlane;
                 break;
