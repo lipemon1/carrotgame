@@ -44,6 +44,8 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private Button _actionButton;
     [SerializeField] private Text _actionButtonText;
     [SerializeField] private Image _actionButtonImage;
+    [Space]
+    [SerializeField] private ButtonData _buttonData;
 
     [Header("Scripts")]
     [SerializeField] private Inventory _inventory;
@@ -56,6 +58,16 @@ public class ActionButtonHandler : MonoBehaviour {
 
         if(_itemPicker == null)
             _itemPicker = GetComponent<ItemPicker>();
+
+        if(_buttonData.ActionButton == null)
+        {
+            GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
+            _buttonData.ActionButton = actionButton.GetComponentInChildren<Button>();
+            _buttonData.ActionImage = actionButton.GetComponentInChildren<Image>();
+            _buttonData.ActionText = actionButton.GetComponentInChildren<Text>();
+
+            UpdateActionButtonValues(_buttonData);
+        }
     }
 
     private void Update()
@@ -155,8 +167,15 @@ public class ActionButtonHandler : MonoBehaviour {
     /// <param name="newButton"></param>
     private void RecieveButtonData(ButtonData newButton)
     {
-        _actionButton = newButton.ActionButton;
-        _actionButtonText = newButton.ActionText;
-        _actionButtonImage = newButton.ActionImage;
+        _buttonData = newButton;
+
+        UpdateActionButtonValues(_buttonData);
+    }
+
+    private void UpdateActionButtonValues(ButtonData newButtonData)
+    {
+        _actionButton = newButtonData.ActionButton;
+        _actionButtonText = newButtonData.ActionText;
+        _actionButtonImage = newButtonData.ActionImage;
     }
 }
