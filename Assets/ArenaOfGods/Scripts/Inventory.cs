@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
+        CheckForNotBusySlot();
     }
 
     /// <summary>
