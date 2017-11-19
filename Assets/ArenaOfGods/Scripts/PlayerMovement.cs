@@ -70,7 +70,12 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void MovePlayer()
     {
-        _characterController.Move(GetDirectionToMove() * _moveSpeed * Time.deltaTime);
+        Vector3 directionToMove = GetDirectionToMove();
+        Vector3 pointToLook = new Vector3(directionToMove.x, transform.position.y, directionToMove.z);
+
+        transform.LookAt(pointToLook);
+
+        _characterController.Move(directionToMove * _moveSpeed * Time.deltaTime);
         _characterController.SimpleMove(Physics.gravity);
 
         Jump();

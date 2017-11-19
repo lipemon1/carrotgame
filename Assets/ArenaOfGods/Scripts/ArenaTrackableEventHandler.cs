@@ -7,6 +7,9 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
 
     private TrackableBehaviour mTrackableBehaviour;
 
+    [Header("Lobby Canvas")]
+    [SerializeField] private GameObject _lobbyCanvas;
+
     // Use this for initialization
     void Start()
     {
@@ -54,10 +57,17 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
     private void OnTrackingFound()
     {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
+        MeshRenderer[] meshRendererComponents = GetComponentsInChildren<MeshRenderer>(true);
         //Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
         // Enable rendering:
         foreach (Renderer component in rendererComponents)
+        {
+            component.enabled = true;
+        }
+
+        // Enable Mesh rendering:
+        foreach (MeshRenderer component in meshRendererComponents)
         {
             component.enabled = true;
         }
@@ -68,6 +78,9 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
         //    component.enabled = true;
         //}
 
+        //showing lobby canvas
+        _lobbyCanvas.gameObject.SetActive(true);
+
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
     }
 
@@ -75,10 +88,17 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
     private void OnTrackingLost()
     {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
+        MeshRenderer[] meshRendererComponents = GetComponentsInChildren<MeshRenderer>(true);
         //Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
         // Disable rendering:
         foreach (Renderer component in rendererComponents)
+        {
+            component.enabled = false;
+        }
+
+        // Disable Mesh rendering:
+        foreach (MeshRenderer component in meshRendererComponents)
         {
             component.enabled = false;
         }
@@ -88,6 +108,9 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
         //{
         //    component.enabled = false;
         //}
+
+        //showing lobby canvas
+        _lobbyCanvas.gameObject.SetActive(false);
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
     }
