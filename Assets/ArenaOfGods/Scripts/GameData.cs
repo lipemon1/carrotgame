@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameData : MonoBehaviour {
@@ -16,5 +17,14 @@ public class GameData : MonoBehaviour {
         Instance = this;
     }
 
-	
+    /// <summary>
+    /// Retorna verdadeiro se o jogador passado por parametro é o dono da area passada por parametro
+    /// </summary>
+    /// <param name="playerId"></param>
+    /// <param name="playerAreaId"></param>
+    /// <returns></returns>
+	public bool IsThisMyArea(int playerId, int playerAreaId)
+    {
+        return PlayerAreaList.Where(pa => pa.Id == playerAreaId && pa.PlayerOwnerId == playerId).First() != null;
+    }
 }

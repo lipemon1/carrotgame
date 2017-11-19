@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
-    public static Inventory Instance { get; private set; }
-
     [System.Serializable]
     public class Slot
     {
@@ -31,13 +29,13 @@ public class Inventory : MonoBehaviour {
 
     [Header("Inventory Info")]
     [SerializeField] public bool HaveOpenSlot;
+    [SerializeField] public bool IsFull;
     [Space]
     [SerializeField] private List<Slot> _inventorySlots = new List<Slot>();
 
     private void Awake()
     {
-        Instance = this;
-        CheckForNotBusySlot();
+        HaveOpenSlot = CheckForNotBusySlot();
     }
 
     /// <summary>
@@ -52,12 +50,12 @@ public class Inventory : MonoBehaviour {
         if(slotToStore != null)
         {
             slotToStore.Store(carrotId);
-            CheckForNotBusySlot();
+            HaveOpenSlot = CheckForNotBusySlot();
             return true;
         }
         else
         {
-            CheckForNotBusySlot();
+            HaveOpenSlot = CheckForNotBusySlot();
             return false;
         }
     }
@@ -77,12 +75,12 @@ public class Inventory : MonoBehaviour {
         {
             carrotId = slotToStore.ItemId;
             slotToStore.Withdraw();
-            CheckForNotBusySlot();
+            HaveOpenSlot = CheckForNotBusySlot();
             return carrotId;
         }
         else
         {
-            CheckForNotBusySlot();
+            HaveOpenSlot = CheckForNotBusySlot();
             return -1;
         }
     }
@@ -104,6 +102,7 @@ public class Inventory : MonoBehaviour {
     /// <returns></returns>
     private bool CheckForNotBusySlot()
     {
-        return _inventorySlots.Where(s => s.Busy == false).ToList().FirstOrDefault() != null;
+        IsFull = !(_inventorySlots.Where(s => s.Busy == false).ToList().FirstOrDefault() != null);
+        return !IsFull;
     }
 }

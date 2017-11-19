@@ -10,6 +10,6 @@ public class PlayerArea {
 
     [Header("Info")]
     [SerializeField] public int Id;
-    [SerializeField] public string PlayerOwnerId;
+    [SerializeField] public int PlayerOwnerId;
     [SerializeField] public List<int> CarrotsListId = new List<int>();
 }

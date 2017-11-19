@@ -1165,24 +1165,24 @@ MonoBehaviour:
   InitialArea:
     GameInstance: {fileID: 2126856188}
     Id: 0
-    PlayerOwnerId: 
+    PlayerOwnerId: 0
     CarrotsListId: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
   PlayerAreaList:
   - GameInstance: {fileID: 1174288203}
     Id: 0
-    PlayerOwnerId: 
+    PlayerOwnerId: -1
     CarrotsListId: 
   - GameInstance: {fileID: 85611135}
     Id: 1
-    PlayerOwnerId: 
+    PlayerOwnerId: -1
     CarrotsListId: 
   - GameInstance: {fileID: 1655912702}
     Id: 2
-    PlayerOwnerId: 
+    PlayerOwnerId: -1
     CarrotsListId: 
   - GameInstance: {fileID: 372991780}
     Id: 3
-    PlayerOwnerId: 
+    PlayerOwnerId: -1
     CarrotsListId: 
   CarrotsList:
   - GameInstance: {fileID: 100430502}

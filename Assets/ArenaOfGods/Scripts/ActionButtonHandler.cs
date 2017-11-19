@@ -18,15 +18,22 @@ public class ActionButtonHandler : MonoBehaviour {
         public Button.ButtonClickedEvent ButtonEvent;
     }
 
-    public static ActionButtonHandler Instance { get; private set; }
+    public struct ButtonData
+    {
+        public Button ActionButton;
+        public Text ActionText;
+        public Image ActionImage;
+    }
 
     [Header("Debug")]
-    [SerializeField] private Collider _curZone;
+    [SerializeField] private PlayerAreaIdentity _curZone;
+    [SerializeField] private int _playerId;
 
     [Header("Qualify Status")]
     [SerializeField] private bool _onMyArea;
     [SerializeField] private bool _haveCarrots;
     [SerializeField] private bool _fullCarrots;
+    [SerializeField] private bool _isTouchingCarrot;
 
     [Header("Buttons Configurations")]
     [SerializeField] private ButtonConfiguration _plantConfiguration;
@@ -38,17 +45,32 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private Text _actionButtonText;
     [SerializeField] private Image _actionButtonImage;
 
+    [Header("Scripts")]
+    [SerializeField] private Inventory _inventory;
+    [SerializeField] private ItemPicker _itemPicker;
+
     private void Awake()
     {
-        Instance = this;
+        if(_inventory == null)
+            _inventory = GetComponent<Inventory>();
+
+        if(_itemPicker == null)
+            _itemPicker = GetComponent<ItemPicker>();
+    }
+
+    private void Update()
+    {
+        CheckButtonToShow();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerArea"))
         {
+            CheckButtonToShow();
+
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
-            _curZone = other;
+            _curZone = other.GetComponent<PlayerAreaIdentity>();
         }
     }
 
@@ -56,6 +78,8 @@ public class ActionButtonHandler : MonoBehaviour {
     {
         if (other.CompareTag("PlayerArea"))
         {
+            CheckButtonToShow();
+
             if (_curZone != null)
             {
                 _curZone = null;
@@ -68,6 +92,8 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     public void CheckButtonToShow()
     {
+        UpdateStatus();
+
         if (_onMyArea)
         {
             if(_haveCarrots == false)
@@ -81,9 +107,13 @@ public class ActionButtonHandler : MonoBehaviour {
         }
         else
         {
-            if(_fullCarrots == false)
+            if(_fullCarrots == false && _isTouchingCarrot)
             {
                 ChangeButton(_pickConfiguration);
+            }
+            else
+            {
+                _actionButton.interactable = false;
             }
         }
     }
@@ -109,6 +139,24 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     private void UpdateStatus()
     {
+        if(_curZone != null)
+        {
+            _onMyArea = GameData.Instance.IsThisMyArea(_playerId, _curZone.PlayerAreaId);
+        }
 
+        _haveCarrots = _inventory.HaveOpenSlot;
+        _fullCarrots = _inventory.IsFull;
+        _isTouchingCarrot = _itemPicker.IsTouchingCarrot;
+    }
+
+    /// <summary>
+    /// Recebe um novo botão como o botão de action que será utilizado
+    /// </summary>
+    /// <param name="newButton"></param>
+    private void RecieveButtonData(ButtonData newButton)
+    {
+        _actionButton = newButton.ActionButton;
+        _actionButtonText = newButton.ActionText;
+        _actionButtonImage = newButton.ActionImage;
     }
 }
