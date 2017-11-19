@@ -235,7 +235,7 @@ GameObject:
   m_PrefabParentObject: {fileID: 1262994247629892, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
---- !u!135 &85611136
+--- !u!135 &85611140
 SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1415,6 +1415,10 @@ Prefab:
       propertyPath: HaveOpenSlot
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1875254212664138, guid: db16917b06ad41d4888e357917f926bc, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: db16917b06ad41d4888e357917f926bc, type: 2}
   m_IsPrefabParent: 0
@@ -2297,7 +2301,7 @@ GameObject:
   m_PrefabParentObject: {fileID: 1808828233279166, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
---- !u!135 &1174288204
+--- !u!135 &1174288208
 SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -2436,7 +2440,7 @@ GameObject:
   m_PrefabParentObject: {fileID: 1585407659539806, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
---- !u!135 &1655912703
+--- !u!135 &1655912707
 SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
