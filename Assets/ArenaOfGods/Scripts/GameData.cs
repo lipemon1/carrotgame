@@ -7,6 +7,9 @@ public class GameData : MonoBehaviour {
 
     public static GameData Instance { get; private set; }
 
+    [Header("Debug")]
+    [SerializeField] private bool _showDebugMessages;
+
     [Header("Game Data")]
     [SerializeField] public PlayerArea InitialArea;
     [SerializeField] public List<PlayerArea> PlayerAreaList = new List<PlayerArea>();
@@ -25,6 +28,12 @@ public class GameData : MonoBehaviour {
     /// <returns></returns>
 	public bool IsThisMyArea(int playerId, int playerAreaId)
     {
-        return PlayerAreaList.Where(pa => pa.Id == playerAreaId && pa.PlayerOwnerId == playerId).First() != null;
+        if (_showDebugMessages) Debug.Log("Iniciando verificação de propriedade de uma área");
+        PlayerArea areaFromPlayer = PlayerAreaList.Where(pa => pa.Id == playerAreaId).FirstOrDefault();
+
+        if (areaFromPlayer == null)
+            return false;
+
+        return areaFromPlayer.PlayerOwnerId == playerId;
     }
 }

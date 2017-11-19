@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 114280667365997216}
   - component: {fileID: 114862714683573296}
   - component: {fileID: 114120286272606674}
+  - component: {fileID: 114544030815262652}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -413,6 +414,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curZone: {fileID: 0}
+  _playerId: 0
+  _onMyArea: 0
+  _haveCarrots: 0
+  _fullCarrots: 0
+  _isTouchingCarrot: 0
+  _plantConfiguration:
+    ButtonText: PLANTAR
+    ButtonSprite: {fileID: 0}
+    ButtonEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  _pickConfiguration:
+    ButtonText: PEGAR
+    ButtonSprite: {fileID: 0}
+    ButtonEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  _shootConfiguration:
+    ButtonText: ATIRAR
+    ButtonSprite: {fileID: 0}
+    ButtonEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  _actionButton: {fileID: 0}
+  _actionButtonText: {fileID: 0}
+  _actionButtonImage: {fileID: 0}
+  _inventory: {fileID: 0}
+  _itemPicker: {fileID: 0}
 --- !u!114 &114187510715281078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -478,6 +513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetToPick: {fileID: 0}
+  IsTouchingCarrot: 0
+  _actionButtonHandler: {fileID: 0}
 --- !u!114 &114348446974973628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -490,6 +527,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnYOffset: 5
+--- !u!114 &114544030815262652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d3080397ea42c4a974420d67e86cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerId: -1
 --- !u!114 &114862714683573296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -506,6 +555,7 @@ MonoBehaviour:
   - {fileID: 1439169330965396}
   - {fileID: 1026414600522786}
   HaveOpenSlot: 1
+  IsFull: 0
   _inventorySlots:
   - Busy: 0
     ItemId: -1

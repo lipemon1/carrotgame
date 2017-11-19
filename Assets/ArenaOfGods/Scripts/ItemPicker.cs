@@ -11,7 +11,7 @@ public class ItemPicker : MonoBehaviour {
     [Header("Scripts")]
     [SerializeField] private ActionButtonHandler _actionButtonHandler;
 
-    private void Awake()
+    private void Start()
     {
         if (_actionButtonHandler == null)
             _actionButtonHandler.GetComponent<ActionButtonHandler>();

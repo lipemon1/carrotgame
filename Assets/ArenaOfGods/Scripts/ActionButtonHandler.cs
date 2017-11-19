@@ -26,6 +26,7 @@ public class ActionButtonHandler : MonoBehaviour {
     }
 
     [Header("Debug")]
+    [SerializeField] private bool _showDebugMessages;
     [SerializeField] private PlayerAreaIdentity _curZone;
     [SerializeField] private int _playerId;
 
@@ -51,7 +52,7 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private ItemPicker _itemPicker;
 
-    private void Awake()
+    private void Start()
     {
         if(_inventory == null)
             _inventory = GetComponent<Inventory>();
@@ -106,6 +107,8 @@ public class ActionButtonHandler : MonoBehaviour {
     {
         UpdateStatus();
 
+        if (_showDebugMessages) Debug.Log("Status verificados");
+
         if (_onMyArea)
         {
             if(_haveCarrots == false)
@@ -154,11 +157,22 @@ public class ActionButtonHandler : MonoBehaviour {
         if(_curZone != null)
         {
             _onMyArea = GameData.Instance.IsThisMyArea(_playerId, _curZone.PlayerAreaId);
+            if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
+        }
+        else
+        {
+            _onMyArea = GameData.Instance.IsThisMyArea(_playerId, -2);
+            if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
 
         _haveCarrots = _inventory.HaveOpenSlot;
+        if (_showDebugMessages) Debug.Log("Verificando se tem cenouras: " + _haveCarrots);
+
         _fullCarrots = _inventory.IsFull;
+        if (_showDebugMessages) Debug.Log("Verificando se o inventario esta cheio: " + _fullCarrots);
+
         _isTouchingCarrot = _itemPicker.IsTouchingCarrot;
+        if (_showDebugMessages) Debug.Log("Verificando se esta tocando alguma cenoura: " + _isTouchingCarrot);
     }
 
     /// <summary>
