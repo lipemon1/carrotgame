@@ -488,6 +488,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22afe1da322dc6442a64b858c67dab9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _carrotsGameObjects:
+  - {fileID: 1458411967809880}
+  - {fileID: 1439169330965396}
+  - {fileID: 1026414600522786}
+  _inventorySlots:
+  - Busy: 0
+    ItemId: -1
+  - Busy: 0
+    ItemId: -1
+  - Busy: 0
+    ItemId: -1
 --- !u!135 &135276698746198236
 SphereCollider:
   m_ObjectHideFlags: 1
