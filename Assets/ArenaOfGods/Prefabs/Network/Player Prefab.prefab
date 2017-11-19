@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 114348446974973628}
   - component: {fileID: 114280667365997216}
   - component: {fileID: 114862714683573296}
+  - component: {fileID: 114120286272606674}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -400,6 +401,18 @@ MonoBehaviour:
   _jumpForce: 5
   _jumpGravity: 3
   _modelAnimator: {fileID: 0}
+--- !u!114 &114120286272606674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b63ffa586a4043c49a8e09fea989102c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _curZone: {fileID: 0}
 --- !u!114 &114187510715281078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -492,6 +505,7 @@ MonoBehaviour:
   - {fileID: 1458411967809880}
   - {fileID: 1439169330965396}
   - {fileID: 1026414600522786}
+  HaveOpenSlot: 1
   _inventorySlots:
   - Busy: 0
     ItemId: -1

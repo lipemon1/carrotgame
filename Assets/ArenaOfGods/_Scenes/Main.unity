@@ -235,6 +235,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1262994247629892, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
+--- !u!114 &85611136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 85611135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eff106c1218db146baa4fd62326babb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerAreaId: 1
 --- !u!135 &85611140
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -494,7 +506,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &180699559
 MonoBehaviour:
@@ -927,6 +939,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.21
   m_Center: {x: 0.06781912, y: 1.2331582, z: 0.10894711}
+--- !u!114 &372991782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372991780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eff106c1218db146baa4fd62326babb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerAreaId: 3
 --- !u!1 &380831556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,16 +1432,26 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4162163822624520, guid: db16917b06ad41d4888e357917f926bc, type: 2}
       propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114862714683573296, guid: db16917b06ad41d4888e357917f926bc,
-        type: 2}
-      propertyPath: HaveOpenSlot
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1875254212664138, guid: db16917b06ad41d4888e357917f926bc, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114120286272606674, guid: db16917b06ad41d4888e357917f926bc,
+        type: 2}
+      propertyPath: _plantConfiguration.ButtonText
+      value: PLANTAR
+      objectReference: {fileID: 0}
+    - target: {fileID: 114120286272606674, guid: db16917b06ad41d4888e357917f926bc,
+        type: 2}
+      propertyPath: _pickConfiguration.ButtonText
+      value: PEGAR
+      objectReference: {fileID: 0}
+    - target: {fileID: 114120286272606674, guid: db16917b06ad41d4888e357917f926bc,
+        type: 2}
+      propertyPath: _shootConfiguration.ButtonText
+      value: ATIRAR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: db16917b06ad41d4888e357917f926bc, type: 2}
@@ -1746,7 +1780,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &705510185
 Prefab:
@@ -2220,7 +2254,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SET NAME IN EDITOR
+  m_Text: NONE
 --- !u!222 &1032377450
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2301,6 +2335,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1808828233279166, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
+--- !u!114 &1174288204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1174288203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eff106c1218db146baa4fd62326babb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerAreaId: 0
 --- !u!135 &1174288208
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2432,6 +2478,22 @@ Prefab:
       propertyPath: m_TagString
       value: PlayerArea
       objectReference: {fileID: 0}
+    - target: {fileID: 1808828233279166, guid: c30f31d7758842844b444b8d6ba86b64, type: 2}
+      propertyPath: m_Name
+      value: Area 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262994247629892, guid: c30f31d7758842844b444b8d6ba86b64, type: 2}
+      propertyPath: m_Name
+      value: Area 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585407659539806, guid: c30f31d7758842844b444b8d6ba86b64, type: 2}
+      propertyPath: m_Name
+      value: Area 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1371730949670438, guid: c30f31d7758842844b444b8d6ba86b64, type: 2}
+      propertyPath: m_Name
+      value: Area 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c30f31d7758842844b444b8d6ba86b64, type: 2}
   m_IsPrefabParent: 0
@@ -2440,6 +2502,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1585407659539806, guid: c30f31d7758842844b444b8d6ba86b64,
     type: 2}
   m_PrefabInternal: {fileID: 1498824069}
+--- !u!114 &1655912703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655912702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eff106c1218db146baa4fd62326babb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerAreaId: 2
 --- !u!135 &1655912707
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3058,7 +3132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bf3be603548374ca46f521a3aa7fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Inspect
+  Name: ActionButton
 --- !u!114 &2115251013
 MonoBehaviour:
   m_ObjectHideFlags: 0

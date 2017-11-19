@@ -19,10 +19,13 @@ public class ItemPicker : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        if (_targetToPick != null)
+        if (other.CompareTag("Carrot"))
         {
-            _targetToPick.GetComponent<CarrotBehaviour>().OnTargetExit();
-            _targetToPick = null;
+            if (_targetToPick != null)
+            {
+                _targetToPick.GetComponent<CarrotBehaviour>().OnTargetExit();
+                _targetToPick = null;
+            }
         }
     }
 }
