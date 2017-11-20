@@ -24,18 +24,22 @@ public class Inventory : MonoBehaviour {
         }
     }
 
+    [Header("Debug")]
+    [SerializeField] private bool _showDebugMessages;
+
     [Header("Feedback to Player")]
     [SerializeField] private List<GameObject> _carrotsGameObjects = new List<GameObject>();
 
     [Header("Inventory Info")]
     [SerializeField] public bool HaveOpenSlot;
     [SerializeField] public bool IsFull;
+    [SerializeField] public bool HaveSomeCarrot;
     [Space]
     [SerializeField] private List<Slot> _inventorySlots = new List<Slot>();
 
     private void Awake()
     {
-        HaveOpenSlot = CheckForNotBusySlot();
+        HaveOpenSlot = UpdateStatusCheckers();
     }
 
     /// <summary>
@@ -45,28 +49,32 @@ public class Inventory : MonoBehaviour {
     /// <returns></returns>
     public bool TryToStoreCarrot(int carrotId)
     {
+        if (_showDebugMessages) Debug.Log("Iniciando store de cenoura no inventário");
+
         Slot slotToStore = _inventorySlots.Where(s => s.Busy == false).ToList().FirstOrDefault();
 
         if(slotToStore != null)
         {
+            if (_showDebugMessages) Debug.Log("Store disponível encontrado");
             slotToStore.Store(carrotId);
-            HaveOpenSlot = CheckForNotBusySlot();
+            HaveOpenSlot = UpdateStatusCheckers();
             return true;
         }
         else
         {
-            HaveOpenSlot = CheckForNotBusySlot();
+            HaveOpenSlot = UpdateStatusCheckers();
             return false;
         }
     }
 
     /// <summary>
-    /// Tenta retirar algum item no primeiro slot nao ocupado que encontrar
+    /// Tenta retirar algum item no primeiro slot nao ocupado que encontrar, retorna o id do item que foi retirado
     /// </summary>
     /// <param name="carrotId"></param>
     /// <returns></returns>
     public int TryToWithdrawCarrot()
     {
+        if (_showDebugMessages) Debug.Log("Iniciando retirada de item do inventário");
         int carrotId = 0;
 
         Slot slotToStore = _inventorySlots.Where(s => s.Busy == true).ToList().FirstOrDefault();
@@ -74,13 +82,15 @@ public class Inventory : MonoBehaviour {
         if (slotToStore != null)
         {
             carrotId = slotToStore.ItemId;
+            if (_showDebugMessages) Debug.Log("Item a ser retirado com ID:" + carrotId);
+
             slotToStore.Withdraw();
-            HaveOpenSlot = CheckForNotBusySlot();
+            HaveOpenSlot = UpdateStatusCheckers();
             return carrotId;
         }
         else
         {
-            HaveOpenSlot = CheckForNotBusySlot();
+            HaveOpenSlot = UpdateStatusCheckers();
             return -1;
         }
     }
@@ -100,8 +110,10 @@ public class Inventory : MonoBehaviour {
     /// Verifica se existe um slot disponivel para ser usado
     /// </summary>
     /// <returns></returns>
-    private bool CheckForNotBusySlot()
+    private bool UpdateStatusCheckers()
     {
+        HaveSomeCarrot = (_inventorySlots.Where(s => s.Busy == true).ToList().FirstOrDefault() != null);
+
         IsFull = !(_inventorySlots.Where(s => s.Busy == false).ToList().FirstOrDefault() != null);
         return !IsFull;
     }

@@ -27,8 +27,7 @@ public class ActionButtonHandler : MonoBehaviour {
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
-    [SerializeField] private PlayerAreaIdentity _curZone;
-    [SerializeField] private int _playerId;
+    [SerializeField] public PlayerAreaIdentity CurZone;
 
     [Header("Qualify Status")]
     [SerializeField] private bool _onMyArea;
@@ -51,6 +50,8 @@ public class ActionButtonHandler : MonoBehaviour {
     [Header("Scripts")]
     [SerializeField] private Inventory _inventory;
     [SerializeField] private ItemPicker _itemPicker;
+    [SerializeField] private PlayerIdentity _playerIdentity;
+    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
 
     private void Start()
     {
@@ -60,7 +61,10 @@ public class ActionButtonHandler : MonoBehaviour {
         if(_itemPicker == null)
             _itemPicker = GetComponent<ItemPicker>();
 
-        if(_buttonData.ActionButton == null)
+        if (_playerIdentity == null)
+            _playerIdentity = GetComponent<PlayerIdentity>();
+
+        if (_buttonData.ActionButton == null)
         {
             GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
             _buttonData.ActionButton = actionButton.GetComponentInChildren<Button>();
@@ -73,17 +77,20 @@ public class ActionButtonHandler : MonoBehaviour {
 
     private void Update()
     {
-        CheckButtonToShow();
+        if(_setupLocalPlayer.isLocalPlayer)
+            CheckButtonToShow();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerArea"))
         {
-            CheckButtonToShow();
-
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
-            _curZone = other.GetComponent<PlayerAreaIdentity>();
+            CurZone = other.GetComponent<PlayerAreaIdentity>();
+
+            _setupLocalPlayer.GameData.CanIBeTheOwner(CurZone.PlayerAreaId, _playerIdentity.PlayerId);
+
+            CheckButtonToShow();
         }
     }
 
@@ -93,9 +100,9 @@ public class ActionButtonHandler : MonoBehaviour {
         {
             CheckButtonToShow();
 
-            if (_curZone != null)
+            if (CurZone != null)
             {
-                _curZone = null;
+                CurZone = null;
             }
         }
     }
@@ -128,7 +135,8 @@ public class ActionButtonHandler : MonoBehaviour {
             }
             else
             {
-                _actionButton.interactable = false;
+                if(_setupLocalPlayer.isLocalPlayer)
+                    _actionButton.interactable = false;
             }
         }
     }
@@ -139,14 +147,17 @@ public class ActionButtonHandler : MonoBehaviour {
     /// <param name="newButtonConfiguration"></param>
     private void ChangeButton(ButtonConfiguration newButtonConfiguration)
     {
-        _actionButton.onClick.RemoveAllListeners();
-        _actionButton.onClick = newButtonConfiguration.ButtonEvent;
+        if (_setupLocalPlayer.isLocalPlayer)
+        {
+            _actionButton.onClick.RemoveAllListeners();
+            _actionButton.onClick = newButtonConfiguration.ButtonEvent;
 
-        _actionButtonText.text = newButtonConfiguration.ButtonText;
+            _actionButtonText.text = newButtonConfiguration.ButtonText;
 
-        _actionButtonImage.sprite = newButtonConfiguration.ButtonSprite;
+            _actionButtonImage.sprite = newButtonConfiguration.ButtonSprite;
 
-        _actionButton.interactable = true;
+            _actionButton.interactable = true;
+        }
     }
 
     /// <summary>
@@ -154,18 +165,20 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     private void UpdateStatus()
     {
-        if(_curZone != null)
+        if(CurZone != null)
         {
-            _onMyArea = GameData.Instance.IsThisMyArea(_playerId, _curZone.PlayerAreaId);
+            _onMyArea = _setupLocalPlayer.GameData.IsThisMyArea(_playerIdentity.PlayerId, CurZone.PlayerAreaId);
+            _itemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
         else
         {
-            _onMyArea = GameData.Instance.IsThisMyArea(_playerId, -2);
+            _onMyArea = false;
+            _itemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
 
-        _haveCarrots = _inventory.HaveOpenSlot;
+        _haveCarrots = _inventory.HaveSomeCarrot;
         if (_showDebugMessages) Debug.Log("Verificando se tem cenouras: " + _haveCarrots);
 
         _fullCarrots = _inventory.IsFull;

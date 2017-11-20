@@ -7,6 +7,7 @@ public class OverridenNetworkDiscovery : NetworkDiscovery {
 
     public override void OnReceivedBroadcast(string fromAddress, string data)
     {
+        this.StopBroadcast();
         base.OnReceivedBroadcast(fromAddress, data);
         Debug.Log("Encontrado o ip: " + fromAddress);
         NetworkManager.singleton.networkAddress = fromAddress;

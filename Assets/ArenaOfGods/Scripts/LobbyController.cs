@@ -26,8 +26,8 @@ public class LobbyController : MonoBehaviour {
     {
         _networkDiscovery.Initialize();
         _networkDiscovery.StartAsClient();
-        NetworkManager.singleton.StartClient();
+        //NetworkManager.singleton.StartClient();
 
-        _onEnd.Invoke();
+        _onStart.Invoke();
     }
 }

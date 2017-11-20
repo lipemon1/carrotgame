@@ -10,5 +10,5 @@ public class Carrot {
 
     [Header("Info")]
     [SerializeField] public int Id;
-    [SerializeField] public string PlayerOwnerId;
+    [SerializeField] public int PlayerOwnerId = -1;
 }

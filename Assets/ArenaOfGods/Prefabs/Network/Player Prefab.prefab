@@ -91,12 +91,14 @@ GameObject:
   - component: {fileID: 54315067081747962}
   - component: {fileID: 114214052957656020}
   - component: {fileID: 114187510715281078}
-  - component: {fileID: 114098269207742670}
   - component: {fileID: 114348446974973628}
+  - component: {fileID: 114098269207742670}
   - component: {fileID: 114280667365997216}
+  - component: {fileID: 114810177687270120}
   - component: {fileID: 114862714683573296}
   - component: {fileID: 114120286272606674}
   - component: {fileID: 114544030815262652}
+  - component: {fileID: 114517965353531066}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -413,8 +415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b63ffa586a4043c49a8e09fea989102c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curZone: {fileID: 0}
-  _playerId: 0
+  _showDebugMessages: 0
+  CurZone: {fileID: 0}
   _onMyArea: 0
   _haveCarrots: 0
   _fullCarrots: 0
@@ -424,7 +426,18 @@ MonoBehaviour:
     ButtonSprite: {fileID: 0}
     ButtonEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 114810177687270120}
+          m_MethodName: TryToPlantCarrot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
         Culture=neutral, PublicKeyToken=null
   _pickConfiguration:
@@ -432,7 +445,18 @@ MonoBehaviour:
     ButtonSprite: {fileID: 0}
     ButtonEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 114280667365997216}
+          m_MethodName: TryToPickCarrot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
         Culture=neutral, PublicKeyToken=null
   _shootConfiguration:
@@ -446,8 +470,10 @@ MonoBehaviour:
   _actionButton: {fileID: 0}
   _actionButtonText: {fileID: 0}
   _actionButtonImage: {fileID: 0}
-  _inventory: {fileID: 0}
-  _itemPicker: {fileID: 0}
+  _inventory: {fileID: 114862714683573296}
+  _itemPicker: {fileID: 114280667365997216}
+  _playerIdentity: {fileID: 114544030815262652}
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114187510715281078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -461,7 +487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
   m_SendInterval: 0.033333335
-  m_SyncRotationAxis: 7
+  m_SyncRotationAxis: 2
   m_RotationSyncCompression: 0
   m_SyncSpin: 1
   m_MovementTheshold: 0.001
@@ -512,9 +538,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e4c2a0b05953c42b125dc23791dae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 0
   _targetToPick: {fileID: 0}
   IsTouchingCarrot: 0
-  _actionButtonHandler: {fileID: 0}
+  _onMyArea: 0
+  _actionButtonHandler: {fileID: 114120286272606674}
+  _inventory: {fileID: 114862714683573296}
+  _playerIdentity: {fileID: 114544030815262652}
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114348446974973628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -526,7 +557,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a67edf395919a844b76d1e353cdf0e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 1
+  PlayerMovement: {fileID: 114098269207742670}
+  ItemPicker: {fileID: 114280667365997216}
+  ItemDropper: {fileID: 114810177687270120}
+  Inventory: {fileID: 114862714683573296}
+  ActionButtonHandler: {fileID: 114120286272606674}
+  GameData: {fileID: 114517965353531066}
+  PlayerIdentity: {fileID: 114544030815262652}
+  _testButton: {fileID: 0}
   _spawnYOffset: 5
+--- !u!114 &114517965353531066
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 531a047bacc2f8a4591e6d1f70184b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugMessages: 0
+  _playersConnectedAmount: 0
+  _playersCon: 0
+  _playersConnectedsList: []
+  PlayerAreaList:
+  - GameInstance: {fileID: 0}
+    Id: 0
+    PlayerOwnerId: 0
+    CarrotsListId: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+  - GameInstance: {fileID: 0}
+    Id: 1
+    PlayerOwnerId: -1
+    CarrotsListId: 
+  - GameInstance: {fileID: 0}
+    Id: 2
+    PlayerOwnerId: -1
+    CarrotsListId: 
+  - GameInstance: {fileID: 0}
+    Id: 3
+    PlayerOwnerId: -1
+    CarrotsListId: 
+  - GameInstance: {fileID: 0}
+    Id: 4
+    PlayerOwnerId: -1
+    CarrotsListId: 
+  CarrotsList:
+  - GameInstance: {fileID: 0}
+    Id: 0
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 1
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 2
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 3
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 4
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 5
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 6
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 7
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 8
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 9
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 10
+    PlayerOwnerId: 0
+  - GameInstance: {fileID: 0}
+    Id: 11
+    PlayerOwnerId: 0
 --- !u!114 &114544030815262652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -538,7 +651,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d3080397ea42c4a974420d67e86cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerId: -1
+  PlayerId: 0
+--- !u!114 &114810177687270120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0abcef23a5ddf4d4fa8b18c2ee657e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugMessages: 0
+  _onMyArea: 0
+  _actionButtonHandler: {fileID: 114120286272606674}
+  _inventory: {fileID: 114862714683573296}
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114862714683573296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -550,12 +679,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22afe1da322dc6442a64b858c67dab9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 0
   _carrotsGameObjects:
   - {fileID: 1458411967809880}
   - {fileID: 1439169330965396}
   - {fileID: 1026414600522786}
   HaveOpenSlot: 1
   IsFull: 0
+  HaveSomeCarrot: 0
   _inventorySlots:
   - Busy: 0
     ItemId: -1
