@@ -36,7 +36,14 @@ public class GameData : NetworkBehaviour {
     public override void OnStartClient()
     {
         base.OnStartClient();
+        SearchCarrots();
         Invoke("LateShitHere", 2f);
+    }
+
+    private void SearchCarrots()
+    {
+        Carrot[] carrotsFound = FindObjectsOfType(typeof(Carrot)) as Carrot[];
+        CarrotsList = carrotsFound.ToList();
     }
 
     private void LateShitHere()
