@@ -9,30 +9,19 @@ public class ItemDropper : MonoBehaviour {
     [SerializeField] private bool _onMyArea;
 
     [Header("Scripts")]
-    [SerializeField] private ActionButtonHandler _actionButtonHandler;
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
-
-    private void Start()
-    {
-        if (_actionButtonHandler == null)
-            _actionButtonHandler.GetComponent<ActionButtonHandler>();
-
-        if (_inventory == null)
-            _inventory = GetComponent<Inventory>();
-    }
+    [SerializeField] private SetupLocalPlayer _playerConfig;
 
     /// <summary>
     /// Método que é chamado pelo botão de pegar cenoura
     /// </summary>
     public void TryToPlantCarrot()
     {
-        int carrotIdRemovedFromInventory = _inventory.TryToWithdrawCarrot();
+        int carrotIdRemovedFromInventory = _playerConfig.Inventory.TryToWithdrawCarrot();
 
         if (carrotIdRemovedFromInventory != -1)
         {
             if (_showDebugMessages) Debug.Log("Consegui retirar do inventário, mudar no servidor agora");
-            _setupLocalPlayer.GameData.AddCarrotToArea(carrotIdRemovedFromInventory, _actionButtonHandler.CurPlayerArea.Id, transform.position);
+            _playerConfig.GameData.AddCarrotToArea(carrotIdRemovedFromInventory, _playerConfig.ActionButtonHandler.CurPlayerArea.Id, transform.position);
         }
     }
 }

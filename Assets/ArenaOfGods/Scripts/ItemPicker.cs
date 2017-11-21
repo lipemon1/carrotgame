@@ -11,38 +11,23 @@ public class ItemPicker : MonoBehaviour {
     [SerializeField] private bool _onMyArea;
 
     [Header("Scripts")]
-    [SerializeField] private ActionButtonHandler _actionButtonHandler;
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private PlayerIdentity _playerIdentity;
-    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
-
-    private void Start()
-    {
-        if (_actionButtonHandler == null)
-            _actionButtonHandler.GetComponent<ActionButtonHandler>();
-
-        if (_inventory == null)
-            _inventory = GetComponent<Inventory>();
-
-        if (_playerIdentity == null)
-            _playerIdentity = GetComponent<PlayerIdentity>();
-    }
+    [SerializeField] private SetupLocalPlayer _playerConfig;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Carrot") && !_onMyArea && !_inventory.IsFull)
+        if (other.CompareTag("Carrot") && !_onMyArea && !_playerConfig.Inventory.IsFull)
         {
             if(_showDebugMessages) Debug.Log("Colliding with some carrot: " + other.gameObject.name);
             _targetToPick = other.GetComponent<Carrot>();
             _targetToPick.GetComponent<CarrotBehaviour>().OnTargetEnter();
             IsTouchingCarrot = true;
-            _actionButtonHandler.CheckButtonToShow();
+            _playerConfig.ActionButtonHandler.CheckButtonToShow();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Carrot") && !_onMyArea && !_inventory.IsFull)
+        if (other.CompareTag("Carrot") && !_onMyArea && !_playerConfig.Inventory.IsFull)
         {
             GettingAwayFromCarrot();
         }
@@ -55,7 +40,7 @@ public class ItemPicker : MonoBehaviour {
             _targetToPick.GetComponent<CarrotBehaviour>().OnTargetExit();
             _targetToPick = null;
             IsTouchingCarrot = false;
-            _actionButtonHandler.CheckButtonToShow();
+            _playerConfig.ActionButtonHandler.CheckButtonToShow();
         }
     }
 
@@ -66,11 +51,11 @@ public class ItemPicker : MonoBehaviour {
     {
         int carrotToPick = _targetToPick.Id;
 
-        if (_inventory.TryToStoreCarrot(carrotToPick))
+        if (_playerConfig.Inventory.TryToStoreCarrot(carrotToPick))
         {
             if (_showDebugMessages) Debug.Log("Consegui guardar no inventário, mudar no servidor agora");
             GettingAwayFromCarrot();
-            _setupLocalPlayer.GameData.ChangeCarrotPlayerOwner(carrotToPick, _playerIdentity.PlayerId);
+            _playerConfig.GameData.ChangeCarrotPlayerOwner(carrotToPick, _playerConfig.PlayerIdentity.PlayerId);
         }
     }
 

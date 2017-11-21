@@ -48,22 +48,10 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private ButtonData _buttonData;
 
     [Header("Scripts")]
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private ItemPicker _itemPicker;
-    [SerializeField] private PlayerIdentity _playerIdentity;
-    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
+    [SerializeField] private SetupLocalPlayer _playerConfig;
 
     private void Start()
     {
-        if(_inventory == null)
-            _inventory = GetComponent<Inventory>();
-
-        if(_itemPicker == null)
-            _itemPicker = GetComponent<ItemPicker>();
-
-        if (_playerIdentity == null)
-            _playerIdentity = GetComponent<PlayerIdentity>();
-
         if (_buttonData.ActionButton == null)
         {
             GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
@@ -77,7 +65,7 @@ public class ActionButtonHandler : MonoBehaviour {
 
     private void Update()
     {
-        if(_setupLocalPlayer.isLocalPlayer)
+        if(_playerConfig.isLocalPlayer)
             CheckButtonToShow();
     }
 
@@ -88,7 +76,7 @@ public class ActionButtonHandler : MonoBehaviour {
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
             CurPlayerArea = other.GetComponent<PlayerArea>();
 
-            _setupLocalPlayer.GameData.CanIBeTheOwner(CurPlayerArea.Id, _playerIdentity.PlayerId);
+            _playerConfig.GameData.CanIBeTheOwner(CurPlayerArea.Id, _playerConfig.PlayerIdentity.PlayerId);
 
             CheckButtonToShow();
         }
@@ -135,7 +123,7 @@ public class ActionButtonHandler : MonoBehaviour {
             }
             else
             {
-                if(_setupLocalPlayer.isLocalPlayer)
+                if(_playerConfig.isLocalPlayer)
                     _actionButton.interactable = false;
             }
         }
@@ -147,7 +135,7 @@ public class ActionButtonHandler : MonoBehaviour {
     /// <param name="newButtonConfiguration"></param>
     private void ChangeButton(ButtonConfiguration newButtonConfiguration)
     {
-        if (_setupLocalPlayer.isLocalPlayer)
+        if (_playerConfig.isLocalPlayer)
         {
             _actionButton.onClick.RemoveAllListeners();
             _actionButton.onClick = newButtonConfiguration.ButtonEvent;
@@ -167,24 +155,24 @@ public class ActionButtonHandler : MonoBehaviour {
     {
         if(CurPlayerArea != null)
         {
-            _onMyArea = _setupLocalPlayer.GameData.IsThisMyArea(_playerIdentity.PlayerId, CurPlayerArea.Id);
-            _itemPicker.SetOnMyArea(_onMyArea);
+            _onMyArea = _playerConfig.GameData.IsThisMyArea(_playerConfig.PlayerIdentity.PlayerId, CurPlayerArea.Id);
+            _playerConfig.ItemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
         else
         {
             _onMyArea = false;
-            _itemPicker.SetOnMyArea(_onMyArea);
+            _playerConfig.ItemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
 
-        _haveCarrots = _inventory.HaveSomeCarrot;
+        _haveCarrots = _playerConfig.Inventory.HaveSomeCarrot;
         if (_showDebugMessages) Debug.Log("Verificando se tem cenouras: " + _haveCarrots);
 
-        _fullCarrots = _inventory.IsFull;
+        _fullCarrots = _playerConfig.Inventory.IsFull;
         if (_showDebugMessages) Debug.Log("Verificando se o inventario esta cheio: " + _fullCarrots);
 
-        _isTouchingCarrot = _itemPicker.IsTouchingCarrot;
+        _isTouchingCarrot = _playerConfig.ItemPicker.IsTouchingCarrot;
         if (_showDebugMessages) Debug.Log("Verificando se esta tocando alguma cenoura: " + _isTouchingCarrot);
     }
 
