@@ -93,10 +93,10 @@ GameObject:
   - component: {fileID: 114187510715281078}
   - component: {fileID: 114348446974973628}
   - component: {fileID: 114098269207742670}
+  - component: {fileID: 114120286272606674}
   - component: {fileID: 114280667365997216}
   - component: {fileID: 114810177687270120}
   - component: {fileID: 114862714683573296}
-  - component: {fileID: 114120286272606674}
   - component: {fileID: 114544030815262652}
   - component: {fileID: 114517965353531066}
   m_Layer: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showDebugMessages: 0
-  CurZone: {fileID: 0}
+  CurPlayerArea: {fileID: 0}
   _onMyArea: 0
   _haveCarrots: 0
   _fullCarrots: 0
@@ -470,10 +470,7 @@ MonoBehaviour:
   _actionButton: {fileID: 0}
   _actionButtonText: {fileID: 0}
   _actionButtonImage: {fileID: 0}
-  _inventory: {fileID: 114862714683573296}
-  _itemPicker: {fileID: 114280667365997216}
-  _playerIdentity: {fileID: 114544030815262652}
-  _setupLocalPlayer: {fileID: 114348446974973628}
+  _playerConfig: {fileID: 114348446974973628}
 --- !u!114 &114187510715281078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -542,10 +539,7 @@ MonoBehaviour:
   _targetToPick: {fileID: 0}
   IsTouchingCarrot: 0
   _onMyArea: 0
-  _actionButtonHandler: {fileID: 114120286272606674}
-  _inventory: {fileID: 114862714683573296}
-  _playerIdentity: {fileID: 114544030815262652}
-  _setupLocalPlayer: {fileID: 114348446974973628}
+  _playerConfig: {fileID: 114348446974973628}
 --- !u!114 &114348446974973628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -558,6 +552,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showDebugMessages: 1
+  _componentsToActive:
+    PlayerMovement: 1
+    ItemPicker: 0
+    ItemDropper: 0
+    Inventory: 0
+    ActionButtonHandler: 0
+    GameData: 0
+    PlayerIdentity: 0
   PlayerMovement: {fileID: 114098269207742670}
   ItemPicker: {fileID: 114280667365997216}
   ItemDropper: {fileID: 114810177687270120}
@@ -577,10 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531a047bacc2f8a4591e6d1f70184b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showDebugMessages: 0
-  _playersConnectedAmount: 0
-  _playersCon: 0
-  _playersConnectedsList: []
+  _showDebugMessages: 1
   PlayerAreaList: []
   CarrotsList: []
 --- !u!114 &114544030815262652
@@ -608,9 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _showDebugMessages: 0
   _onMyArea: 0
-  _actionButtonHandler: {fileID: 114120286272606674}
-  _inventory: {fileID: 114862714683573296}
-  _setupLocalPlayer: {fileID: 114348446974973628}
+  _playerConfig: {fileID: 114348446974973628}
 --- !u!114 &114862714683573296
 MonoBehaviour:
   m_ObjectHideFlags: 1

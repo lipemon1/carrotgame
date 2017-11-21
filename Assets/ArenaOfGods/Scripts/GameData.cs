@@ -6,26 +6,15 @@ using UnityEngine.Networking;
 
 public class GameData : NetworkBehaviour {
 
-    [System.Serializable]
-    public class PlayerConnected
-    {
-        public int PlayerId;
-        public GameObject GameInstance;
-        public bool IsReady;
-
-        public PlayerConnected(int id, GameObject instance)
-        {
-            PlayerId = id;
-            GameInstance = instance;
-        }
-    }
-
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
 
     [Header("Players Connected")]
-    [SerializeField] private int _playersConnectedAmount = 0;
-    [SerializeField] private List<PlayerConnected> _playersConnectedsList = new List<PlayerConnected>();
+    [SyncVar]
+    [SerializeField] public PlayerConnected LastPlayerRegistered;
+    [SyncVar]
+    [SerializeField] public int LastPlayerId;
+    [SerializeField] public List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
 
     [Header("Game Data")]
     [SerializeField] public List<PlayerArea> PlayerAreaList = new List<PlayerArea>();
@@ -48,6 +37,11 @@ public class GameData : NetworkBehaviour {
     {
         PlayerArea[] playerAreasFound = FindObjectsOfType(typeof(PlayerArea)) as PlayerArea[];
         PlayerAreaList = playerAreasFound.ToList();
+    }
+
+    public bool SomeoneHasThisIp(int idToCheck)
+    {
+        return PlayersConnectedsList.Where(pc => pc.PlayerId == idToCheck).FirstOrDefault() != null;
     }
 
     /// <summary>
@@ -148,15 +142,15 @@ public class GameData : NetworkBehaviour {
     public bool CanIBeTheOwner(int areaThatIJustFound, int newOwnerId)
     {
         int playerId = newOwnerId - 1;
-        if (GetMyPlayerOwnerId(areaThatIJustFound) == -1 && !_playersConnectedsList[playerId].IsReady)
+        if (GetMyPlayerOwnerId(areaThatIJustFound) == -1 && !PlayersConnectedsList[playerId].IsReady)
         {
             ChangePlayerAreaOwner(areaThatIJustFound, newOwnerId);
-            _playersConnectedsList[playerId].IsReady = true;
+            PlayersConnectedsList[playerId].IsReady = true;
 
-            return _playersConnectedsList[playerId].IsReady;
+            return PlayersConnectedsList[playerId].IsReady;
         }
 
-        return _playersConnectedsList[playerId].IsReady;
+        return PlayersConnectedsList[playerId].IsReady;
     }
 
     #region CARROTS HOOKS
