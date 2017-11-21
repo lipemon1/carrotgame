@@ -14,16 +14,17 @@ public class PlayerArea : NetworkBehaviour{
 
     [SyncVar(hook = "OnPlayerOwnerIdChanged")]
     [SerializeField] public int PlayerOwnerId;
+
+    [SyncVar(hook = "OnActiveChanged")]
+    [SerializeField] public bool IsActive;
+
     [SerializeField] public List<Carrot> CarrotsList = new List<Carrot>();
 
-    private void OnPlayerOwnerIdChanged(int newId)
+    private void Start()
     {
-        RpcChangePlayerOwnerId(newId);
-    }
+        if (GameInstance == null)
+            GameInstance = this.gameObject;
 
-    [ClientRpc]
-    private void RpcChangePlayerOwnerId(int id)
-    {
-        PlayerOwnerId = id;
+        IsActive = this.gameObject.activeInHierarchy;
     }
 }
