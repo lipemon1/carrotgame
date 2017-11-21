@@ -565,7 +565,6 @@ MonoBehaviour:
   ActionButtonHandler: {fileID: 114120286272606674}
   GameData: {fileID: 114517965353531066}
   PlayerIdentity: {fileID: 114544030815262652}
-  _testButton: {fileID: 0}
   _spawnYOffset: 5
 --- !u!114 &114517965353531066
 MonoBehaviour:
@@ -582,64 +581,8 @@ MonoBehaviour:
   _playersConnectedAmount: 0
   _playersCon: 0
   _playersConnectedsList: []
-  PlayerAreaList:
-  - GameInstance: {fileID: 0}
-    Id: 0
-    PlayerOwnerId: 0
-    CarrotsListId: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
-  - GameInstance: {fileID: 0}
-    Id: 1
-    PlayerOwnerId: -1
-    CarrotsListId: 
-  - GameInstance: {fileID: 0}
-    Id: 2
-    PlayerOwnerId: -1
-    CarrotsListId: 
-  - GameInstance: {fileID: 0}
-    Id: 3
-    PlayerOwnerId: -1
-    CarrotsListId: 
-  - GameInstance: {fileID: 0}
-    Id: 4
-    PlayerOwnerId: -1
-    CarrotsListId: 
-  CarrotsList:
-  - GameInstance: {fileID: 0}
-    Id: 0
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 1
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 2
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 3
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 4
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 5
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 6
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 7
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 8
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 9
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 10
-    PlayerOwnerId: 0
-  - GameInstance: {fileID: 0}
-    Id: 11
-    PlayerOwnerId: 0
+  PlayerAreaList: []
+  CarrotsList: []
 --- !u!114 &114544030815262652
 MonoBehaviour:
   m_ObjectHideFlags: 1

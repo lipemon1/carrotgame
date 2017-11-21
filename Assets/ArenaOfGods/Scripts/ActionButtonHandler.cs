@@ -27,7 +27,7 @@ public class ActionButtonHandler : MonoBehaviour {
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
-    [SerializeField] public PlayerAreaIdentity CurZone;
+    [SerializeField] public PlayerArea CurPlayerArea;
 
     [Header("Qualify Status")]
     [SerializeField] private bool _onMyArea;
@@ -86,9 +86,9 @@ public class ActionButtonHandler : MonoBehaviour {
         if (other.CompareTag("PlayerArea"))
         {
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
-            CurZone = other.GetComponent<PlayerAreaIdentity>();
+            CurPlayerArea = other.GetComponent<PlayerArea>();
 
-            _setupLocalPlayer.GameData.CanIBeTheOwner(CurZone.PlayerAreaId, _playerIdentity.PlayerId);
+            _setupLocalPlayer.GameData.CanIBeTheOwner(CurPlayerArea.Id, _playerIdentity.PlayerId);
 
             CheckButtonToShow();
         }
@@ -100,9 +100,9 @@ public class ActionButtonHandler : MonoBehaviour {
         {
             CheckButtonToShow();
 
-            if (CurZone != null)
+            if (CurPlayerArea != null)
             {
-                CurZone = null;
+                CurPlayerArea = null;
             }
         }
     }
@@ -165,9 +165,9 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     private void UpdateStatus()
     {
-        if(CurZone != null)
+        if(CurPlayerArea != null)
         {
-            _onMyArea = _setupLocalPlayer.GameData.IsThisMyArea(_playerIdentity.PlayerId, CurZone.PlayerAreaId);
+            _onMyArea = _setupLocalPlayer.GameData.IsThisMyArea(_playerIdentity.PlayerId, CurPlayerArea.Id);
             _itemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }

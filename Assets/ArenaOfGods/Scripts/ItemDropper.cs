@@ -27,12 +27,12 @@ public class ItemDropper : MonoBehaviour {
     /// </summary>
     public void TryToPlantCarrot()
     {
-        int carrotRemovedFromInventory = _inventory.TryToWithdrawCarrot();
+        int carrotIdRemovedFromInventory = _inventory.TryToWithdrawCarrot();
 
-        if (carrotRemovedFromInventory != -1)
+        if (carrotIdRemovedFromInventory != -1)
         {
             if (_showDebugMessages) Debug.Log("Consegui retirar do inventário, mudar no servidor agora");
-            _setupLocalPlayer.GameData.AddCarrotToArea(carrotRemovedFromInventory, _actionButtonHandler.CurZone.PlayerAreaId, transform.position);
+            _setupLocalPlayer.GameData.AddCarrotToArea(carrotIdRemovedFromInventory, _actionButtonHandler.CurPlayerArea.Id, transform.position);
         }
     }
 }

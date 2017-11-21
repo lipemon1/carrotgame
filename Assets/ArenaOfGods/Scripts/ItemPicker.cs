@@ -6,7 +6,7 @@ public class ItemPicker : MonoBehaviour {
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
-    [SerializeField] private CarrotIdentity _targetToPick;
+    [SerializeField] private Carrot _targetToPick;
     [SerializeField] public bool IsTouchingCarrot;
     [SerializeField] private bool _onMyArea;
 
@@ -33,7 +33,7 @@ public class ItemPicker : MonoBehaviour {
         if (other.CompareTag("Carrot") && !_onMyArea && !_inventory.IsFull)
         {
             if(_showDebugMessages) Debug.Log("Colliding with some carrot: " + other.gameObject.name);
-            _targetToPick = other.GetComponent<CarrotIdentity>();
+            _targetToPick = other.GetComponent<Carrot>();
             _targetToPick.GetComponent<CarrotBehaviour>().OnTargetEnter();
             IsTouchingCarrot = true;
             _actionButtonHandler.CheckButtonToShow();
@@ -64,7 +64,7 @@ public class ItemPicker : MonoBehaviour {
     /// </summary>
     public void TryToPickCarrot()
     {
-        int carrotToPick = _targetToPick.CarrotId;
+        int carrotToPick = _targetToPick.Id;
 
         if (_inventory.TryToStoreCarrot(carrotToPick))
         {

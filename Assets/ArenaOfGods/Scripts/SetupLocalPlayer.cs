@@ -24,26 +24,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        if (isLocalPlayer)
-        {
-            PlayerMovement.enabled = true;
-            ItemPicker.enabled = true;
-            ItemDropper.enabled = true;
-            Inventory.enabled = true;
-            ActionButtonHandler.enabled = true;
-            PlayerIdentity.enabled = true;
-
-            if (_showDebugMessages) Debug.Log("Configurando setup local player de: " + gameObject.name);
-        }
-        else
-        {
-            PlayerMovement.enabled = false;
-            ItemPicker.enabled = false;
-            ItemDropper.enabled = false;
-            Inventory.enabled = false;
-            ActionButtonHandler.enabled = false;
-            PlayerIdentity.enabled = false;
-        }
+        ConfigureAllScripts();
 
         transform.SetParent(GameObject.Find("Arena").gameObject.transform);
         transform.position = new Vector3(transform.position.x, transform.position.y + _spawnYOffset, transform.position.z);
@@ -54,9 +35,32 @@ public class SetupLocalPlayer : NetworkBehaviour {
 		
 	}
 
+    void ConfigureAllScripts()
+    {
+        if (isLocalPlayer)
+        {
+            PlayerMovement.enabled = true;
+            //ItemPicker.enabled = true;
+            //ItemDropper.enabled = true;
+            //Inventory.enabled = true;
+            //ActionButtonHandler.enabled = true;
+            //PlayerIdentity.enabled = true;
+
+            if (_showDebugMessages) Debug.Log("Configurando setup local player de: " + gameObject.name);
+        }
+        else
+        {
+            PlayerMovement.enabled = false;
+            //ItemPicker.enabled = false;
+            //ItemDropper.enabled = false;
+            //Inventory.enabled = false;
+            //ActionButtonHandler.enabled = false;
+            //PlayerIdentity.enabled = false;
+        }
+    }
+
     public void SetMyId()
     {
-        int myId = GameData.SomeoneConnected(this.gameObject);
-        PlayerIdentity.SetPlayerId(myId);
+        //PlayerIdentity.SetPlayerId(myId);
     }
 }

@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 136542945815864848}
   - component: {fileID: 114311956639949288}
   - component: {fileID: 114015831814413994}
-  - component: {fileID: 114126213610277812}
   - component: {fileID: 114491036176113878}
   m_Layer: 0
   m_Name: Carrot
@@ -128,18 +127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetMarker: {fileID: 212507713124061106}
---- !u!114 &114126213610277812
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1503623413855280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 023c052ea99d78c4c9e67a75662290b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarrotId: 0
 --- !u!114 &114311956639949288
 MonoBehaviour:
   m_ObjectHideFlags: 1
