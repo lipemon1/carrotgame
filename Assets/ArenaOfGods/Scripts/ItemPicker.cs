@@ -55,7 +55,8 @@ public class ItemPicker : MonoBehaviour {
         {
             if (_showDebugMessages) Debug.Log("Consegui guardar no inventário, mudar no servidor agora");
             GettingAwayFromCarrot();
-            _playerConfig.GameData.ChangeCarrotPlayerOwner(carrotToPick, _playerConfig.PlayerIdentity.PlayerId);
+
+            PickCarrotFromServer(carrotToPick, 0, _playerConfig.PlayerIdentity.PlayerId);
         }
     }
 
@@ -66,5 +67,18 @@ public class ItemPicker : MonoBehaviour {
     public void SetOnMyArea(bool value)
     {
         _onMyArea = value;
+    }
+
+    /// <summary>
+    /// Chama os método necessários do GameData para fazer o picking da cenoura em todo mundo
+    /// </summary>
+    /// <param name="carrotToPick"></param>
+    /// <param name="areaToStore"></param>
+    /// <param name="playerToPick"></param>
+    private void PickCarrotFromServer(int carrotToPick, int areaToStore, int playerToPick)
+    {
+        _playerConfig.GameData.ChangeCarrotPlayerOwner(carrotToPick, playerToPick);
+        _playerConfig.GameData.ChangeCarrotActiveValue(carrotToPick, false);
+        _playerConfig.GameData.ChangeCarrotPlayerArea(carrotToPick, areaToStore, GameData.Operation.Remove);
     }
 }

@@ -6,6 +6,12 @@ using UnityEngine.Networking;
 
 public class GameData : NetworkBehaviour {
 
+    public enum Operation
+    {
+        Add,
+        Remove
+    }
+
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
 
@@ -84,7 +90,21 @@ public class GameData : NetworkBehaviour {
     /// <returns></returns>
     private int AreaFromThisCarrot(int carrotId)
     {
-        return PlayerAreaList.Where(pl => pl.CarrotsList.Contains(CarrotsList.Where(cr => cr.Id == carrotId).FirstOrDefault())).ToList().FirstOrDefault().Id;
+        if (_showDebugMessages) Debug.Log("Descobrindo a área que é dona dessa cenoura<" + carrotId + ">");
+        Carrot carrotToFoundArea = GetCarrotById(carrotId);
+        PlayerArea playerAreaFromThisCarrot = PlayerAreaList.Where(pl => pl.CarrotsList.Contains(carrotToFoundArea)).FirstOrDefault();
+
+        if(playerAreaFromThisCarrot == null)
+        {
+            if (_showDebugMessages) Debug.Log("Cenoura está com algum jogador<Jogador Dono Atual:" + carrotToFoundArea.PlayerOwnerId + ">");
+            return 0;
+        }
+        else
+        {
+            if (_showDebugMessages) Debug.Log("Area dona encontrada: <" + playerAreaFromThisCarrot.Id + ">");
+
+            return playerAreaFromThisCarrot.Id;
+        }
     }
 
     /// <summary>
@@ -98,21 +118,76 @@ public class GameData : NetworkBehaviour {
         
         if (isServer)
         {
-            RpcChangeCarrotPlayerArea(carrotId, newOwner);
-            RpcChangeCarrotActiveValue(carrotId, false);
             RpcChangeCarrotOwner(carrotId, newOwner);
         }
 
         if (isClient)
         {
-            CmdChangeCarrotPlayerArea(carrotId, newOwner);
-            ChangeCarrotPlayerArea(carrotId, newOwner);
-
-            CmdChangeCarrotActiveValue(carrotId, false);
-            ChangeCarrotActiveValue(carrotId, false);
-
             CmdChangeCarrotOwner(carrotId, newOwner);
             ChangeCarrotOwner(carrotId, newOwner);
+        }
+    }
+
+    /// <summary>
+    /// Troca o estatus do objeto da cenoura
+    /// </summary>
+    /// <param name="carrotId"></param>
+    /// <param name="value"></param>
+    public void ChangeCarrotActiveValue(int carrotId, bool value)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando troca de estado de gameobject da cenoura<" + carrotId + ">");
+
+        if (isServer)
+        {
+            RpcChangeCarrotActiveValue(carrotId, value);
+        }
+
+        if (isClient)
+        {
+            CmdChangeCarrotActiveValue(carrotId, value);
+            ChangeCarrotActiveValueNow(carrotId, value);
+        }
+    }
+
+    /// <summary>
+    /// Modifica a area de jogador que é dona da cenoura
+    /// </summary>
+    /// <param name="carrotId"></param>
+    /// <param name="newPlayerArea"></param>
+    public void ChangeCarrotPlayerArea(int carrotId, int newPlayerArea, Operation operation)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando troca área dona da cenoura");
+
+        if (isServer)
+        {
+            RpcChangeCarrotPlayerArea(carrotId, newPlayerArea, operation);
+        }
+
+        if (isClient)
+        {
+            CmdChangeCarrotPlayerArea(carrotId, newPlayerArea, operation);
+            ChangeCarrotPlayerAreaNow(carrotId, newPlayerArea, operation);
+        }
+    }
+
+    /// <summary>
+    /// Muda a instancia de uma cenoura de posição
+    /// </summary>
+    /// <param name="carrotId"></param>
+    /// <param name="newPosition"></param>
+    public void ChangeCarrotGameInstancePosition(int carrotId, Vector3 newPosition)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando troca de posição de uma cenoura<" + carrotId + ">");
+
+        if (isServer)
+        {
+            RpcChangeCarrotPosition(carrotId, newPosition);
+        }
+
+        if (isClient)
+        {
+            CmdChangeCarrotPosition(carrotId, newPosition);
+            ChangeCarrotPositionNow(carrotId, newPosition);
         }
     }
 
@@ -123,10 +198,9 @@ public class GameData : NetworkBehaviour {
     /// <param name="newAreaId"></param>
     public void AddCarrotToArea(int carrotId, int newAreaId, Vector3 newPosition)
     {
-        PlayerAreaList[newAreaId].CarrotsList.Add(CarrotsList.Where(cr => cr.Id == carrotId).ToList().FirstOrDefault());
-
-        CarrotsList.Where(cr => cr.Id == carrotId).FirstOrDefault().GameInstance.transform.position = newPosition;
-        CarrotsList.Where(cr => cr.Id == carrotId).FirstOrDefault().IsActive = true;
+        ChangeCarrotActiveValue(carrotId, true);
+        ChangeCarrotPlayerArea(carrotId, newAreaId, Operation.Add);
+        ChangeCarrotGameInstancePosition(carrotId, newPosition);
     }
 
     /// <summary>
@@ -168,6 +242,26 @@ public class GameData : NetworkBehaviour {
     public PlayerConnected GetPlayerById(int playerId)
     {
         return PlayersConnectedsList.Where(player => player.PlayerId == playerId).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Retorna a cenoura atraves do seu ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Carrot GetCarrotById(int id)
+    {
+        return CarrotsList.Where(carrot => carrot.Id == id).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Retorna uma player area atraves do seu ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public PlayerArea GetPlayerAreaById(int id)
+    {
+        return PlayerAreaList.Where(pa => pa.Id == id).FirstOrDefault();
     }
 
     /// <summary>
@@ -218,25 +312,52 @@ public class GameData : NetworkBehaviour {
     #region CARROTS HOOKS
     #region Carrots PlayerArea
     [Command]
-    private void CmdChangeCarrotPlayerArea(int carrotIdToChange, int newOwner)
+    private void CmdChangeCarrotPlayerArea(int carrotIdToChange, int newAreaOwner, Operation operation)
     {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando o dono da cenoura: " + carrotIdToChange + "para o jogador: " + newOwner);
-        ChangeCarrotPlayerArea(carrotIdToChange, newOwner);
+        if (_showDebugMessages) Debug.Log("COMAND > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
+        ChangeCarrotPlayerAreaNow(carrotIdToChange, newAreaOwner, operation);
     }
 
     [ClientRpc]
-    private void RpcChangeCarrotPlayerArea(int carrotIdToChange, int newOwner)
+    private void RpcChangeCarrotPlayerArea(int carrotIdToChange, int newAreaOwner, Operation operation)
     {
-        if (_showDebugMessages) Debug.Log("RPC >Mudando o dono da cenoura: " + carrotIdToChange + "para o jogador: " + newOwner);
-        ChangeCarrotPlayerArea(carrotIdToChange, newOwner);
+        if (_showDebugMessages) Debug.Log("RPC > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
+        ChangeCarrotPlayerAreaNow(carrotIdToChange, newAreaOwner, operation);
     }
 
-    void ChangeCarrotPlayerArea(int carrotIdToChange, int newOwner)
+    void ChangeCarrotPlayerAreaNow(int carrotIdToChange, int newAreaOwner, Operation operation)
     {
-        if (_showDebugMessages) Debug.Log("LOCAL > Mudando o dono da cenoura: " + carrotIdToChange + "para o jogador: " + newOwner);
-        //deletando da lista que estava
-        int areaToRemoveFrom = AreaFromThisCarrot(carrotIdToChange);
-        PlayerAreaList[areaToRemoveFrom].CarrotsList.Remove(CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault());
+        if (_showDebugMessages) Debug.Log("LOCAL > Mudando a area da cenoura<" + carrotIdToChange + ">");
+        
+        if(operation == Operation.Remove)
+        {
+            if (_showDebugMessages) Debug.Log("LOCAL > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
+            //deletando da lista que estava
+            PlayerArea areaToRemoveFrom = GetPlayerAreaById(AreaFromThisCarrot(carrotIdToChange));
+
+            if (areaToRemoveFrom.CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault() == null)
+            {
+                if (_showDebugMessages) Debug.Log("LOCAL > A cenoura<" + carrotIdToChange + "> já não existe mais nessa área<" + areaToRemoveFrom + ">");
+            }
+            else
+            {
+                areaToRemoveFrom.CarrotsList.Remove(GetCarrotById(carrotIdToChange));
+            }
+        }
+
+        if(operation == Operation.Add)
+        {
+            PlayerArea areaToAddCarrot = GetPlayerAreaById(newAreaOwner);
+
+            if (areaToAddCarrot.CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault() != null)
+            {
+                if (_showDebugMessages) Debug.Log("LOCAL > A cenoura<" + carrotIdToChange + "> já está nessa área<" + newAreaOwner + ">");
+            }
+            else
+            {
+                areaToAddCarrot.CarrotsList.Add(GetCarrotById(carrotIdToChange));
+            }
+        }
     }
     #endregion
     #region Carrots Owners
@@ -250,7 +371,7 @@ public class GameData : NetworkBehaviour {
     [ClientRpc]
     private void RpcChangeCarrotOwner(int carrotIdToChange, int newOwner)
     {
-        if (_showDebugMessages) Debug.Log("RPC >Mudando o dono da cenoura: " + carrotIdToChange + "para o jogador: " + newOwner);
+        if (_showDebugMessages) Debug.Log("RPC >Mudando o dono da cenoura<" + carrotIdToChange + "> para o jogador: " + newOwner);
         ChangeCarrotOwner(carrotIdToChange, newOwner);
     }
 
@@ -266,21 +387,43 @@ public class GameData : NetworkBehaviour {
     private void CmdChangeCarrotActiveValue(int carrotIdToChange, bool value)
     {
         if (_showDebugMessages) Debug.Log("COMAND > Mudando status do objeto da cenoura: " + carrotIdToChange);
-        ChangeCarrotActiveValue(carrotIdToChange, value);
+        ChangeCarrotActiveValueNow(carrotIdToChange, value);
     }
 
     [ClientRpc]
     private void RpcChangeCarrotActiveValue(int carrotIdToChange, bool value)
     {
         if (_showDebugMessages) Debug.Log("RPC > Mudando status do objeto da cenoura: " + carrotIdToChange);
-        ChangeCarrotActiveValue(carrotIdToChange, value);
+        ChangeCarrotActiveValueNow(carrotIdToChange, value);
     }
 
-    void ChangeCarrotActiveValue(int carrotIdToChange, bool value)
+    void ChangeCarrotActiveValueNow(int carrotIdToChange, bool value)
     {
         if (_showDebugMessages) Debug.Log("LOCAL > Mudando status do objeto da cenoura: " + carrotIdToChange);
         CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault().IsActive = value;
         CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault().GameInstance.SetActive(value);
+    }
+    #endregion
+    #region Carrots Position
+    [Command]
+    private void CmdChangeCarrotPosition(int carrotIdToMove, Vector3 newPosition)
+    {
+        if (_showDebugMessages) Debug.Log("COMAND > Mudando posição da cenoura<" + carrotIdToMove + ">");
+        ChangeCarrotPositionNow(carrotIdToMove, newPosition);
+    }
+
+    [ClientRpc]
+    private void RpcChangeCarrotPosition(int carrotIdToMove, Vector3 newPosition)
+    {
+        if (_showDebugMessages) Debug.Log("RPC > Mudando posição da cenoura<" + carrotIdToMove + ">");
+        ChangeCarrotPositionNow(carrotIdToMove, newPosition);
+    }
+
+    void ChangeCarrotPositionNow(int carrotIdToMove, Vector3 newPosition)
+    {
+        if (_showDebugMessages) Debug.Log("LOCAL > Mudando posição da cenoura<" + carrotIdToMove + ">");
+        GetCarrotById(carrotIdToMove).GameInstance.transform.position = newPosition;
+        GetCarrotById(carrotIdToMove).GameInstance.GetComponent<CarrotBehaviour>().OnTargetExit();
     }
     #endregion
     #endregion

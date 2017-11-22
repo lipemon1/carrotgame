@@ -16,6 +16,7 @@ public class ItemDropper : MonoBehaviour {
     /// </summary>
     public void TryToPlantCarrot()
     {
+        if (_showDebugMessages) Debug.Log("Tentando tirar do inventário");
         int carrotIdRemovedFromInventory = _playerConfig.Inventory.TryToWithdrawCarrot();
 
         if (carrotIdRemovedFromInventory != -1)
