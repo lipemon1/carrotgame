@@ -36,23 +36,28 @@ public class GameData : NetworkBehaviour {
         NewPlayerOnServer(++PlayersGamingNow);
     }
 
+    /// <summary>
+    /// Procura pelas cenouras que existem no mundo do jogo
+    /// </summary>
     private void SearchCarrots()
     {
         Carrot[] carrotsFound = FindObjectsOfType(typeof(Carrot)) as Carrot[];
         CarrotsList = carrotsFound.ToList();
     }
 
+    /// <summary>
+    /// Procura pelas areas que existem no mundo do jogo
+    /// </summary>
     private void SearchPlayerAreas()
     {
         PlayerArea[] playerAreasFound = FindObjectsOfType(typeof(PlayerArea)) as PlayerArea[];
         PlayerAreaList = playerAreasFound.ToList();
     }
 
-    public bool SomeoneHasThisIp(int idToCheck)
-    {
-        return PlayersConnectedsList.Where(pc => pc.PlayerId == idToCheck).FirstOrDefault() != null;
-    }
-
+    /// <summary>
+    /// Registra um novo jogador dentro do servidor
+    /// </summary>
+    /// <param name="newId"></param>
     private void NewPlayerOnServer(int newId)
     {
         int myNewId = PlayersGamingNow;
@@ -66,23 +71,8 @@ public class GameData : NetworkBehaviour {
         GetComponent<PlayerIdentity>().SetPlayerId(myNewId);
     }
 
-    /// <summary>
-    /// Retorna verdadeiro se o jogador passado por parametro é o dono da area passada por parametro
-    /// </summary>
-    /// <param name="playerId"></param>
-    /// <param name="playerAreaId"></param>
-    /// <returns></returns>
-	public bool IsThisMyArea(int playerId, int playerAreaId)
-    {
-        if (_showDebugMessages) Debug.Log("Iniciando verificação de propriedade de uma área.\nÁrea: " + playerAreaId + "\nJogador:" + playerId);
-        PlayerArea areaFromPlayer = PlayerAreaList.Where(pa => pa.Id == playerAreaId).FirstOrDefault();
-
-        if (areaFromPlayer == null)
-            return false;
-
-        return areaFromPlayer.PlayerOwnerId == playerId;
-    }
-
+    #region PUBLIC METHODS
+    #region Carrots
     /// <summary>
     /// Retorna o id da area dona da cenoura que voce pediu imbecil
     /// </summary>
@@ -94,7 +84,7 @@ public class GameData : NetworkBehaviour {
         Carrot carrotToFoundArea = GetCarrotById(carrotId);
         PlayerArea playerAreaFromThisCarrot = PlayerAreaList.Where(pl => pl.CarrotsList.Contains(carrotToFoundArea)).FirstOrDefault();
 
-        if(playerAreaFromThisCarrot == null)
+        if (playerAreaFromThisCarrot == null)
         {
             if (_showDebugMessages) Debug.Log("Cenoura está com algum jogador<Jogador Dono Atual:" + carrotToFoundArea.PlayerOwnerId + ">");
             return 0;
@@ -115,7 +105,7 @@ public class GameData : NetworkBehaviour {
     public void ChangeCarrotPlayerOwner(int carrotId, int newOwner)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de dono de cenoura");
-        
+
         if (isServer)
         {
             RpcChangeCarrotOwner(carrotId, newOwner);
@@ -202,6 +192,24 @@ public class GameData : NetworkBehaviour {
         ChangeCarrotPlayerArea(carrotId, newAreaId, Operation.Add);
         ChangeCarrotGameInstancePosition(carrotId, newPosition);
     }
+    #endregion
+    #region Player Areas
+    /// <summary>
+    /// Retorna verdadeiro se o jogador passado por parametro é o dono da area passada por parametro
+    /// </summary>
+    /// <param name="playerId"></param>
+    /// <param name="playerAreaId"></param>
+    /// <returns></returns>
+    public bool IsThisMyArea(int playerId, int playerAreaId)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando verificação de propriedade de uma área.\nÁrea: " + playerAreaId + "\nJogador:" + playerId);
+        PlayerArea areaFromPlayer = PlayerAreaList.Where(pa => pa.Id == playerAreaId).FirstOrDefault();
+
+        if (areaFromPlayer == null)
+            return false;
+
+        return areaFromPlayer.PlayerOwnerId == playerId;
+    }
 
     /// <summary>
     /// Troca o dono de uma área, usado na primeira vez que está plantando
@@ -234,6 +242,34 @@ public class GameData : NetworkBehaviour {
         return PlayerAreaList.Where(pa => pa.Id == areaId).FirstOrDefault().PlayerOwnerId;
     }
 
+    /// <summary>
+    /// Verifica se o jogador recebido pode ser o dono da area que ele acabou de entrar
+    /// </summary>
+    /// <param name="areaThatIJustFound"></param>
+    /// <param name="newOwnerId"></param>
+    /// <returns></returns>
+    public bool CanIBeTheOwner(int areaThatIJustFound, int newOwnerId)
+    {
+        if (_showDebugMessages) Debug.Log("Verificando se área já tem dono ou se o jogador já está pronto");
+        int playerToTurnOwner = newOwnerId;
+        if (GetMyPlayerAreaOwnerId(areaThatIJustFound) == -1 && !GetPlayerById(playerToTurnOwner).IsReady)
+        {
+            if (_showDebugMessages) Debug.Log("Nenhum, nem outro. O jogador " + playerToTurnOwner + " agora deve ser dono da área " + areaThatIJustFound);
+            ChangePlayerAreaOwner(areaThatIJustFound, playerToTurnOwner);
+            SetPlayerAsReady(playerToTurnOwner);
+
+            return GetPlayerById(playerToTurnOwner).IsReady;
+        }
+        else
+        {
+            if (_showDebugMessages) Debug.Log("Ou o jogador já está pronto<" + GetPlayerById(playerToTurnOwner).IsReady + "> ou a área já tem dono<Dono: " + GetMyPlayerAreaOwnerId(areaThatIJustFound) + ">");
+            return GetPlayerById(playerToTurnOwner).IsReady;
+        }
+    }
+    #endregion
+    #endregion
+
+    #region INTERNAL UTIL METHODS
     /// <summary>
     /// Retorna um player connected de acordo com o seu ID
     /// </summary>
@@ -283,31 +319,7 @@ public class GameData : NetworkBehaviour {
             ChangePlayerReadyValue(playerId);
         }
     }
-
-    /// <summary>
-    /// Verifica se o jogador recebido pode ser o dono da area que ele acabou de entrar
-    /// </summary>
-    /// <param name="areaThatIJustFound"></param>
-    /// <param name="newOwnerId"></param>
-    /// <returns></returns>
-    public bool CanIBeTheOwner(int areaThatIJustFound, int newOwnerId)
-    {
-        if (_showDebugMessages) Debug.Log("Verificando se área já tem dono ou se o jogador já está pronto");
-        int playerToTurnOwner = newOwnerId;
-        if (GetMyPlayerAreaOwnerId(areaThatIJustFound) == -1 && !GetPlayerById(playerToTurnOwner).IsReady)
-        {
-            if (_showDebugMessages) Debug.Log("Nenhum, nem outro. O jogador " + playerToTurnOwner + " agora deve ser dono da área " + areaThatIJustFound);
-            ChangePlayerAreaOwner(areaThatIJustFound, playerToTurnOwner);
-            SetPlayerAsReady(playerToTurnOwner);
-
-            return GetPlayerById(playerToTurnOwner).IsReady;
-        }
-        else
-        {
-            if (_showDebugMessages) Debug.Log("Ou o jogador já está pronto<" + GetPlayerById(playerToTurnOwner).IsReady + "> ou a área já tem dono<Dono: " + GetMyPlayerAreaOwnerId(areaThatIJustFound) + ">");
-            return GetPlayerById(playerToTurnOwner).IsReady;
-        }
-    }
+    #endregion
 
     #region CARROTS HOOKS
     #region Carrots PlayerArea

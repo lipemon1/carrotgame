@@ -48,12 +48,6 @@ public class SetupLocalPlayer : NetworkBehaviour {
         transform.position = new Vector3(transform.position.x, transform.position.y + _spawnYOffset, transform.position.z);
     }
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        //SetMyId();
-    }
-
     void ConfigureAllScripts()
     {
         if (isLocalPlayer)
@@ -79,69 +73,4 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = false;
         }
     }
-
-    public void SetMyId()
-    {
-        int curPlayers = GameData.PlayersConnectedsList.Count;
-        int newPlayerId = ++curPlayers;
-
-        while (GameData.SomeoneHasThisIp(newPlayerId))
-        {
-            newPlayerId++;
-        }
-
-        if (isServer)
-        {
-            RpcNewPlayerConnected(newPlayerId);
-        }
-
-        if (isClient)
-        {
-            CmdNewPlayerConnected(newPlayerId);
-            NewPlayerConnected(newPlayerId);
-        }
-
-        //PlayerIdentity.SetPlayerId(GameData.LastPlayerRegistered.PlayerId);
-        //PlayerIdentity.SetPlayerId(NetworkIdentity.netId.Value as int);
-    }
-
-    #region PLAYERS HOOKS
-    #region Registrando Novo Jogador
-    [Command]
-    private void CmdNewPlayerConnected(int newPlayersAmount)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Novo jogador conectado: " + newPlayersAmount);
-        NewPlayerConnected(newPlayersAmount);
-    }
-
-    [ClientRpc]
-    private void RpcNewPlayerConnected(int newPlayersAmount)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Novo jogador conectado: " + newPlayersAmount);
-        NewPlayerConnected(newPlayersAmount);
-    }
-
-    void NewPlayerConnected(int newPlayerId)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Novo jogador conectado: " + newPlayerId);
-        if (GameData.PlayersConnectedsList.Where(pc => pc.PlayerId == newPlayerId).FirstOrDefault() == null)
-        {
-            if (_showDebugMessages) Debug.Log("Primeiro jogador com este id: " + newPlayerId);
-
-            PlayerConnected newPlayer = new PlayerConnected();
-            newPlayer.PlayerId = newPlayerId;
-
-            GameData.PlayersConnectedsList.Add(newPlayer);
-
-            GameData.LastPlayerRegistered = newPlayer;
-            GameData.LastPlayerId = newPlayer.PlayerId;
-        }
-        else
-        {
-            if (_showDebugMessages) Debug.Log("Já existe um jogador com esse id: " + newPlayerId);
-            GameData.LastPlayerRegistered = GameData.PlayersConnectedsList.Where(pc => pc.PlayerId == newPlayerId).FirstOrDefault();
-        }
-    }
-    #endregion
-    #endregion
 }
