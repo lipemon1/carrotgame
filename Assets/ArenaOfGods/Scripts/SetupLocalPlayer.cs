@@ -17,6 +17,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
         public bool ActionButtonHandler;
         public bool GameData;
         public bool PlayerIdentity;
+        public bool NetworkIdentity;
     }
 
     [Header("Debug")]
@@ -33,6 +34,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
     [SerializeField] public ActionButtonHandler ActionButtonHandler;
     [SerializeField] public GameData GameData;
     [SerializeField] public PlayerIdentity PlayerIdentity;
+    [SerializeField] public NetworkIdentity NetworkIdentity;
 
     [Header("Spawn Configs")]
     [SerializeField] private float _spawnYOffset = 5f;
@@ -49,7 +51,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
     public override void OnStartClient()
     {
         base.OnStartClient();
-        SetMyId();
+        //SetMyId();
     }
 
     void ConfigureAllScripts()
@@ -62,6 +64,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_componentsToActive.Inventory) Inventory.enabled = true;
             if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = true;
             if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = true;
+            if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = true;
 
             if (_showDebugMessages) Debug.Log("Configurando setup local player de: " + gameObject.name);
         }
@@ -73,6 +76,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_componentsToActive.Inventory) Inventory.enabled = false;
             if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = false;
             if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = false;
+            if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = false;
         }
     }
 
@@ -97,7 +101,8 @@ public class SetupLocalPlayer : NetworkBehaviour {
             NewPlayerConnected(newPlayerId);
         }
 
-        PlayerIdentity.SetPlayerId(GameData.LastPlayerRegistered.PlayerId);
+        //PlayerIdentity.SetPlayerId(GameData.LastPlayerRegistered.PlayerId);
+        //PlayerIdentity.SetPlayerId(NetworkIdentity.netId.Value as int);
     }
 
     #region PLAYERS HOOKS

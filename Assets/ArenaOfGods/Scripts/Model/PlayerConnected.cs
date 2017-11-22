@@ -14,4 +14,7 @@ public class PlayerConnected {
 
     [SyncVar]
     public bool IsConnected;
+
+    [SyncVar]
+    public GameObject GameInstance;
 }

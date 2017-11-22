@@ -14,7 +14,9 @@ public class GameData : NetworkBehaviour {
     [SerializeField] public PlayerConnected LastPlayerRegistered;
     [SyncVar]
     [SerializeField] public int LastPlayerId;
-    [SerializeField] public List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
+    [SerializeField] public static int PlayersGamingNow = 0;
+    [SerializeField] public static List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
+    [SerializeField] public List<PlayerConnected> CopyOfPlayersConnectedsList = new List<PlayerConnected>();
 
     [Header("Game Data")]
     [SerializeField] public List<PlayerArea> PlayerAreaList = new List<PlayerArea>();
@@ -25,6 +27,7 @@ public class GameData : NetworkBehaviour {
         base.OnStartClient();
         SearchCarrots();
         SearchPlayerAreas();
+        NewPlayerOnServer(++PlayersGamingNow);
     }
 
     private void SearchCarrots()
@@ -42,6 +45,19 @@ public class GameData : NetworkBehaviour {
     public bool SomeoneHasThisIp(int idToCheck)
     {
         return PlayersConnectedsList.Where(pc => pc.PlayerId == idToCheck).FirstOrDefault() != null;
+    }
+
+    private void NewPlayerOnServer(int newId)
+    {
+        int myNewId = PlayersGamingNow;
+        PlayerConnected newPlayer = new PlayerConnected();
+        newPlayer.PlayerId = myNewId;
+        newPlayer.GameInstance = this.gameObject;
+        newPlayer.IsConnected = true;
+        PlayersConnectedsList.Add(newPlayer);
+        CopyOfPlayersConnectedsList = PlayersConnectedsList;
+
+        GetComponent<PlayerIdentity>().SetPlayerId(myNewId);
     }
 
     /// <summary>
@@ -120,17 +136,58 @@ public class GameData : NetworkBehaviour {
     /// <param name="newOwner"></param>
     public void ChangePlayerAreaOwner(int areaToChangeOwner, int newOwner)
     {
-        PlayerAreaList[areaToChangeOwner].PlayerOwnerId = newOwner;
+        if (_showDebugMessages) Debug.Log("Iniciando troca de dono de uma área(" + areaToChangeOwner + ")");
+
+        if (isServer)
+        {
+            RpcChangePlayerAreaOwner(areaToChangeOwner, newOwner);
+        }
+
+        if (isClient)
+        {
+            CmdChangePlayerAreaOwner(areaToChangeOwner, newOwner);
+            ChangePlayerAreaOwnerNow(areaToChangeOwner, newOwner);
+        }
     }
 
     /// <summary>
     /// Retorna o ID do Dono dessa área, se for -1, ainda não tem dono
     /// </summary>
-    /// <param name="areaToSearch"></param>
+    /// <param name="areaId"></param>
     /// <returns></returns>
-    public int GetMyPlayerOwnerId(int areaToSearch)
+    public int GetMyPlayerAreaOwnerId(int areaId)
     {
-        return PlayerAreaList[areaToSearch].PlayerOwnerId;
+        return PlayerAreaList.Where(pa => pa.Id == areaId).FirstOrDefault().PlayerOwnerId;
+    }
+
+    /// <summary>
+    /// Retorna um player connected de acordo com o seu ID
+    /// </summary>
+    /// <param name="playerId"></param>
+    /// <returns></returns>
+    public PlayerConnected GetPlayerById(int playerId)
+    {
+        return PlayersConnectedsList.Where(player => player.PlayerId == playerId).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Marca que o jogador está pronto
+    /// </summary>
+    /// <param name="playerId"></param>
+    public void SetPlayerAsReady(int playerId)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando troca de estado de pronto do jogador<" + playerId + ">");
+
+        if (isServer)
+        {
+            RpcChangePlayerReadyValue(playerId);
+        }
+
+        if (isClient)
+        {
+            CmdChangePlayerReadyValue(playerId);
+            ChangePlayerReadyValue(playerId);
+        }
     }
 
     /// <summary>
@@ -141,16 +198,21 @@ public class GameData : NetworkBehaviour {
     /// <returns></returns>
     public bool CanIBeTheOwner(int areaThatIJustFound, int newOwnerId)
     {
-        int playerId = newOwnerId - 1;
-        if (GetMyPlayerOwnerId(areaThatIJustFound) == -1 && !PlayersConnectedsList[playerId].IsReady)
+        if (_showDebugMessages) Debug.Log("Verificando se área já tem dono ou se o jogador já está pronto");
+        int playerToTurnOwner = newOwnerId;
+        if (GetMyPlayerAreaOwnerId(areaThatIJustFound) == -1 && !GetPlayerById(playerToTurnOwner).IsReady)
         {
-            ChangePlayerAreaOwner(areaThatIJustFound, newOwnerId);
-            PlayersConnectedsList[playerId].IsReady = true;
+            if (_showDebugMessages) Debug.Log("Nenhum, nem outro. O jogador " + playerToTurnOwner + " agora deve ser dono da área " + areaThatIJustFound);
+            ChangePlayerAreaOwner(areaThatIJustFound, playerToTurnOwner);
+            SetPlayerAsReady(playerToTurnOwner);
 
-            return PlayersConnectedsList[playerId].IsReady;
+            return GetPlayerById(playerToTurnOwner).IsReady;
         }
-
-        return PlayersConnectedsList[playerId].IsReady;
+        else
+        {
+            if (_showDebugMessages) Debug.Log("Ou o jogador já está pronto<" + GetPlayerById(playerToTurnOwner).IsReady + "> ou a área já tem dono<Dono: " + GetMyPlayerAreaOwnerId(areaThatIJustFound) + ">");
+            return GetPlayerById(playerToTurnOwner).IsReady;
+        }
     }
 
     #region CARROTS HOOKS
@@ -223,7 +285,48 @@ public class GameData : NetworkBehaviour {
     #endregion
     #endregion
 
-    //#region PLAYER AREAS HOOKS
+    #region PLAYER AREAS HOOKS
+    #region PlayerAreas Owners
+    [Command]
+    private void CmdChangePlayerAreaOwner(int playerAreaIdToChange, int newOwner)
+    {
+        if (_showDebugMessages) Debug.Log("COMAND > Mudando o dono da area: " + playerAreaIdToChange + ", para o jogador: " + newOwner);
+        ChangePlayerAreaOwnerNow(playerAreaIdToChange, newOwner);
+    }
 
-    //#endregion
+    [ClientRpc]
+    private void RpcChangePlayerAreaOwner(int playerAreaIdToChange, int newOwner)
+    {
+        if (_showDebugMessages) Debug.Log("RPC > Mudando o dono da area: " + playerAreaIdToChange + ", para o jogador: " + newOwner);
+        ChangePlayerAreaOwnerNow(playerAreaIdToChange, newOwner);
+    }
+
+    void ChangePlayerAreaOwnerNow(int playerAreaIdToChange, int newOwner)
+    {
+        if (_showDebugMessages) Debug.Log("A área " + playerAreaIdToChange + " tem um novo dono: " + newOwner);
+        PlayerAreaList.Where(pa => pa.Id == playerAreaIdToChange).FirstOrDefault().PlayerOwnerId = newOwner;
+    }
+    #endregion
+    #region Players Ready
+    [Command]
+    private void CmdChangePlayerReadyValue(int playerToBeReady)
+    {
+        if (_showDebugMessages) Debug.Log("COMAND > Marcando jogador como pronto: " + playerToBeReady);
+        ChangePlayerReadyValue(playerToBeReady);
+    }
+
+    [ClientRpc]
+    private void RpcChangePlayerReadyValue(int playerToBeReady)
+    {
+        if (_showDebugMessages) Debug.Log("RPC > Marcando jogador como pronto: " + playerToBeReady);
+        ChangePlayerReadyValue(playerToBeReady);
+    }
+
+    void ChangePlayerReadyValue(int playerToBeReady)
+    {
+        if (_showDebugMessages) Debug.Log("LOCAL > Marcando jogador como pronto: " + playerToBeReady);
+        GetPlayerById(playerToBeReady).IsReady = true;
+    }
+    #endregion
+    #endregion
 }

@@ -478,7 +478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
   Id: 2
-  PlayerOwnerId: 0
+  PlayerOwnerId: -1
+  IsActive: 0
   CarrotsList: []
 --- !u!1001 &100430501
 Prefab:
@@ -1687,7 +1688,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
   Id: 4
-  PlayerOwnerId: 0
+  PlayerOwnerId: -1
+  IsActive: 0
   CarrotsList: []
 --- !u!4 &372991783
 Transform:
@@ -4125,7 +4127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
   Id: 1
-  PlayerOwnerId: 0
+  PlayerOwnerId: -1
+  IsActive: 0
   CarrotsList: []
 --- !u!1 &1237214441
 GameObject:
@@ -4976,7 +4979,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
   Id: 3
-  PlayerOwnerId: 0
+  PlayerOwnerId: -1
+  IsActive: 0
   CarrotsList: []
 --- !u!1001 &1700624416
 Prefab:
@@ -6210,7 +6214,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
   Id: 0
-  PlayerOwnerId: 0
+  PlayerOwnerId: -1
+  IsActive: 0
   CarrotsList:
   - {fileID: 349867385}
   - {fileID: 453880657}
