@@ -16,10 +16,6 @@ public class GameData : NetworkBehaviour {
     [SerializeField] private bool _showDebugMessages;
 
     [Header("Players Connected")]
-    [SyncVar]
-    [SerializeField] public PlayerConnected LastPlayerRegistered;
-    [SyncVar]
-    [SerializeField] public int LastPlayerId;
     [SerializeField] public static int PlayersGamingNow = 0;
     [SerializeField] public static List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
     [SerializeField] public List<PlayerConnected> CopyOfPlayersConnectedsList = new List<PlayerConnected>();
@@ -60,6 +56,7 @@ public class GameData : NetworkBehaviour {
     /// <param name="newId"></param>
     private void NewPlayerOnServer(int newId)
     {
+        if (_showDebugMessages) Debug.Log("Registrando novo jogador com id: " + newId);
         int myNewId = PlayersGamingNow;
         PlayerConnected newPlayer = new PlayerConnected();
         newPlayer.PlayerId = myNewId;
