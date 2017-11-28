@@ -5,10 +5,16 @@ using Vuforia;
 
 public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler {
 
+    public TrackableBehaviour.Status CurStatus;
+
+    public static ArenaTrackableEventHandler Instance { get; private set; }
+
     private TrackableBehaviour mTrackableBehaviour;
 
-    [Header("Lobby Canvas")]
-    [SerializeField] private GameObject _lobbyCanvas;
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Use this for initialization
     void Start()
@@ -35,6 +41,8 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
                                     TrackableBehaviour.Status previousStatus,
                                     TrackableBehaviour.Status newStatus)
     {
+        CurStatus = newStatus;
+
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
             newStatus == TrackableBehaviour.Status.TRACKED ||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
@@ -78,8 +86,10 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
         //    component.enabled = true;
         //}
 
-        //showing lobby canvas
-        _lobbyCanvas.gameObject.SetActive(true);
+        if(LobbyController.Instance != null)
+        {
+            LobbyController.Instance.OnTargetFound();
+        }
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
     }
@@ -109,8 +119,10 @@ public class ArenaTrackableEventHandler : MonoBehaviour, ITrackableEventHandler 
         //    component.enabled = false;
         //}
 
-        //showing lobby canvas
-        _lobbyCanvas.gameObject.SetActive(false);
+        if (LobbyController.Instance != null)
+        {
+            LobbyController.Instance.OnTargetLost();
+        }
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
     }

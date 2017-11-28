@@ -54,15 +54,21 @@ public class PlayerMovement : MonoBehaviour
         {
             _characterController = GetComponent<CharacterController>();
         }
-
-        _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        RecieveInput();
-        MovePlayer();
+        if(_joystick != null)
+        {
+            RecieveInput();
+            MovePlayer();
+        }
+        else
+        {
+            if(GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>() != null)
+                _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
+        }
     }
 
     /// <summary>

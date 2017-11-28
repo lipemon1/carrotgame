@@ -18,6 +18,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
         public bool GameData;
         public bool PlayerIdentity;
         public bool NetworkIdentity;
+        public bool GameCore;
     }
 
     [Header("Debug")]
@@ -35,21 +36,15 @@ public class SetupLocalPlayer : NetworkBehaviour {
     [SerializeField] public GameData GameData;
     [SerializeField] public PlayerIdentity PlayerIdentity;
     [SerializeField] public NetworkIdentity NetworkIdentity;
+    [SerializeField] public GameCore GameCore;
 
     [Header("Spawn Configs")]
     [SerializeField] private float _spawnYOffset = 5f;
 
-	// Use this for initialization
-	void Start () {
-
-        ConfigureAllScripts();
-
-        transform.SetParent(GameObject.Find("Arena").gameObject.transform);
-        transform.position = new Vector3(transform.position.x, transform.position.y + _spawnYOffset, transform.position.z);
-    }
-
-    void ConfigureAllScripts()
+    public void ConfigureAllScripts()
     {
+        if (_showDebugMessages) Debug.Log("Iniciando configuração de setup: " + gameObject.name + "(is local player: " + isLocalPlayer + " )");
+
         if (isLocalPlayer)
         {
             if(_componentsToActive.PlayerMovement) PlayerMovement.enabled = true;
@@ -59,8 +54,9 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = true;
             if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = true;
             if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = true;
+            if (_componentsToActive.GameCore) GameCore.enabled = true;
 
-            if (_showDebugMessages) Debug.Log("Configurando setup local player de: " + gameObject.name);
+            if (_showDebugMessages) Debug.Log("Configuração realizada de setup local player de: " + gameObject.name);
         }
         else
         {
@@ -71,6 +67,21 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = false;
             if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = false;
             if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = false;
+            if (_componentsToActive.GameCore) GameCore.enabled = false;
+
+            if (_showDebugMessages) Debug.Log("Não é o local player, configuração não foi feita: " + gameObject.name);
+        }
+
+        transform.SetParent(GameObject.Find("Arena").gameObject.transform);
+        transform.position = new Vector3(transform.position.x, transform.position.y + _spawnYOffset, transform.position.z);
+    }
+
+    public void StartLoop()
+    {
+        if (isServer)
+        {
+            if (_showDebugMessages) Debug.Log("Chamando início de loop de jogo...");
+            GameCore.StartGameLoop();
         }
     }
 }

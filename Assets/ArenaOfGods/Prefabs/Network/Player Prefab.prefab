@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 114862714683573296}
   - component: {fileID: 114544030815262652}
   - component: {fileID: 114517965353531066}
+  - component: {fileID: 114031682314953588}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -129,8 +130,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1875254212664138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.521, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3.88, y: 2.58, z: -1.28}
+  m_LocalScale: {x: 29, y: 29, z: 29}
   m_Children:
   - {fileID: 4605604551614842}
   - {fileID: 4992561275431214}
@@ -144,8 +145,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1846394489150156}
   m_LocalRotation: {x: -0, y: -0.34097978, z: -0, w: 0.9400706}
-  m_LocalPosition: {x: 0, y: 0.8425003, z: 0}
-  m_LocalScale: {x: 0.12065342, y: 0.241747, z: 0.120653376}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.005704337, y: 0.011429478, z: 0.0057043317}
   m_Children:
   - {fileID: 4939386227011596}
   - {fileID: 4848442565353066}
@@ -161,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 1026414600522786}
   m_LocalRotation: {x: -0.80879235, y: -0.009318907, z: 0.575609, w: -0.120176196}
   m_LocalPosition: {x: -0.8220019, y: -3.8849442, z: -4.106922}
-  m_LocalScale: {x: 0.92446643, y: 0.92274255, z: 0.92446685}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4605604551614842}
   m_RootOrder: 2
@@ -174,7 +175,7 @@ Transform:
   m_GameObject: {fileID: 1439169330965396}
   m_LocalRotation: {x: -0.80879235, y: -0.009318907, z: 0.575609, w: -0.120176196}
   m_LocalPosition: {x: -2.955619, y: -3.9259744, z: -2.7592626}
-  m_LocalScale: {x: 0.92446643, y: 0.92274255, z: 0.92446685}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4605604551614842}
   m_RootOrder: 1
@@ -187,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 1458411967809880}
   m_LocalRotation: {x: -0.80879235, y: -0.009318907, z: 0.575609, w: -0.120176196}
   m_LocalPosition: {x: -4.1837764, y: -3.8096297, z: -0.5009734}
-  m_LocalScale: {x: 0.92444324, y: 0.92276, z: 0.9244433}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4605604551614842}
   m_RootOrder: 0
@@ -200,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 1895089376880430}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4162163822624520}
   m_RootOrder: 1
@@ -380,6 +381,44 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 16
   m_CollisionDetection: 0
+--- !u!114 &114031682314953588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7764fa0ca0d9b40a003e6bd25a300e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugMessage: 1
+  _showDebugMessageGameLoop: 0
+  _curLoopStatus: 0
+  _alreadyStartedLoop: 0
+  PlayersAmountWanted: 4
+  MatchStarted: 0
+  MatchEnded: 0
+  _moveOn:
+    onRoundStarting: 0
+    onWaitingPlayers: 0
+    onPickingArea: 1
+    onWaitOthersToPick: 0
+    onMatchStarting: 0
+    onRoundPlaying: 1
+    onRoundEnding: 0
+  _startGameDelay: 3
+  _startMatchDelay: 3
+  _endDelay: 3
+  _waitingConnections: ESPERANDO OUTRO JOGADORES CONECTAREM
+  _chooseYourArea: "ANDE AT\xC9 A \xC1REA PARA QUE ELA SEJA SUA"
+  _waitingOthersArea: "ESPERANDO QUE OUTROS JOGADORES ESCOLHAM SUAS \xC1REAS"
+  _startMatch: "COME\xC7ANDO A PARTIDA"
+  _endMessage: A PARTIDA ACABAOU
+  _matchTime: 35
+  _curTime: 1
+  _messageUI: {fileID: 0}
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114098269207742670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -560,6 +599,8 @@ MonoBehaviour:
     ActionButtonHandler: 0
     GameData: 0
     PlayerIdentity: 0
+    NetworkIdentity: 0
+    GameCore: 1
   PlayerMovement: {fileID: 114098269207742670}
   ItemPicker: {fileID: 114280667365997216}
   ItemDropper: {fileID: 114810177687270120}
@@ -567,7 +608,9 @@ MonoBehaviour:
   ActionButtonHandler: {fileID: 114120286272606674}
   GameData: {fileID: 114517965353531066}
   PlayerIdentity: {fileID: 114544030815262652}
-  _spawnYOffset: 5
+  NetworkIdentity: {fileID: 114214052957656020}
+  GameCore: {fileID: 114031682314953588}
+  _spawnYOffset: 0.15
 --- !u!114 &114517965353531066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,8 +623,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showDebugMessages: 1
+  _playerDebug: {fileID: 0}
+  CopyOfPlayersConnectedsList: []
   PlayerAreaList: []
   CarrotsList: []
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114544030815262652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,8 +690,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.04
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!143 &143435314548090180
 CharacterController:
   m_ObjectHideFlags: 1
@@ -656,10 +702,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2.43
-  m_Radius: 0.5
+  m_Height: 0.14
+  m_Radius: 0.03
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.47, z: 0}
+  m_Center: {x: 0, y: -0.006, z: 0}

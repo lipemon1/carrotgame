@@ -50,21 +50,21 @@ public class ActionButtonHandler : MonoBehaviour {
     [Header("Scripts")]
     [SerializeField] private SetupLocalPlayer _playerConfig;
 
-    private void Start()
-    {
-        if (_buttonData.ActionButton == null)
-        {
-            GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
-            _buttonData.ActionButton = actionButton.GetComponentInChildren<Button>();
-            _buttonData.ActionImage = actionButton.GetComponentInChildren<Image>();
-            _buttonData.ActionText = actionButton.GetComponentInChildren<Text>();
-
-            UpdateActionButtonValues(_buttonData);
-        }
-    }
-
     private void Update()
     {
+        if(GameObject.Find("ScreenJoystick").gameObject != null)
+        {
+            if (_buttonData.ActionButton == null)
+            {
+                GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
+                _buttonData.ActionButton = actionButton.GetComponentInChildren<Button>();
+                _buttonData.ActionImage = actionButton.GetComponentInChildren<Image>();
+                _buttonData.ActionText = actionButton.GetComponentInChildren<Text>();
+
+                UpdateActionButtonValues(_buttonData);
+            }
+        }
+
         if(_playerConfig.isLocalPlayer)
             CheckButtonToShow();
     }
@@ -104,27 +104,30 @@ public class ActionButtonHandler : MonoBehaviour {
 
         if (_showDebugMessages) Debug.Log("Status verificados");
 
-        if (_onMyArea)
+        if(_actionButton != null)
         {
-            if(_haveCarrots == false)
+            if (_onMyArea)
             {
-                ChangeButton(_shootConfiguration);
+                if (_haveCarrots == false)
+                {
+                    ChangeButton(_shootConfiguration);
+                }
+                else
+                {
+                    ChangeButton(_plantConfiguration);
+                }
             }
             else
             {
-                ChangeButton(_plantConfiguration);
-            }
-        }
-        else
-        {
-            if(_fullCarrots == false && _isTouchingCarrot)
-            {
-                ChangeButton(_pickConfiguration);
-            }
-            else
-            {
-                if(_playerConfig.isLocalPlayer)
-                    _actionButton.interactable = false;
+                if (_fullCarrots == false && _isTouchingCarrot)
+                {
+                    ChangeButton(_pickConfiguration);
+                }
+                else
+                {
+                    if (_playerConfig.isLocalPlayer)
+                        _actionButton.interactable = false;
+                }
             }
         }
     }
