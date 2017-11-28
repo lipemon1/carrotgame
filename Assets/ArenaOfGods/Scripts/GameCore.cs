@@ -65,17 +65,9 @@ public class GameCore : NetworkBehaviour
     [SerializeField] private static string _curMessageToShow;
     [SerializeField] private float _curTime = 1f;
 
-    [Header("Interface")]
-    [SerializeField] private Text _messageUI;
-
     [Header("MyPlayer")]
     [SerializeField]
     private SetupLocalPlayer _setupLocalPlayer;
-
-    private void Awake()
-    {
-        _messageUI = GameObject.Find("GameHUD").GetComponentInChildren<Text>();
-    }
 
     private void Start()
     {
@@ -409,7 +401,7 @@ public class GameCore : NetworkBehaviour
     private void UpdateMessageUINow(string newMessage)
     {
         if (_showDebugMessage) Debug.Log("LOCAL > Chamando update message: " + newMessage);
-        _messageUI.text = newMessage;
+        GameHud.Instance.SetNewMessage(newMessage);
     }
     #endregion
     #region TimerCall
