@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArenaOfGods", "ArenaOfGods.csproj", "{521F62AA-4854-F581-D303-D1411C9E72DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArenaOfGods.Plugins", "ArenaOfGods.Plugins.csproj", "{5A741A97-DF3D-815B-9121-D9A618718840}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArenaOfGods.Editor", "ArenaOfGods.Editor.csproj", "{BBCB78C1-A829-D714-E252-13DF957943D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{521F62AA-4854-F581-D303-D1411C9E72DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521F62AA-4854-F581-D303-D1411C9E72DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521F62AA-4854-F581-D303-D1411C9E72DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521F62AA-4854-F581-D303-D1411C9E72DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A741A97-DF3D-815B-9121-D9A618718840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A741A97-DF3D-815B-9121-D9A618718840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A741A97-DF3D-815B-9121-D9A618718840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A741A97-DF3D-815B-9121-D9A618718840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBCB78C1-A829-D714-E252-13DF957943D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCB78C1-A829-D714-E252-13DF957943D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCB78C1-A829-D714-E252-13DF957943D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCB78C1-A829-D714-E252-13DF957943D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

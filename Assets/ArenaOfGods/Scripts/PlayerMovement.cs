@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     [Header("Debug Options")]
-    [SerializeField] private bool _showDebugMessages;
+    [SerializeField]
+    private bool _showDebugMessages;
 
     [Header("Move Configs")]
     [SerializeField]
     private InputMode _inputType;
+
+    [Header("Animations Controller")] [SerializeField] private CharAnimationsController _animController;
 
     [Header("Inputs Standard")]
     [SerializeField]
@@ -43,9 +46,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce = 5.0f;
     [SerializeField] private float _jumpGravity = 3.0f;
 
+    [Space(10)] [SerializeField] private bool _stolingCarrot;
+    [SerializeField] private bool _hasGun;
+
     [Header("Animation")]
     [SerializeField]
     private Animator _modelAnimator;
+
+
 
     // Use this for initialization
     void Start()
@@ -54,19 +62,23 @@ public class PlayerMovement : MonoBehaviour
         {
             _characterController = GetComponent<CharacterController>();
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_joystick != null)
+        if (_joystick != null)
         {
             RecieveInput();
             MovePlayer();
+            UpdateCharAnimations();
+
+
         }
         else
         {
-            if(GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>() != null)
+            if (GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>() != null)
                 _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
         }
     }
@@ -85,6 +97,25 @@ public class PlayerMovement : MonoBehaviour
         _characterController.SimpleMove(Physics.gravity);
 
         Jump();
+    }
+
+    /// <summary>
+    /// Passa os parametros para o controlador de animações para atualiza-la
+    /// </summary>
+    void UpdateCharAnimations()
+    {
+        float biggestInput = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform));
+
+        print("" + biggestInput);
+        _animController.UpdateAnimations(biggestInput, false, _stolingCarrot, _hasGun);
+    }
+
+    private float GetBiggestCurInput(float x, float y)
+    {
+        if (x > y)
+            return x;
+        else
+            return y;
     }
 
     /// <summary>
@@ -131,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             default:
-                if(_showDebugMessages) Debug.LogError("Input Type Unkown: " + _inputType);
+                if (_showDebugMessages) Debug.LogError("Input Type Unkown: " + _inputType);
                 break;
         }
 
