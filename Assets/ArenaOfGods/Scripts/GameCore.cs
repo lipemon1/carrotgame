@@ -214,7 +214,8 @@ public class GameCore : NetworkBehaviour
         ChangeCurStatus(LoopStatus.RoundEnding);
         ChangeMovementStatus(_moveOn.onRoundEnding);
 
-        ChangeCurMessage(_endMessage);
+        //ChangeCurMessage(_endMessage);
+        CallHudGameOver(false);
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return _endWait;
@@ -349,6 +350,25 @@ public class GameCore : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Chama o método de gameover na hud do jogo
+    /// </summary>
+    /// <param name="newStatus"></param>
+    private void CallHudGameOver(bool win)
+    {
+        if (_showDebugMessage) Debug.Log("Iniciando chamada de gameover pro canvas com resultado: " + win);
+
+        if (isServer)
+        {
+            RpcCallHudGameOver(win);
+        }
+
+        if (isClient)
+        {
+            CmdCallHudGameOver(win);
+        }
+    }
+
     #region GAME CORE HOOKS
     #region Control PlayerMovement
     [Command]
@@ -425,6 +445,26 @@ public class GameCore : NetworkBehaviour
         MatchTime.Instance.StartMatchTimer(newTimer);
     }
     #endregion
-    #endregion
+    #region GameOverCall
+    [Command]
+    private void CmdCallHudGameOver(bool win)
+    {
+        if (_showDebugMessage) Debug.Log("COMAND > Chamando tela de game over com resultado: " + win);
+        RpcCallHudGameOver(win);
+    }
 
+    [ClientRpc]
+    private void RpcCallHudGameOver(bool win)
+    {
+        if (_showDebugMessage) Debug.Log("RPC > Chamando tela de game over com resultado: " + win);
+        CallHudGameOverNow(win);
+    }
+
+    private void CallHudGameOverNow(bool win)
+    {
+        if (_showDebugMessage) Debug.Log("LOCAL > Chamando tela de game over com resultado: " + win);
+        GameHud.Instance.GameIsOver(win);
+    }
+    #endregion
+    #endregion
 }

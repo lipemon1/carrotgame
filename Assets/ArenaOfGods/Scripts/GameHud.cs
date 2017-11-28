@@ -42,6 +42,7 @@ public class GameHud : MonoBehaviour {
     /// <param name="win"></param>
     public void GameIsOver(bool win)
     {
+        if (_showDebugMessage) Debug.Log("Mostrando tela de gameover com final: " + GetRightEndMessage(win));
         _endGameMessage.text = GetRightEndMessage(win);
         _endGamePanel.SetActive(true);
     }

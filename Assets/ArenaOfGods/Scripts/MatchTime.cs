@@ -50,11 +50,28 @@ public class MatchTime : MonoBehaviour {
     }
 
     /// <summary>
+    /// Para a contagem de tempo na fase
+    /// </summary>
+    public void StopMatchTimer()
+    {
+        _canPassTime = false;
+        _timeToRun = 0f;
+    }
+
+    /// <summary>
     /// Reduz o tempo da partida
     /// </summary>
     private void PassTime()
     {
-        _timeToRun -= Time.deltaTime;
-        UpdateUI(_timeToRun);
+        if(_timeToRun > 0)
+        {
+
+            _timeToRun -= Time.deltaTime;
+            UpdateUI(_timeToRun);
+        }
+        else
+        {
+            StopMatchTimer();
+        }
     }
 }
