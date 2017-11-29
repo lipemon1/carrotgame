@@ -1048,6 +1048,7 @@ GameObject:
   - component: {fileID: 114544030815262652}
   - component: {fileID: 114517965353531066}
   - component: {fileID: 114031682314953588}
+  - component: {fileID: 114436983586706886}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Untagged
@@ -2809,6 +2810,17 @@ MonoBehaviour:
   NetworkIdentity: {fileID: 114214052957656020}
   GameCore: {fileID: 114031682314953588}
   _spawnYOffset: 0.15
+--- !u!114 &114436983586706886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d86908ef672db46943b4681d03b0ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114517965353531066
 MonoBehaviour:
   m_ObjectHideFlags: 1
