@@ -853,6 +853,7 @@ GameObject:
   - component: {fileID: 180699557}
   - component: {fileID: 180699559}
   - component: {fileID: 180699560}
+  - component: {fileID: 180699561}
   m_Layer: 0
   m_Name: LocalGameManager
   m_TagString: Untagged
@@ -929,6 +930,17 @@ MonoBehaviour:
   _canPassTime: 0
   _timeToRun: 0
   _timeOnScreen: {fileID: 568170037}
+--- !u!114 &180699561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180699556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342bb2ffcfff7d24bad74b5543ac4f6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &200185728
 Prefab:
   m_ObjectHideFlags: 0
@@ -4157,7 +4169,7 @@ GameObject:
   - component: {fileID: 952416218}
   - component: {fileID: 952416217}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Restart Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4220,7 +4232,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 952416218}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 180699561}
+        m_MethodName: RestartCurrentScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &952416218
@@ -5323,6 +5346,7 @@ GameObject:
   - component: {fileID: 1312944689}
   - component: {fileID: 1312944688}
   - component: {fileID: 1312944687}
+  - component: {fileID: 1312944691}
   - component: {fileID: 1312944690}
   m_Layer: 5
   m_Name: GameHUD
@@ -5410,6 +5434,22 @@ MonoBehaviour:
   _importanteMessage: {fileID: 1969497560}
   _endGamePanel: {fileID: 76456241}
   _endGameMessage: {fileID: 800764471}
+--- !u!114 &1312944691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1312944686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1317706897
 GameObject:
   m_ObjectHideFlags: 0
