@@ -463,7 +463,8 @@ public class GameCore : NetworkBehaviour
     private void CallHudGameOverNow(bool win)
     {
         if (_showDebugMessage) Debug.Log("LOCAL > Chamando tela de game over com resultado: " + win);
-        GameHud.Instance.GameIsOver(win);
+        //GameHud.Instance.GameIsOver(win);
+        WinnerHolder.Instance.CheckNewWinners(_setupLocalPlayer.GameData);
     }
     #endregion
     #endregion

@@ -2837,6 +2837,22 @@ MonoBehaviour:
   CopyOfPlayersConnectedsList: []
   PlayerAreaList: []
   CarrotsList: []
+  _namesAvailable:
+  - Urso Gelado
+  - Rato Saltitante
+  - Gazerla Triste
+  - Macaco Surdo
+  - Panda Magrelo
+  - "Girafa Carn\xEDvora"
+  - "Cachorro Sem Cora\xE7\xE3o"
+  - Caralho Alado
+  - "Protetor In\xFAtil"
+  - Pandeiro Sem Couro
+  - Fui Mas Voltei
+  - Cenoura Man
+  - Barleze 20k
+  - Tranquilo
+  - Tranquilinho
   _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114544030815262652
 MonoBehaviour:

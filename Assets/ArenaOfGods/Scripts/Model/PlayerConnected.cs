@@ -16,5 +16,8 @@ public class PlayerConnected {
     public bool IsConnected;
 
     [SyncVar]
+    public string PlayerName;
+
+    [SyncVar]
     public GameObject GameInstance;
 }

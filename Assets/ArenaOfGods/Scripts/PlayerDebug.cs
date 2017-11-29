@@ -12,6 +12,7 @@ public class PlayerDebug : MonoBehaviour {
     [SerializeField] private Text _carrotsIdUI;
     [SerializeField] private Text _connectedPlayersUI;
     [SerializeField] private Text _everyoneReadyUI;
+    [SerializeField] private Text _playerNameUI;
 
     [Header("Sufixes")]
     [SerializeField] private string _playerIdLabel;
@@ -20,10 +21,12 @@ public class PlayerDebug : MonoBehaviour {
     [SerializeField] private string _carrotsIdLabel;
     [SerializeField] private string _connectedPlayersLabel;
     [SerializeField] private string _everyoneReadyLabel;
+    [SerializeField] private string _playerNameLabel;
 
-    public void DebugPlayer(int playerId, bool isReady, int playerArea, List<int> carrotsId, int connectedPlayersAmount, bool allReady)
+    public void DebugPlayer(int playerId, string playerName, bool isReady, int playerArea, List<int> carrotsId, int connectedPlayersAmount, bool allReady)
     {
         _playerIdUI.text = _playerIdLabel + ": " + playerId.ToString();
+        _playerNameUI.text = _playerNameLabel + ": " + playerName;
         _readyUI.text = _readyLabel + ": " + isReady;
         _playerAreadUI.text = _playerAreadLabel + ": " + playerArea.ToString();
         _carrotsIdUI.text = _carrotsIdLabel + ": " + GetListAsString(carrotsId);

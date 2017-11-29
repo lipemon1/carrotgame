@@ -25,6 +25,9 @@ public class GameData : NetworkBehaviour {
     [SerializeField] public List<PlayerArea> PlayerAreaList = new List<PlayerArea>();
     [SerializeField] public List<Carrot> CarrotsList = new List<Carrot>();
 
+    [Header("Available Names")]
+    [SerializeField] private List<string> _namesAvailable = new List<string>();
+
     [Header("Scripts")]
     [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
 
@@ -55,6 +58,17 @@ public class GameData : NetworkBehaviour {
 
         if (isServer)
             _setupLocalPlayer.StartLoop();
+    }
+
+    /// <summary>
+    /// Retorna um nome aleatório para o jogador
+    /// </summary>
+    /// <returns></returns>
+    private string GetRandomName()
+    {
+        int randomIndex = Random.Range(0, _namesAvailable.Count);
+
+        return _namesAvailable[randomIndex];
     }
 
     private void Update()
@@ -100,6 +114,7 @@ public class GameData : NetworkBehaviour {
         PlayerConnected newPlayer = new PlayerConnected();
         newPlayer.PlayerId = myNewId;
         newPlayer.GameInstance = this.gameObject;
+        newPlayer.PlayerName = GetRandomName();
         newPlayer.IsConnected = true;
         PlayersConnectedsList.Add(newPlayer);
         CopyOfPlayersConnectedsList = PlayersConnectedsList;
@@ -358,10 +373,7 @@ public class GameData : NetworkBehaviour {
             CmdChangePlayerReadyValue(playerId);
         }
     }
-    #endregion
-    #endregion
 
-    #region INTERNAL UTIL METHODS
     /// <summary>
     /// Retorna um player connected de acordo com o seu ID
     /// </summary>
@@ -372,6 +384,36 @@ public class GameData : NetworkBehaviour {
         return PlayersConnectedsList.Where(player => player.PlayerId == playerId).FirstOrDefault();
     }
 
+    /// <summary>
+    /// Retorna o nome do jogador de acordo com o seu id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public string GetPlayerNameById(int id)
+    {
+        return GetPlayerById(id).PlayerName;
+    }
+
+    /// <summary>
+    /// Retorna uma lista com todos os nomes de acordo com a lista de id passados
+    /// </summary>
+    /// <param name="playersId"></param>
+    /// <returns></returns>
+    public List<string> GetPlayersNamesById(List<int> playersId)
+    {
+        List<string> playersNames = new List<string>();
+
+        foreach (int playerId in playersId)
+        {
+            playersNames.Add(GetPlayerNameById(playerId));
+        }
+
+        return playersNames;
+    }
+    #endregion
+    #endregion
+
+    #region INTERNAL UTIL METHODS
     /// <summary>
     /// Retorna a cenoura atraves do seu ID
     /// </summary>
@@ -599,7 +641,7 @@ public class GameData : NetworkBehaviour {
     private void CallOnAnyChange()
     {
         int playerId = _setupLocalPlayer.PlayerIdentity.PlayerId;
-        _playerDebug.DebugPlayer(playerId, _setupLocalPlayer.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart());
+        _playerDebug.DebugPlayer(playerId, _setupLocalPlayer.GameData.GetPlayerNameById(playerId),_setupLocalPlayer.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart());
     }
     #endregion
 }

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class WinnerHolder : NetworkBehaviour {
+public class WinnerHolder : MonoBehaviour{
+
+    public static WinnerHolder Instance { get; private set; }
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessage;
@@ -14,10 +15,25 @@ public class WinnerHolder : NetworkBehaviour {
     [SerializeField] private List<PlayerArea> _winners = new List<PlayerArea>();
     [SerializeField] private List<PlayerArea> _losers = new List<PlayerArea>();
 
-    public void CheckNewWinners(List<PlayerArea> allPlayersAreas)
+    private void Awake()
     {
-        _winners = WhoHaveMoreCarrots(allPlayersAreas);
-        _losers = FilterAreasTakeOutWinners(allPlayersAreas, _winners);
+        Instance = this;
+    }
+
+    /// <summary>
+    /// Verifica os ganhadores e perdedores de acordo com as Player Areas e manda isso para a interface de final de jogo
+    /// </summary>
+    /// <param name="allPlayersAreas"></param>
+    /// <param name="data"></param>
+    public void CheckNewWinners(GameData data)
+    {
+        List<PlayerArea> playerAreasOnGame = data.PlayerAreaList;
+        playerAreasOnGame.Remove(playerAreasOnGame.Where(pa => pa.Id == 0).FirstOrDefault());
+
+        _winners = WhoHaveMoreCarrots(playerAreasOnGame);
+        _losers = FilterAreasTakeOutWinners(playerAreasOnGame, _winners);
+
+        GameHud.Instance.RecievePlayersLists(_winners, _losers, data);
     }
 
     /// <summary>
