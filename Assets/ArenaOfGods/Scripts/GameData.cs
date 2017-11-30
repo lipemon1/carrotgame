@@ -64,11 +64,16 @@ public class GameData : NetworkBehaviour {
     /// Retorna um nome aleatório para o jogador
     /// </summary>
     /// <returns></returns>
-    private string GetRandomName()
+    private string GetRandomName(int playerId)
     {
-        int randomIndex = Random.Range(0, _namesAvailable.Count);
+        //Random.InitState(playerId);
+        //int randomIndex = Random.Range(0, _namesAvailable.Count);
 
-        return _namesAvailable[randomIndex];
+        //string newName = _namesAvailable[randomIndex];
+        //_namesAvailable.Remove(newName);
+        //return newName;
+
+        return _namesAvailable[playerId];
     }
 
     private void Update()
@@ -114,7 +119,7 @@ public class GameData : NetworkBehaviour {
         PlayerConnected newPlayer = new PlayerConnected();
         newPlayer.PlayerId = myNewId;
         newPlayer.GameInstance = this.gameObject;
-        newPlayer.PlayerName = GetRandomName();
+        newPlayer.PlayerName = GetRandomName(myNewId);
         newPlayer.IsConnected = true;
         PlayersConnectedsList.Add(newPlayer);
         CopyOfPlayersConnectedsList = PlayersConnectedsList;
