@@ -2502,7 +2502,7 @@ MonoBehaviour:
   PlayersAmountWanted: 4
   _moveOn:
     onRoundStarting: 0
-    onWaitingPlayers: 0
+    onWaitingPlayers: 1
     onPickingArea: 1
     onWaitOthersToPick: 0
     onMatchStarting: 0
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5a0fc02c2fda847ac4b3b3cc892812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showDebugMessages: 0
+  _showDebugMessages: 1
   _inputType: 1
   _animController: {fileID: 114596847619116566}
   _charactControlle: {fileID: 114313364535900478}

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
 
     public enum InputMode
@@ -250,11 +251,42 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(_vectorDirection * Time.deltaTime);
     }
 
+    public void Fire()
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando tiro");
+
+        if (isServer)
+        {
+            RpcSpawnBullet();
+            return;
+        }
+
+        if (isClient)
+        {
+            CmdFire();
+        }
+    }
+
     /// <summary>
     /// Realiza o tiro do fazendeiro
     /// </summary>
-    public void Fire()
+    [Command]
+    public void CmdFire()
     {
+        if (_showDebugMessages) Debug.LogWarning("COMAND > Atirando");
+        RpcSpawnBullet();
+    }
+
+    [ClientRpc]
+    public void RpcSpawnBullet()
+    {
+        if (_showDebugMessages) Debug.LogWarning("RPC > Atirando");
+        SpawnBullet();
+    }
+
+    public void SpawnBullet()
+    {
+        if (_showDebugMessages) Debug.LogWarning("LOCAL > Atirando");
         // Create the Bullet from the Bullet Prefab
         var bullet = (GameObject)Instantiate(
             _bulletPrefab,
