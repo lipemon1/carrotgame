@@ -21,11 +21,12 @@ public class CharacterControlle : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 	    anim.UpdateAnimations(speed, planting, stoling, WithGun);
-	    if (Input.GetKeyDown(KeyCode.Space))
-	    {
-	        anim.Shoot();
-	    }
 	}
+
+    public void Shoot()
+    {
+        anim.Shoot();
+    }
 
     void OnValidate()
     {

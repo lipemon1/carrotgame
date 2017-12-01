@@ -21,7 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private InputMode _inputType;
 
-    [Header("Animations Controller")] [SerializeField] private CharAnimationsController _animController;
+    [Header("Animations Controller")]
+    [SerializeField] private CharAnimationsController _animController;
+    [SerializeField] private CharacterControlle _charactControlle;
 
     [Header("Inputs Standard")]
     [SerializeField]
@@ -46,8 +48,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce = 5.0f;
     [SerializeField] private float _jumpGravity = 3.0f;
 
-    [Space(10)] [SerializeField] private bool _stolingCarrot;
+    [Header("Status Markers")]
+    [SerializeField] private bool _stolingCarrot;
     [SerializeField] private bool _hasGun;
+
+    [Header("Shooting")]
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private float _bulletLifetime = 2f;
+    [SerializeField] private float _bulletSpeed = 5f;
 
     [Header("Animation")]
     [SerializeField]
@@ -81,6 +90,14 @@ public class PlayerMovement : MonoBehaviour
             if (GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>() != null)
                 _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
         }
+
+        #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Fire();
+        }
+        #endif
+
     }
 
     /// <summary>
@@ -95,8 +112,6 @@ public class PlayerMovement : MonoBehaviour
 
         _characterController.Move(directionToMove * _moveSpeed * Time.deltaTime);
         _characterController.SimpleMove(Physics.gravity);
-
-        Jump();
     }
 
     /// <summary>
@@ -233,5 +248,25 @@ public class PlayerMovement : MonoBehaviour
 
         _vectorDirection.y -= _jumpGravity * Time.deltaTime;
         _characterController.Move(_vectorDirection * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Realiza o tiro do fazendeiro
+    /// </summary>
+    public void Fire()
+    {
+        // Create the Bullet from the Bullet Prefab
+        var bullet = (GameObject)Instantiate(
+            _bulletPrefab,
+            _bulletSpawn.position,
+            _bulletSpawn.rotation);
+
+        // Add velocity to the bullet
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * _bulletSpeed;
+
+        // Destroy the bullet after _bulletLifetime seconds
+        Destroy(bullet, _bulletLifetime);
+
+        _charactControlle.Shoot();
     }
 }

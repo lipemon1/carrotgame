@@ -14,7 +14,7 @@ public class CharAnimationsController : MonoBehaviour
     public float TimePlanting = 3.0f;
     public float TimeStoling = 3.0f;
     public float cooldown = 0.5f;
-    private bool canShoot = true;
+    private bool canShoot = false;
 
     [Header("Objects")] public GameObject Gun;
 
@@ -37,7 +37,6 @@ public class CharAnimationsController : MonoBehaviour
     void Update()
     {
         UpdateSpeed();
-        Shoot();
     }
 
     public void UpdateAnimations(float speed, bool planting, bool stoling, bool withGun)
@@ -57,10 +56,7 @@ public class CharAnimationsController : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.S) && canShoot)
-        {
-            StartCoroutine(ShootRoutine());
-        }
+        StartCoroutine(ShootRoutine());
     }
 
     private IEnumerator ShootRoutine()
