@@ -57,9 +57,9 @@ public class ActionButtonHandler : MonoBehaviour {
             if (_buttonData.ActionButton == null)
             {
                 GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
-                _buttonData.ActionButton = actionButton.GetComponentInChildren<Button>();
-                _buttonData.ActionImage = actionButton.GetComponentInChildren<Image>();
-                _buttonData.ActionText = actionButton.GetComponentInChildren<Text>();
+                _buttonData.ActionButton = actionButton.transform.GetChild(0).GetComponent<Button>();
+                _buttonData.ActionImage = actionButton.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+                _buttonData.ActionText = actionButton.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>();
 
                 UpdateActionButtonValues(_buttonData);
             }

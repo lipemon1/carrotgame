@@ -17,6 +17,7 @@ public class GameHud : MonoBehaviour {
     [SerializeField] private string _onLose = "PERDEU";
 
     [Header("Importante Message")]
+    [SerializeField] private GameObject _importantMessagePanel;
     [SerializeField] private Text _importanteMessage;
 
     [Header("EndGame")]
@@ -53,6 +54,8 @@ public class GameHud : MonoBehaviour {
     /// <param name="newMessage"></param>
 	public void SetNewMessage(string newMessage)
     {
+        _importantMessagePanel.SetActive(!String.IsNullOrEmpty(newMessage));
+
         if (_showDebugMessage) Debug.Log("Trocando mensagem na tela para: " + newMessage);
         _importanteMessage.text = newMessage;
     }

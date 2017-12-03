@@ -2511,7 +2511,7 @@ MonoBehaviour:
   _startGameDelay: 3
   _startMatchDelay: 3
   _endDelay: 3
-  _waitingConnections: ESPERANDO OUTRO JOGADORES CONECTAREM
+  _waitingConnections: ESPERANDO OUTROS JOGADORES CONECTAREM
   _chooseYourArea: "ANDE AT\xC9 A \xC1REA PARA QUE ELA SEJA SUA"
   _waitingOthersArea: "ESPERANDO QUE OUTROS JOGADORES ESCOLHAM SUAS \xC1REAS"
   _startMatch: "COME\xC7ANDO A PARTIDA"
@@ -2571,7 +2571,7 @@ MonoBehaviour:
   _isTouchingCarrot: 0
   _plantConfiguration:
     ButtonText: PLANTAR
-    ButtonSprite: {fileID: 0}
+    ButtonSprite: {fileID: 21300016, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
@@ -2590,7 +2590,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
   _pickConfiguration:
     ButtonText: PEGAR
-    ButtonSprite: {fileID: 0}
+    ButtonSprite: {fileID: 21300012, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
@@ -2609,7 +2609,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
   _shootConfiguration:
     ButtonText: ATIRAR
-    ButtonSprite: {fileID: 0}
+    ButtonSprite: {fileID: 21300018, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
