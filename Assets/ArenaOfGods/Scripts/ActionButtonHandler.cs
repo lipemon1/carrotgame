@@ -13,6 +13,7 @@ public class ActionButtonHandler : MonoBehaviour {
         [Header("Interface")]
         public string ButtonText;
         public Sprite ButtonSprite;
+        public bool ShowAimSign;
 
         [Header("Core")]
         public Button.ButtonClickedEvent ButtonEvent;
@@ -46,6 +47,9 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private Image _actionButtonImage;
     [Space]
     [SerializeField] private ButtonData _buttonData;
+
+    [Header("Aim Sprite")]
+    [SerializeField] private GameObject _aimSign;
 
     [Header("Scripts")]
     [SerializeField] private SetupLocalPlayer _playerConfig;
@@ -100,6 +104,8 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     public void CheckButtonToShow()
     {
+        _aimSign.SetActive(false);
+
         UpdateStatus();
 
         if (_showDebugMessages) Debug.Log("Status verificados");
@@ -146,6 +152,8 @@ public class ActionButtonHandler : MonoBehaviour {
             _actionButtonText.text = newButtonConfiguration.ButtonText;
 
             _actionButtonImage.sprite = newButtonConfiguration.ButtonSprite;
+
+            _aimSign.SetActive(newButtonConfiguration.ShowAimSign);
 
             _actionButton.interactable = true;
         }

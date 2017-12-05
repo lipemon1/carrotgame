@@ -1360,7 +1360,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1875254212664138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 2.83, z: -1.28}
+  m_LocalPosition: {x: -0.3, y: 2.49, z: -1.28}
   m_LocalScale: {x: 29, y: 29, z: 29}
   m_Children:
   - {fileID: 4405488892980780}
@@ -1420,7 +1420,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1439608665273022}
   m_LocalRotation: {x: 0.49999925, y: -0.5000007, z: 0.49999794, w: 0.5000022}
-  m_LocalPosition: {x: -0.00000010585, y: -0.0737, z: 0.18747}
+  m_LocalPosition: {x: -0.00000010585, y: -0.068, z: 0.18747}
   m_LocalScale: {x: 0.074186586, y: 0.04827873, z: 0.04636389}
   m_Children: []
   m_Father: {fileID: 4162163822624520}
@@ -2082,13 +2082,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1941856481196216}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: -0.99785894, z: 0, w: -0.06540306}
   m_LocalPosition: {x: -0.0000019360689, y: 0.8600001, z: -22.10001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4138166008066992}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -187.5, z: 0}
 --- !u!4 &4848442565353066
 Transform:
   m_ObjectHideFlags: 1
@@ -2602,6 +2602,7 @@ MonoBehaviour:
   _plantConfiguration:
     ButtonText: PLANTAR
     ButtonSprite: {fileID: 21300016, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
+    ShowAimSign: 0
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
@@ -2621,6 +2622,7 @@ MonoBehaviour:
   _pickConfiguration:
     ButtonText: PEGAR
     ButtonSprite: {fileID: 21300012, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
+    ShowAimSign: 0
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
@@ -2640,6 +2642,7 @@ MonoBehaviour:
   _shootConfiguration:
     ButtonText: ATIRAR
     ButtonSprite: {fileID: 21300018, guid: b62b4ef21efa2ae4b8e667ee7fe3044a, type: 3}
+    ShowAimSign: 1
     ButtonEvent:
       m_PersistentCalls:
         m_Calls:
@@ -2659,6 +2662,7 @@ MonoBehaviour:
   _actionButton: {fileID: 0}
   _actionButtonText: {fileID: 0}
   _actionButtonImage: {fileID: 0}
+  _aimSign: {fileID: 1439608665273022}
   _playerConfig: {fileID: 114348446974973628}
 --- !u!114 &114187510715281078
 MonoBehaviour:
