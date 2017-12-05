@@ -80,6 +80,9 @@ public class Sounds
 
 public class SoundManager : MonoBehaviour
 {
+    [Header("Debug")]
+    public float _curSpeed;
+
     public static SoundManager Instance;
     public AudioSource SfxSource;
 
@@ -106,28 +109,8 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     /// <param name="speed">Player Speed</param>
     /// <param name="stoling">If Player is stoling/planting</param>
-    public void UpdateAudio(float speed, bool stoling)
+    public void UpdateStolingAudio(bool stoling)
     {
-        #region Running
-        if (!_running)
-        {
-            if (speed > MinSpeedRun)
-            {
-                _running = true;
-                InvokeRepeating("Running", 0.1f, 0.3f);
-            }
-        }
-        else
-        {
-            if (speed < MinSpeedRun)
-            {
-                _running = false;
-                CancelInvoke("Running");
-            }
-        }
-
-        #endregion
-
         #region Planting, Stoling
 
         if (_planting == false && stoling)
@@ -142,6 +125,28 @@ public class SoundManager : MonoBehaviour
         }
         #endregion
 
+    }
+
+    public void UpdateRunningAudio(float speed)
+    {
+        _curSpeed = speed;
+
+        if (!_running)
+        {
+            if (_curSpeed > MinSpeedRun)
+            {
+                _running = true;
+                InvokeRepeating("Running", 0.1f, 0.3f);
+            }
+        }
+        else
+        {
+            if (_curSpeed < MinSpeedRun)
+            {
+                _running = false;
+                CancelInvoke("Running");
+            }
+        }
     }
 
     /// <summary>

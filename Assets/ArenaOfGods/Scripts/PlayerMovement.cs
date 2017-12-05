@@ -17,6 +17,7 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Debug Options")]
     [SerializeField]
     private bool _showDebugMessages;
+    [SerializeField] private bool _isMoving;
 
     [Header("Move Configs")]
     [SerializeField]
@@ -84,6 +85,9 @@ public class PlayerMovement : NetworkBehaviour
             MovePlayer();
             UpdateCharAnimations();
 
+            // TODO Barulho dos passos
+            //UpdateMoveStatus();
+            //SoundManager.Instance.UpdateRunningAudio(GetSpeedToUseOnMoveCheck());
 
         }
         else
@@ -265,6 +269,23 @@ public class PlayerMovement : NetworkBehaviour
         {
             CmdFire();
         }
+    }
+
+    /// <summary>
+    /// Diz se o jogador está de movendo ou não
+    /// </summary>
+    private void UpdateMoveStatus()
+    {
+        _isMoving = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform)) > 0f && Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform)) < 1f;
+    }
+
+    /// <summary>
+    /// Retorna a soma das velocidades
+    /// </summary>
+    /// <returns></returns>
+    private float GetSpeedToUseOnMoveCheck()
+    {
+        return Mathf.Abs(_horizontalCrossPlatform) + Mathf.Abs(_verticalCrossPlatform);
     }
 
     /// <summary>

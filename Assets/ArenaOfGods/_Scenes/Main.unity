@@ -1051,7 +1051,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 180699556}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 632b22d3fc869334bbc350c0eb21c4d3, type: 3}
   m_Name: 
@@ -1069,6 +1069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a084850f4d6f04458a80ff383503cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _curSpeed: 0
   SfxSource: {fileID: 180699565}
   MinSpeedRun: 0.1
   GameSounds:

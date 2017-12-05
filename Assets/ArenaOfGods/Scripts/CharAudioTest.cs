@@ -17,7 +17,9 @@ public class CharAudioTest : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	    SoundManager.Instance.UpdateAudio(speed, planting);
+	    SoundManager.Instance.UpdateStolingAudio(planting);
+
+        SoundManager.Instance.UpdateRunningAudio(speed);
 
 	    if (Input.GetKeyDown(KeyCode.J))
 	    {
