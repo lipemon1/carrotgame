@@ -8,12 +8,11 @@ public class BulletBehaviour : NetworkBehaviour {
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
 
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision collision)
     {
-        if (_showDebugMessages) Debug.Log("Iniciando Destruição da Bala...");
-        if (_showDebugMessages) Debug.Log("I'm a Server: " + isServer);
-        if (_showDebugMessages) Debug.Log("I'm a Client: " + isClient);
+        
 
+        if (_showDebugMessages) Debug.Log("Iniciando Destruição da Bala...");
         NetworkServer.Destroy(this.gameObject);
     }
 }
