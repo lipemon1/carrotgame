@@ -126,7 +126,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         float biggestInput = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform));
 
-        print("" + biggestInput);
+         if(_showDebugMessages) print("" + biggestInput);
         _animController.UpdateAnimations(biggestInput, false, _stolingCarrot, _hasGun);
     }
 

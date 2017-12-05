@@ -2559,7 +2559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5a0fc02c2fda847ac4b3b3cc892812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showDebugMessages: 1
+  _showDebugMessages: 0
   _isMoving: 0
   _inputType: 1
   _animController: {fileID: 114596847619116566}
@@ -2744,7 +2744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a67edf395919a844b76d1e353cdf0e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showDebugMessages: 1
+  _showDebugMessages: 0
   _componentsToActive:
     PlayerMovement: 1
     ItemPicker: 0

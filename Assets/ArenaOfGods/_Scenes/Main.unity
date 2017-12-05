@@ -4077,6 +4077,12 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 617768266}
+--- !u!114 &619155631 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114363914806261276, guid: 56fb848a501cfc74fa371e3004e9d644,
+    type: 2}
+  m_PrefabInternal: {fileID: 100430501}
+  m_Script: {fileID: 11500000, guid: 8dcdb6a2f35e5104d86f7fa375c2a034, type: 3}
 --- !u!1001 &629029786
 Prefab:
   m_ObjectHideFlags: 0
@@ -9483,18 +9489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c3c865782347f41b6358d9fba14b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementRange: 50
-  axesToUse: 0
-  horizontalAxisName: Horizontal
-  verticalAxisName: Vertical
-  m_StartPos: {x: 0, y: 0, z: 0}
-  m_OriginalPos: {x: 0, y: 0, z: 0}
-  RectOriginalPos: {x: 0, y: 0, z: 0}
-  m_UseX: 0
-  m_UseY: 0
-  _inputValues:
-    Horizontal: 0
-    Vertical: 0
 --- !u!114 &1920085735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10469,8 +10463,8 @@ MonoBehaviour:
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 619155631}
+  - {fileID: 2128030764}
   - {fileID: 2044448168}
   - {fileID: 115860383}
   - {fileID: 788937564}
@@ -10513,6 +10507,12 @@ MonoBehaviour:
     i15: 100
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &2128030764 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114363914806261276, guid: 56fb848a501cfc74fa371e3004e9d644,
+    type: 2}
+  m_PrefabInternal: {fileID: 200185728}
+  m_Script: {fileID: 11500000, guid: 8dcdb6a2f35e5104d86f7fa375c2a034, type: 3}
 --- !u!1 &2128080538
 GameObject:
   m_ObjectHideFlags: 0

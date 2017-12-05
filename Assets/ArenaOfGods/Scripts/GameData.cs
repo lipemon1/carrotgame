@@ -436,7 +436,7 @@ public class GameData : NetworkBehaviour {
     /// <returns></returns>
     public PlayerArea GetPlayerAreaById(int id)
     {
-        return PlayerAreaList.Where(pa => pa.Id == id).FirstOrDefault();
+        return PlayerAreaList.FirstOrDefault(pa => pa.Id == id);
     }
 
     /// <summary>
@@ -497,9 +497,9 @@ public class GameData : NetworkBehaviour {
         {
             if (_showDebugMessages) Debug.Log("LOCAL > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
             //deletando da lista que estava
-            PlayerArea areaToRemoveFrom = GetPlayerAreaById(AreaFromThisCarrot(carrotIdToChange));
+            PlayerArea areaToRemoveFrom = GetPlayerAreaById(AreaFromThisCarrot(carrotIdToChange));                
 
-            if (areaToRemoveFrom.CarrotsList.Where(cr => cr.Id == carrotIdToChange).FirstOrDefault() == null)
+            if (areaToRemoveFrom.CarrotsList.FirstOrDefault(cr => cr.Id == carrotIdToChange) == null)
             {
                 if (_showDebugMessages) Debug.Log("LOCAL > A cenoura<" + carrotIdToChange + "> já não existe mais nessa área<" + areaToRemoveFrom + ">");
             }
