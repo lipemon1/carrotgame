@@ -47,6 +47,7 @@ public class GameData : NetworkBehaviour {
 
     public void ConfigureNewStart()
     {
+        this.gameObject.tag = "Player";
         SearchCarrots();
         SearchPlayerAreas();
         NewPlayerOnServer(++PlayersGamingNow);
