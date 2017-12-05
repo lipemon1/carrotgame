@@ -33,7 +33,7 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Inputs CrossPlatform")]
     [SerializeField]
-    private Joystick _joystick;
+    private EasyJoystick _easyJoystick;
     [SerializeField] private float _horizontalCrossPlatform;
     [SerializeField] private float _verticalCrossPlatform;
 
@@ -78,7 +78,7 @@ public class PlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_joystick != null)
+        if (_easyJoystick != null)
         {
             RecieveInput();
             MovePlayer();
@@ -88,8 +88,8 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            if (GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>() != null)
-                _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
+            if (GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>() != null)
+                _easyJoystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>();
         }
 
         #if UNITY_EDITOR
@@ -197,16 +197,16 @@ public class PlayerMovement : NetworkBehaviour
                 _verticalStandard = Input.GetAxis("Vertical");
                 break;
             case InputMode.CrossPlatform:
-                if (_joystick == null)
+                if (_easyJoystick == null)
                 {
-                    if (_showDebugMessages) Debug.Log("Searching for Joystick script");
-                    _joystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<Joystick>();
+                    if (_showDebugMessages) Debug.Log("Searching for EasyJoystick script");
+                    _easyJoystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>();
                 }
                 else
                 {
                     if (_showDebugMessages) Debug.Log("Getting input values");
-                    _horizontalCrossPlatform = _joystick._inputValues.Horizontal;
-                    _verticalCrossPlatform = _joystick._inputValues.Vertical;
+                    _horizontalCrossPlatform = _easyJoystick.MoveInput().x;
+                    _verticalCrossPlatform = _easyJoystick.MoveInput().z;
                 }
                 break;
 

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace UnityStandardAssets.CrossPlatformInput
 {
-	public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+	public class EasyJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
         [System.Serializable]
         public struct InputData
@@ -26,8 +26,9 @@ namespace UnityStandardAssets.CrossPlatformInput
 		public string horizontalAxisName = "Horizontal"; // The name given to the horizontal axis for the cross platform input
 		public string verticalAxisName = "Vertical"; // The name given to the vertical axis for the cross platform input
 
-		Vector3 m_StartPos;
-        Vector3 m_OriginalPos;
+		public Vector3 m_StartPos;
+        public Vector3 m_OriginalPos;
+	    public Vector3 RectOriginalPos;
 		bool m_UseX; // Toggle for using the x axis
 		bool m_UseY; // Toggle for using the Y axis
 		CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
@@ -45,7 +46,8 @@ namespace UnityStandardAssets.CrossPlatformInput
         void Start()
         {
             m_StartPos = transform.position;
-            m_OriginalPos = m_StartPos;
+            m_OriginalPos = transform.localPosition;
+            RectOriginalPos = GetComponent<RectTransform>().anchoredPosition;
         }
 
 		void UpdateVirtualAxes(Vector3 value)
@@ -106,15 +108,17 @@ namespace UnityStandardAssets.CrossPlatformInput
 				newPos.y = delta;
 			}
             //transform.position = new Vector3(m_StartPos.x + newPos.x, m_StartPos.y + newPos.y, m_StartPos.z + newPos.z);
-            transform.position = Vector3.ClampMagnitude(new Vector3(newPos.x, newPos.y, newPos.z), MovementRange) + m_StartPos;
+            transform.position = Vector3.ClampMagnitude(new Vector3(newPos.x, newPos.y, newPos.z), MovementRange);
 			UpdateVirtualAxes(transform.position);
 		}
 
 
 		public void OnPointerUp(PointerEventData data)
 		{
-			transform.position = m_OriginalPos;
-			UpdateVirtualAxes(m_OriginalPos);
+			//transform.localPosition = m_OriginalPos;
+		    GetComponent<RectTransform>().anchoredPosition = RectOriginalPos;
+			UpdateVirtualAxes(RectOriginalPos);
+
 		}
 
 

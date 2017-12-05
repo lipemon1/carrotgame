@@ -2536,7 +2536,7 @@ MonoBehaviour:
   _charactControlle: {fileID: 114313364535900478}
   _horizontalStandard: 0
   _verticalStandard: 0
-  _joystick: {fileID: 0}
+  _easyJoystick: {fileID: 0}
   _horizontalCrossPlatform: 0
   _verticalCrossPlatform: 0
   _turnSpeed: 300
