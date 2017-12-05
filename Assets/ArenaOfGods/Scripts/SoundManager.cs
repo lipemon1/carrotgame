@@ -13,6 +13,7 @@ public enum AudioType
     Stun,
     WinGame,
     LoseGame,
+    ClickedButton
 }
 
 [System.Serializable]
@@ -34,6 +35,9 @@ public class Sounds
     [SerializeField]
     private AudioClip _win;
     [SerializeField] private AudioClip _lose;
+
+    [Header("Interface")]
+    [SerializeField] private AudioClip _clickedButton;
 
     public AudioClip GetAudioShot(AudioType audioType)
     {
@@ -63,6 +67,9 @@ public class Sounds
                 break;
             case AudioType.LoseGame:
                 return _lose;
+
+            case AudioType.ClickedButton:
+                return _clickedButton;
              
             default:
                 throw new ArgumentOutOfRangeException("audioType", audioType, null);
@@ -194,6 +201,11 @@ public class SoundManager : MonoBehaviour
     public void LoseGame()
     {
         PlayAudio(AudioType.LoseGame);
+    }
+
+    public void ClickedButton()
+    {
+        PlayAudio(AudioType.ClickedButton);
     }
 
 

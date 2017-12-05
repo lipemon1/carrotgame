@@ -196,6 +196,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 180699564}
+        m_MethodName: ClickedButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &16380335
@@ -1069,6 +1080,7 @@ MonoBehaviour:
     _stun: {fileID: 8300000, guid: fe06232354a331d49bc12c8f4a26e373, type: 3}
     _win: {fileID: 8300000, guid: 7e6e414a0f5768f41a98d396ab50a304, type: 3}
     _lose: {fileID: 8300000, guid: 06975308148421e4aabbfd5f4a3f1a3e, type: 3}
+    _clickedButton: {fileID: 8300000, guid: aa6372e80f809b44fa326933e5cf04ea, type: 3}
 --- !u!82 &180699565
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1078,9 +1090,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d048919162f54b545b00f45db95c8d66, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2285,6 +2297,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 180699557}
         m_MethodName: StartServerAndClient
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 180699564}
+        m_MethodName: ClickedButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

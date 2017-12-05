@@ -300,5 +300,7 @@ public class PlayerMovement : NetworkBehaviour
         Destroy(bullet, _bulletLifetime);
 
         _charactControlle.Shoot();
+
+        SoundManager.Instance.Shoot();
     }
 }

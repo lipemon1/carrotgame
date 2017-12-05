@@ -57,6 +57,7 @@ public class ItemPicker : MonoBehaviour {
             GettingAwayFromCarrot();
 
             PickCarrotFromServer(carrotToPick, 0, _playerConfig.PlayerIdentity.PlayerId);
+            SoundManager.Instance.CarrotPickUp();
         }
     }
 

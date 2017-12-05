@@ -23,6 +23,7 @@ public class ItemDropper : MonoBehaviour {
         {
             if (_showDebugMessages) Debug.Log("Consegui retirar do inventário, mudar no servidor agora");
             _playerConfig.GameData.AddCarrotToArea(carrotIdRemovedFromInventory, _playerConfig.ActionButtonHandler.CurPlayerArea.Id, transform.position);
+            SoundManager.Instance.CarrotPlaced();
         }
     }
 }
