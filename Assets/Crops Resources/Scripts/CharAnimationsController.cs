@@ -78,7 +78,9 @@ public class CharAnimationsController : MonoBehaviour
 
     private void SetHasGun(bool hasGun)
     {
+        Gun.SetActive(hasGun);
         WithGun = hasGun;
+        
         _myAnimator.SetBool("WithGun", WithGun);
     }
 

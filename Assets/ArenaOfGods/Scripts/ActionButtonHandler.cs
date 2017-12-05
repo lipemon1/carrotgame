@@ -116,15 +116,18 @@ public class ActionButtonHandler : MonoBehaviour {
             {
                 if (_haveCarrots == false)
                 {
+                    ChangeGunStatus(true);
                     ChangeButton(_shootConfiguration);
                 }
                 else
                 {
+                    ChangeGunStatus(false);
                     ChangeButton(_plantConfiguration);
                 }
             }
             else
             {
+                ChangeGunStatus(false);
                 if (_fullCarrots == false && _isTouchingCarrot)
                 {
                     ChangeButton(_pickConfiguration);
@@ -137,6 +140,7 @@ public class ActionButtonHandler : MonoBehaviour {
             }
         }
     }
+
 
     /// <summary>
     /// Método que atualiza o botão que será liberado para o jogador
@@ -157,6 +161,11 @@ public class ActionButtonHandler : MonoBehaviour {
 
             _actionButton.interactable = true;
         }
+    }
+
+    public void ChangeGunStatus(bool hasGun)
+    {
+        _playerConfig.PlayerMovement.SetHasGun(hasGun);
     }
 
     /// <summary>

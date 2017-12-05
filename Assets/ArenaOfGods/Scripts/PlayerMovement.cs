@@ -54,7 +54,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private bool _stolingCarrot;
     [SerializeField] private bool _hasGun;
 
-    [Header("Shooting")]
+    [Header("Shooting")] 
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _bulletLifetime = 2f;
@@ -288,6 +288,12 @@ public class PlayerMovement : NetworkBehaviour
         return Mathf.Abs(_horizontalCrossPlatform) + Mathf.Abs(_verticalCrossPlatform);
     }
 
+
+    public void SetHasGun(bool hasGun)
+    {
+        _hasGun = hasGun;
+    }
+
     /// <summary>
     /// Realiza o tiro do fazendeiro
     /// </summary>
@@ -320,7 +326,7 @@ public class PlayerMovement : NetworkBehaviour
         // Destroy the bullet after _bulletLifetime seconds
         Destroy(bullet, _bulletLifetime);
 
-        _charactControlle.Shoot();
+        _animController.Shoot();
 
         SoundManager.Instance.Shoot();
     }
