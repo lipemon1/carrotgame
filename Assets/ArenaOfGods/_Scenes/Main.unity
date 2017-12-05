@@ -990,6 +990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a084850f4d6f04458a80ff383503cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SfxSource: {fileID: 180699565}
   MinSpeedRun: 0.1
   GameSounds:
     _messWithDirt: {fileID: 8300000, guid: e269b0a3c1ff24c4c9890b9706cb0f1e, type: 3}
@@ -1000,7 +1001,6 @@ MonoBehaviour:
     _stun: {fileID: 8300000, guid: fe06232354a331d49bc12c8f4a26e373, type: 3}
     _win: {fileID: 8300000, guid: 7e6e414a0f5768f41a98d396ab50a304, type: 3}
     _lose: {fileID: 8300000, guid: 06975308148421e4aabbfd5f4a3f1a3e, type: 3}
-  SfxSource: {fileID: 180699565}
 --- !u!82 &180699565
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3061,7 +3061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -39.3}
+  m_AnchoredPosition: {x: 0, y: -39.30005}
   m_SizeDelta: {x: -71.5, y: 407.9}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &505226689
@@ -3981,8 +3981,8 @@ Camera:
   m_GameObject: {fileID: 676747695}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -4873,20 +4873,6 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -10249,20 +10235,6 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
