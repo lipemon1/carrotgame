@@ -861,6 +861,9 @@ GameObject:
   - component: {fileID: 180699560}
   - component: {fileID: 180699561}
   - component: {fileID: 180699562}
+  - component: {fileID: 180699564}
+  - component: {fileID: 180699563}
+  - component: {fileID: 180699565}
   m_Layer: 0
   m_Name: LocalGameManager
   m_TagString: Untagged
@@ -963,6 +966,121 @@ MonoBehaviour:
   _showDebugMessageOnChecking: 1
   _winners: []
   _losers: []
+--- !u!114 &180699563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180699556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632b22d3fc869334bbc350c0eb21c4d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planting: 0
+  speed: 0
+--- !u!114 &180699564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180699556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a084850f4d6f04458a80ff383503cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinSpeedRun: 0.1
+  GameSounds:
+    _messWithDirt: {fileID: 8300000, guid: e269b0a3c1ff24c4c9890b9706cb0f1e, type: 3}
+    _carrotPickup: {fileID: 8300000, guid: fb04ba5e2a3479c47b05db9cc43f0ed5, type: 3}
+    _carrotPlaced: {fileID: 8300000, guid: d20ba6abf3f0d544e9bde1d64026a61d, type: 3}
+    _shoot: {fileID: 8300000, guid: d81e55c55dc16c64e8912373db46698d, type: 3}
+    _stepOnDirt: {fileID: 8300000, guid: 509462e7fad25814d9756191bd7754c6, type: 3}
+    _stun: {fileID: 8300000, guid: fe06232354a331d49bc12c8f4a26e373, type: 3}
+    _win: {fileID: 8300000, guid: 7e6e414a0f5768f41a98d396ab50a304, type: 3}
+    _lose: {fileID: 8300000, guid: 06975308148421e4aabbfd5f4a3f1a3e, type: 3}
+  SfxSource: {fileID: 180699565}
+--- !u!82 &180699565
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180699556}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1001 &200185728
 Prefab:
   m_ObjectHideFlags: 0
@@ -8475,7 +8593,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1762504515}
-  m_LocalRotation: {x: 0.00000014901158, y: -0, z: 0.46680394, w: 0.8843608}
+  m_LocalRotation: {x: 0.0000001490116, y: -0, z: 0.46680397, w: 0.88436085}
   m_LocalPosition: {x: -0.24, y: -0.94, z: 0.1}
   m_LocalScale: {x: 1.1391157, y: 1.1391156, z: 1.1391157}
   m_Children: []
