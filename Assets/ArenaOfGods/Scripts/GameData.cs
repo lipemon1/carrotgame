@@ -513,6 +513,7 @@ public class GameData : NetworkBehaviour {
             else
             {
                 areaToRemoveFrom.CarrotsList.Remove(GetCarrotById(carrotIdToChange));
+                areaToRemoveFrom.UpdateInterface();
             }
         }
 
@@ -527,6 +528,7 @@ public class GameData : NetworkBehaviour {
             else
             {
                 areaToAddCarrot.CarrotsList.Add(GetCarrotById(carrotIdToChange));
+                areaToAddCarrot.UpdateInterface();
             }
         }
     }

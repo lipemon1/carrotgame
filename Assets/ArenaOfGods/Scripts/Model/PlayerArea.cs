@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
 [System.Serializable]
@@ -22,6 +23,9 @@ public class PlayerArea : NetworkBehaviour{
     [Header("Carrots List")]
     [SerializeField] public List<Carrot> CarrotsList = new List<Carrot>();
 
+    [Header("Interface")]
+    [SerializeField] private Text _carrotsAmountUI;
+
     private void Start()
     {
         if (GameInstance == null)
@@ -31,6 +35,11 @@ public class PlayerArea : NetworkBehaviour{
     }
 
     public Material GetMaterialToPlayer() { return _materialToPlayer; }
+
+    public void UpdateInterface()
+    {
+        _carrotsAmountUI.text = CarrotsList.Count.ToString();
+    }
 
     #region PlayerOwnerChange
     private void OnPlayerOwnerIdChanged(int newId)

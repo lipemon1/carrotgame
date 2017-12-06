@@ -463,6 +463,7 @@ MonoBehaviour:
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
+  _carrotsAmountUI: {fileID: 1952827323}
 --- !u!1001 &100430501
 Prefab:
   m_ObjectHideFlags: 0
@@ -2266,6 +2267,7 @@ MonoBehaviour:
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
+  _carrotsAmountUI: {fileID: 215767324}
 --- !u!4 &372991783
 Transform:
   m_ObjectHideFlags: 0
@@ -6929,6 +6931,7 @@ MonoBehaviour:
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
+  _carrotsAmountUI: {fileID: 440162558}
 --- !u!1 &1195110950
 GameObject:
   m_ObjectHideFlags: 0
@@ -9196,6 +9199,7 @@ MonoBehaviour:
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
+  _carrotsAmountUI: {fileID: 1015974353}
 --- !u!1 &1660406551
 GameObject:
   m_ObjectHideFlags: 0
@@ -11173,6 +11177,7 @@ MonoBehaviour:
   - {fileID: 1064689557}
   - {fileID: 1465936280}
   - {fileID: 310736184}
+  _carrotsAmountUI: {fileID: 0}
 --- !u!114 &2126856193
 MonoBehaviour:
   m_ObjectHideFlags: 0
