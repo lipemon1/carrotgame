@@ -14,11 +14,20 @@ public class StunBehaviour : NetworkBehaviour {
     [Header("Configs")]
     [SerializeField] private float _stunTime;
 
-    [Header("Setup Local Player")]
-    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
-
-
     public bool GetStunedValue() { return _isStuned; }
+
+    [Header("Particle")]
+    [SerializeField]private GameObject _stunParticle;
+    [SerializeField] private float _particleSpawnY;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.LogWarning("Start Stun");
+            StartStun();
+        }
+    }
 
     /// <summary>
     /// Inicia o Stun
@@ -81,16 +90,13 @@ public class StunBehaviour : NetworkBehaviour {
         _isStuned = value;
 
         // JEFESU CHAMAR PARTICULA DE STUN AQUI
-        if(value)
-            DropSomeCarrot();
+        if(value) SpawnParticle();
     }
 
-    /// <summary>
-    /// Tenta dropar uma cenoura caso o jogador tenha
-    /// </summary>
-    private void DropSomeCarrot()
+    void SpawnParticle()
     {
-        _setupLocalPlayer.ItemDropper.TryToPlantCarrot();
+        Vector3 position = new Vector3(transform.position.x, _particleSpawnY, transform.position.z);
+        Instantiate(_stunParticle, position, Quaternion.identity);
     }
     #endregion
 }
