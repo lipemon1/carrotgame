@@ -20,6 +20,9 @@ public class StunBehaviour : NetworkBehaviour {
     [SerializeField]private GameObject _stunParticle;
     [SerializeField] private float _particleSpawnY;
 
+    [Header("Setup Local Player")]
+    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -91,6 +94,14 @@ public class StunBehaviour : NetworkBehaviour {
 
         // JEFESU CHAMAR PARTICULA DE STUN AQUI
         if(value) SpawnParticle();
+    }
+
+    /// <summary>
+    /// Tenta dropar uma cenoura caso o jogador tenha
+    /// </summary>
+    private void DropSomeCarrot()
+    {
+        _setupLocalPlayer.ItemDropper.TryToPlantCarrot();
     }
 
     void SpawnParticle()
