@@ -20,12 +20,12 @@ public class CharacterControlle : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	    anim.UpdateAnimations(speed, planting, stoling, WithGun);
+	    //anim.UpdateAnimations(speed, planting, stoling, WithGun);
 	}
 
     public void Shoot()
     {
-        anim.Shoot();
+        //anim.Shoot();
     }
 
     void OnValidate()

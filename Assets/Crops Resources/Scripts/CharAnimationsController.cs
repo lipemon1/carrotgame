@@ -15,6 +15,7 @@ public class CharAnimationsController : MonoBehaviour
     public float TimeStoling = 3.0f;
     public float cooldown = 0.5f;
     private bool canShoot = false;
+    
 
     [Header("Objects")] public GameObject Gun;
 
@@ -30,6 +31,7 @@ public class CharAnimationsController : MonoBehaviour
     void Start()
     {
         if (_myAnimator == null) _myAnimator = GetComponent<Animator>();
+      
 
     }
 
@@ -42,10 +44,25 @@ public class CharAnimationsController : MonoBehaviour
     public void UpdateAnimations(float speed, bool planting, bool stoling, bool withGun)
     {
         _speed = speed;
-        if (withGun != this.WithGun)
+
+       
+        if (withGun)
         {
-            SetHasGun(withGun);
+            print("Speed: " + speed);
+            if (speed > 0.02f)
+            {
+                SetHasGun(false);
+            }
+            else
+            {
+                SetHasGun(true);
+            }
         }
+        else
+        {
+            SetHasGun(false);
+        }
+        
         SetPlanting(planting);
         SetStoling(stoling);
     }

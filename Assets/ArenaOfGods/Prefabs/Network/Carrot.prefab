@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 136542945815864848}
   - component: {fileID: 114311956639949288}
   - component: {fileID: 114015831814413994}
-  - component: {fileID: 114069823099778494}
   - component: {fileID: 114363914806261276}
   m_Layer: 0
   m_Name: Carrot
@@ -69,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1503623413855280}
   m_LocalRotation: {x: -0.9984949, y: 0.00000019441413, z: 0.054844223, w: -0.000000010678564}
-  m_LocalPosition: {x: 0.768, y: 0.2, z: 0.657}
+  m_LocalPosition: {x: -0.287, y: 0.2, z: 0.489}
   m_LocalScale: {x: 0.05397741, y: 11.82928, z: 0.0539775}
   m_Children:
   - {fileID: 4776898629065614}
@@ -128,21 +127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetMarker: {fileID: 212507713124061106}
---- !u!114 &114069823099778494
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1503623413855280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dcdb6a2f35e5104d86f7fa375c2a034, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameInstance: {fileID: 0}
-  Id: 1
-  PlayerOwnerId: -1
-  IsActive: 0
 --- !u!114 &114311956639949288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -187,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 0}
-  Id: 2
+  Id: 0
   PlayerOwnerId: -1
   IsActive: 0
 --- !u!136 &136542945815864848

@@ -215,6 +215,9 @@ public class GameData : NetworkBehaviour {
     {
         ChangeCarrotActiveValue(carrotId, true);
         ChangeCarrotPlayerArea(carrotId, newAreaId, Operation.Add);
+
+        newPosition = new Vector3(newPosition.x, _setupLocalPlayer.GameCore.CarrotYPos, newPosition.z);
+        
         ChangeCarrotGameInstancePosition(carrotId, newPosition);
     }
     #endregion
