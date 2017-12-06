@@ -1046,6 +1046,7 @@ GameObject:
   - component: {fileID: 114031682314953588}
   - component: {fileID: 114436983586706886}
   - component: {fileID: 114103695419450746}
+  - component: {fileID: 114996604468945422}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Player
@@ -2854,6 +2855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455460d6cece74b46bd55b6f93436f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 1
   _myAnimator: {fileID: 95591035601078274}
   _speed: 0
   WithGun: 1
@@ -2865,6 +2867,7 @@ MonoBehaviour:
   - {fileID: 198908945821641582}
   - {fileID: 198340773248940960}
   - {fileID: 198977652837232422}
+  _syncAnimation: {fileID: 114996604468945422}
 --- !u!114 &114810177687270120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2905,6 +2908,19 @@ MonoBehaviour:
     ItemId: -1
   - Busy: 0
     ItemId: -1
+--- !u!114 &114996604468945422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875254212664138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ce95122170c5e479d5062c9ef60431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugMessages: 1
+  _charAnimController: {fileID: 114596847619116566}
 --- !u!135 &135276698746198236
 SphereCollider:
   m_ObjectHideFlags: 1

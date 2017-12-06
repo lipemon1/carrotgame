@@ -5,6 +5,8 @@ using System.Linq;
 
 public class CharAnimationsController : MonoBehaviour
 {
+    [Header("Debug")]
+    [SerializeField] private bool _showDebugMessages;
 
     [SerializeField] private Animator _myAnimator;
     public float _speed;
@@ -21,6 +23,9 @@ public class CharAnimationsController : MonoBehaviour
 
     [Header("Particles")]
     public List<ParticleSystem> ShootVFX = new List<ParticleSystem>();
+
+    [Header("Animation Sync")]
+    [SerializeField] private SyncAnimation _syncAnimation;
 
     void Awake()
     {
@@ -43,9 +48,15 @@ public class CharAnimationsController : MonoBehaviour
 
     public void UpdateAnimations(float speed, bool planting, bool stoling, bool withGun)
     {
+        _syncAnimation.SyncAnimations(speed, planting, stoling, withGun);
+    }
+
+    public void SyncAnimationsNow(float speed, bool planting, bool stoling, bool withGun)
+    {
+        if (_showDebugMessages) Debug.Log("LOCAL > Atualizando animações");
         _speed = speed;
 
-       
+
         if (withGun)
         {
             print("Speed: " + speed);
@@ -62,7 +73,7 @@ public class CharAnimationsController : MonoBehaviour
         {
             SetHasGun(false);
         }
-        
+
         SetPlanting(planting);
         SetStoling(stoling);
     }
