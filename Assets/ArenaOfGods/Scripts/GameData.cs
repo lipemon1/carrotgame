@@ -286,6 +286,9 @@ public class GameData : NetworkBehaviour {
             ChangePlayerAreaOwner(areaThatIJustFound, playerToTurnOwner);
             SetPlayerAsReady(playerToTurnOwner);
 
+            //change material
+            ChangeMaterialNow(playerToTurnOwner, areaThatIJustFound);
+
             return GetPlayerById(playerToTurnOwner).IsReady;
         }
         else
@@ -639,6 +642,27 @@ public class GameData : NetworkBehaviour {
         GetPlayerById(playerToBeReady).IsReady = true;
 
         //UpdateGameStartCondition();
+    }
+    #endregion
+    #region Players Materials
+    [Command]
+    private void CmdChangeMaterial(int playerToChange, int areaToGetMaterial)
+    {
+        if (_showDebugMessages) Debug.Log("COMAND > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
+        RpcChangeMaterial(playerToChange, areaToGetMaterial);
+    }
+
+    [ClientRpc]
+    private void RpcChangeMaterial(int playerToChange, int areaToGetMaterial)
+    {
+        if (_showDebugMessages) Debug.Log("RPC > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
+        ChangeMaterialNow(playerToChange, areaToGetMaterial);
+    }
+
+    private void ChangeMaterialNow(int playerToChange, int areaToGetMaterial)
+    {
+        if (_showDebugMessages) Debug.Log("LOCAL > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
+        _setupLocalPlayer.ChangePlayerMaterial(GetPlayerAreaById(areaToGetMaterial).GetMaterialToPlayer());
     }
     #endregion
     #endregion

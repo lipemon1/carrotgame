@@ -459,6 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 85611135}
   Id: 2
+  _materialToPlayer: {fileID: 2100000, guid: 8e1cb204581a6d449836752970b56756, type: 2}
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
@@ -2025,6 +2026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 372991780}
   Id: 4
+  _materialToPlayer: {fileID: 2100000, guid: f8803b24d88fc1b408bef869f836b314, type: 2}
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
@@ -4793,20 +4795,6 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -6179,6 +6167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 1174288203}
   Id: 1
+  _materialToPlayer: {fileID: 2100000, guid: ac007e786bb60d94abbcb69946ce4838, type: 2}
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
@@ -8219,6 +8208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 1655912702}
   Id: 3
+  _materialToPlayer: {fileID: 2100000, guid: 8fe10c9f4e1610e4182cdce4c554733c, type: 2}
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList: []
@@ -10024,6 +10014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInstance: {fileID: 2126856188}
   Id: 0
+  _materialToPlayer: {fileID: 0}
   PlayerOwnerId: -1
   IsActive: 0
   CarrotsList:
@@ -10280,20 +10271,6 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0

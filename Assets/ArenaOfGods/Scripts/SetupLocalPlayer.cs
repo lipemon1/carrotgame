@@ -41,6 +41,9 @@ public class SetupLocalPlayer : NetworkBehaviour {
     [Header("Spawn Configs")]
     [SerializeField] private float _spawnYOffset = 5f;
 
+    [Header("Materials")]
+    [SerializeField] private SkinnedMeshRenderer _playerMeshRenderer;
+
     public void ConfigureAllScripts()
     {
         if (_showDebugMessages) Debug.Log("Iniciando configuração de setup: " + gameObject.name + "(is local player: " + isLocalPlayer + " )");
@@ -83,5 +86,16 @@ public class SetupLocalPlayer : NetworkBehaviour {
             if (_showDebugMessages) Debug.Log("Chamando início de loop de jogo...");
             GameCore.StartGameLoop();
         }
+    }
+
+    /// <summary>
+    /// Altera o material que está sendo usado pelo jogador
+    /// </summary>
+    /// <param name="newMaterial"></param>
+    public void ChangePlayerMaterial(Material newMaterial)
+    {
+        Material[] mats = new Material[] { newMaterial};
+
+        _playerMeshRenderer.materials = mats;
     }
 }

@@ -11,6 +11,7 @@ public class PlayerArea : NetworkBehaviour{
 
     [Header("Info")]
     [SerializeField] public int Id;
+    [SerializeField] private Material _materialToPlayer;
 
     [SyncVar(hook = "OnPlayerOwnerIdChanged")]
     [SerializeField] public int PlayerOwnerId;
@@ -18,6 +19,7 @@ public class PlayerArea : NetworkBehaviour{
     [SyncVar(hook = "OnActiveChanged")]
     [SerializeField] public bool IsActive;
 
+    [Header("Carrots List")]
     [SerializeField] public List<Carrot> CarrotsList = new List<Carrot>();
 
     private void Start()
@@ -27,6 +29,8 @@ public class PlayerArea : NetworkBehaviour{
 
         IsActive = this.gameObject.activeInHierarchy;
     }
+
+    public Material GetMaterialToPlayer() { return _materialToPlayer; }
 
     #region PlayerOwnerChange
     private void OnPlayerOwnerIdChanged(int newId)

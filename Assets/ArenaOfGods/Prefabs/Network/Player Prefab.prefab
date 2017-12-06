@@ -2601,6 +2601,7 @@ MonoBehaviour:
   _stunParticle: {fileID: 1056092061650092, guid: 3bed665e1d8e9904fb53c7bc29aa0843,
     type: 2}
   _particleSpawnY: 4.01
+  _setupLocalPlayer: {fileID: 114348446974973628}
 --- !u!114 &114120286272606674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2613,7 +2614,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showDebugMessages: 0
-  CurPlayerArea: {fileID: 0}
+  _curPlayerArea: {fileID: 0}
+  _centerPlayerArea: {fileID: 0}
   _onMyArea: 0
   _haveCarrots: 0
   _fullCarrots: 0
@@ -2784,6 +2786,7 @@ MonoBehaviour:
   NetworkIdentity: {fileID: 114214052957656020}
   GameCore: {fileID: 114031682314953588}
   _spawnYOffset: 0.15
+  _playerMeshRenderer: {fileID: 137294226721343696}
 --- !u!114 &114436983586706886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3006,7 +3009,8 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ac007e786bb60d94abbcb69946ce4838, type: 2}
+  - {fileID: 0}
+  - {fileID: 2100000, guid: f972cf53309f9c54dabd5d6c5ecfae7a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
