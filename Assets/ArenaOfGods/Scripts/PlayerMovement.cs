@@ -63,7 +63,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private Animator _modelAnimator;
 
-
+    [Header("Stun Controller")]
+    [SerializeField] private StunBehaviour _stunBehaviour;
 
     // Use this for initialization
     void Start()
@@ -81,8 +82,12 @@ public class PlayerMovement : NetworkBehaviour
         if (_easyJoystick != null)
         {
             RecieveInput();
-            MovePlayer();
-            UpdateCharAnimations();
+
+            if (_stunBehaviour.GetStunedValue() == false)
+            {
+                MovePlayer();
+                UpdateCharAnimations();
+            }
 
             // TODO Barulho dos passos
             //UpdateMoveStatus();

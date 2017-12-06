@@ -2583,6 +2583,7 @@ MonoBehaviour:
   _bulletLifetime: 2
   _bulletSpeed: 50
   _modelAnimator: {fileID: 0}
+  _stunBehaviour: {fileID: 114103695419450746}
 --- !u!114 &114103695419450746
 MonoBehaviour:
   m_ObjectHideFlags: 1
