@@ -14,8 +14,20 @@ public class StunBehaviour : NetworkBehaviour {
     [Header("Configs")]
     [SerializeField] private float _stunTime;
 
-
     public bool GetStunedValue() { return _isStuned; }
+
+    [Header("Particle")]
+    [SerializeField]private GameObject _stunParticle;
+    [SerializeField] private float _particleSpawnY;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.LogWarning("Start Stun");
+            StartStun();
+        }
+    }
 
     /// <summary>
     /// Inicia o Stun
@@ -78,6 +90,13 @@ public class StunBehaviour : NetworkBehaviour {
         _isStuned = value;
 
         // JEFESU CHAMAR PARTICULA DE STUN AQUI
+        if(value) SpawnParticle();
+    }
+
+    void SpawnParticle()
+    {
+        Vector3 position = new Vector3(transform.position.x, _particleSpawnY, transform.position.z);
+        Instantiate(_stunParticle, position, Quaternion.identity);
     }
     #endregion
 }
