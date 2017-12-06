@@ -76,6 +76,8 @@ public class StunBehaviour : NetworkBehaviour {
     {
         if (_showDebugMessages) Debug.Log("LOCAL > Mudando status do Is Stuned para: " + value);
         _isStuned = value;
+
+        // JEFESU CHAMAR PARTICULA DE STUN AQUI
     }
     #endregion
 }
