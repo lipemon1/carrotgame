@@ -81,7 +81,8 @@ public class StunBehaviour : NetworkBehaviour {
         _isStuned = value;
 
         // JEFESU CHAMAR PARTICULA DE STUN AQUI
-        DropSomeCarrot();
+        if(value)
+            DropSomeCarrot();
     }
 
     /// <summary>
