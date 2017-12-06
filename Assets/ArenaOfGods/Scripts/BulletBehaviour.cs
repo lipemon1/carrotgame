@@ -10,7 +10,10 @@ public class BulletBehaviour : NetworkBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<StunBehaviour>().StartStun();
+        }
 
         if (_showDebugMessages) Debug.Log("Iniciando Destruição da Bala...");
         NetworkServer.Destroy(this.gameObject);

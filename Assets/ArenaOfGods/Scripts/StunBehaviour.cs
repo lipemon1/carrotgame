@@ -11,12 +11,39 @@ public class StunBehaviour : NetworkBehaviour {
     [Header("Stats")]
     [SerializeField] private bool _isStuned;
 
+    [Header("Configs")]
+    [SerializeField] private float _stunTime;
+
 
     public bool GetStunedValue() { return _isStuned; }
 
-    public void ChangeStunedValue(bool value)
+    /// <summary>
+    /// Inicia o Stun
+    /// </summary>
+    public void StartStun()
     {
-        if (_showDebugMessages) Debug.Log("Iniciando troca de status do Is Stuned");
+        if (_showDebugMessages) Debug.Log("Iniciando Stun");
+        ChangeStunedValue(true);
+        Invoke("StopStun", _stunTime);
+        if (_showDebugMessages) Debug.Log("Terminando Stun em " + _stunTime.ToString("F0") + " segundos...");
+    }
+
+    /// <summary>
+    /// Para o Stun
+    /// </summary>
+    private void StopStun()
+    {
+        ChangeStunedValue(false);
+        if (_showDebugMessages) Debug.Log("Stun finalizado");
+    }
+
+    /// <summary>
+    /// Modifica o valor de stun
+    /// </summary>
+    /// <param name="value"></param>
+    private void ChangeStunedValue(bool value)
+    {
+        if (_showDebugMessages) Debug.Log("Iniciando troca de status do Is Stuned com valor: " + value);
 
         if (isServer)
         {
