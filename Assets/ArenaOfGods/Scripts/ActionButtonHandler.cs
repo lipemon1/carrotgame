@@ -28,7 +28,8 @@ public class ActionButtonHandler : MonoBehaviour {
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
-    [SerializeField] public PlayerArea CurPlayerArea;
+    [SerializeField] private PlayerArea _curPlayerArea;
+    [SerializeField] private PlayerArea _centerPlayerArea;
 
     [Header("Qualify Status")]
     [SerializeField] private bool _onMyArea;
@@ -78,9 +79,9 @@ public class ActionButtonHandler : MonoBehaviour {
         if (other.CompareTag("PlayerArea"))
         {
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
-            CurPlayerArea = other.GetComponent<PlayerArea>();
+            _curPlayerArea = other.GetComponent<PlayerArea>();
 
-            _playerConfig.GameData.CanIBeTheOwner(CurPlayerArea.Id, _playerConfig.PlayerIdentity.PlayerId);
+            _playerConfig.GameData.CanIBeTheOwner(_curPlayerArea.Id, _playerConfig.PlayerIdentity.PlayerId);
 
             CheckButtonToShow();
         }
@@ -92,9 +93,9 @@ public class ActionButtonHandler : MonoBehaviour {
         {
             CheckButtonToShow();
 
-            if (CurPlayerArea != null)
+            if (_curPlayerArea != null)
             {
-                CurPlayerArea = null;
+                _curPlayerArea = null;
             }
         }
     }
@@ -173,9 +174,9 @@ public class ActionButtonHandler : MonoBehaviour {
     /// </summary>
     private void UpdateStatus()
     {
-        if(CurPlayerArea != null)
+        if(_curPlayerArea != null)
         {
-            _onMyArea = _playerConfig.GameData.IsThisMyArea(_playerConfig.PlayerIdentity.PlayerId, CurPlayerArea.Id);
+            _onMyArea = _playerConfig.GameData.IsThisMyArea(_playerConfig.PlayerIdentity.PlayerId, _curPlayerArea.Id);
             _playerConfig.ItemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
@@ -212,5 +213,20 @@ public class ActionButtonHandler : MonoBehaviour {
         _actionButton = newButtonData.ActionButton;
         _actionButtonText = newButtonData.ActionText;
         _actionButtonImage = newButtonData.ActionImage;
+    }
+
+    /// <summary>
+    /// Retorna a Player Area atual do jogador
+    /// </summary>
+    /// <returns></returns>
+    public PlayerArea GetCurPlayerArea()
+    {
+        if(_centerPlayerArea == null)
+            _centerPlayerArea = _playerConfig.GameData.GetPlayerAreaById(0);
+
+        if (_curPlayerArea != null)
+            return _curPlayerArea;
+        else
+            return _centerPlayerArea;
     }
 }

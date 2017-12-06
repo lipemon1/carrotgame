@@ -14,6 +14,9 @@ public class StunBehaviour : NetworkBehaviour {
     [Header("Configs")]
     [SerializeField] private float _stunTime;
 
+    [Header("Setup Local Player")]
+    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
+
 
     public bool GetStunedValue() { return _isStuned; }
 
@@ -78,6 +81,15 @@ public class StunBehaviour : NetworkBehaviour {
         _isStuned = value;
 
         // JEFESU CHAMAR PARTICULA DE STUN AQUI
+        DropSomeCarrot();
+    }
+
+    /// <summary>
+    /// Tenta dropar uma cenoura caso o jogador tenha
+    /// </summary>
+    private void DropSomeCarrot()
+    {
+        _setupLocalPlayer.ItemDropper.TryToPlantCarrot();
     }
     #endregion
 }

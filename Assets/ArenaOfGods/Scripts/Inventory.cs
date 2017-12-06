@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour {
     }
 
     /// <summary>
-    /// Tenta retirar algum item no primeiro slot nao ocupado que encontrar, retorna o id do item que foi retirado
+    /// Tenta retirar algum item no primeiro slot nao ocupado que encontrar, retorna o id do item que foi retirado, retorna -1 se não conseguiu tirar nenhum item
     /// </summary>
     /// <param name="carrotId"></param>
     /// <returns></returns>
