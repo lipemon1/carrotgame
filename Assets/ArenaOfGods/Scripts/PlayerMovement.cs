@@ -24,8 +24,7 @@ public class PlayerMovement : NetworkBehaviour
     private InputMode _inputType;
 
     [Header("Animations Controller")]
-    [SerializeField] private CharAnimationsController _animController;
-    [SerializeField] private CharacterControlle _charactControlle;
+    [SerializeField] private CharAnimationsController _animController;    
 
     [Header("Inputs Standard")]
     [SerializeField]
@@ -127,6 +126,7 @@ public class PlayerMovement : NetworkBehaviour
         float biggestInput = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform));
 
          if(_showDebugMessages) print("" + biggestInput);
+         
         _animController.UpdateAnimations(biggestInput, false, _stolingCarrot, _hasGun);
     }
 

@@ -42,7 +42,13 @@ public class GameCore : NetworkBehaviour
     [Header("Movement On Game Status")]
     [SerializeField] private MovementEnableOptions _moveOn;
 
+    [Space(8)]
+    public float CarrotYPos;
+
+
+    
     [Header("Loop Configs")]
+    [Space(8)]
     [HideInInspector] private WaitForSeconds _startGameWait;
     [HideInInspector] private WaitForSeconds _startMatchWait;
     [HideInInspector] private WaitForSeconds _endWait;
