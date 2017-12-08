@@ -23,10 +23,13 @@ public class PlayerDebug : MonoBehaviour {
     [SerializeField] private string _everyoneReadyLabel;
     [SerializeField] private string _playerNameLabel;
 
-    public void DebugPlayer(int playerId, string playerName, bool isReady, int playerArea, List<int> carrotsId, int connectedPlayersAmount, bool allReady)
+    public void DebugPlayer(int playerId, string playerName, bool isReady, int playerArea, List<int> carrotsId, int connectedPlayersAmount, bool allReady, Color playerColor)
     {
         _playerIdUI.text = _playerIdLabel + ": " + playerId.ToString();
-        _playerNameUI.text = _playerNameLabel + ": " + playerName;
+
+        _playerNameUI.text = _playerNameLabel + playerName.ToUpper();
+        _playerNameUI.color = playerColor;
+
         _readyUI.text = _readyLabel + ": " + isReady;
         _playerAreadUI.text = _playerAreadLabel + ": " + playerArea.ToString();
         _carrotsIdUI.text = _carrotsIdLabel + ": " + GetListAsString(carrotsId);

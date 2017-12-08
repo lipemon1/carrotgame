@@ -13,6 +13,7 @@ public class PlayerArea : NetworkBehaviour{
     [Header("Info")]
     [SerializeField] public int Id;
     [SerializeField] private Material _materialToPlayer;
+    [SerializeField] private Color _playerColor;
 
     [SyncVar(hook = "OnPlayerOwnerIdChanged")]
     [SerializeField] public int PlayerOwnerId;
@@ -35,6 +36,8 @@ public class PlayerArea : NetworkBehaviour{
     }
 
     public Material GetMaterialToPlayer() { return _materialToPlayer; }
+
+    public Color GetPlayerColor() { return _playerColor; }
 
     public void UpdateInterface()
     {

@@ -2530,10 +2530,10 @@ MonoBehaviour:
   _showDebugMessageGameLoop: 0
   _curLoopStatus: 0
   _alreadyStartedLoop: 0
-  PlayersAmountWanted: 4
+  PlayersAmountWanted: 2
   _moveOn:
     onRoundStarting: 0
-    onWaitingPlayers: 1
+    onWaitingPlayers: 0
     onPickingArea: 1
     onWaitOthersToPick: 0
     onMatchStarting: 0
@@ -2817,17 +2817,15 @@ MonoBehaviour:
   CarrotsList: []
   _namesAvailable:
   - Urso Gelado
-  - Rato Saltitante
-  - Gazerla Triste
-  - Macaco Surdo
+  - Pandeiro Sem Couro
   - Panda Magrelo
+  - Macaco Surdo
   - "Girafa Carn\xEDvora"
   - "Cachorro Sem Cora\xE7\xE3o"
   - Caralho Alado
   - "Protetor In\xFAtil"
-  - Pandeiro Sem Couro
   - Fui Mas Voltei
-  - Cenoura Man
+  - Dia Display
   - Barleze 20k
   - Tranquilo
   - Tranquilinho

@@ -345,7 +345,7 @@ public class GameData : NetworkBehaviour {
     /// <returns></returns>
     public bool EveryoneIsReady()
     {
-        return PlayersConnectedsList.Where(pc => pc.IsReady == false).FirstOrDefault() == null;
+        return PlayersConnectedsList.Where(pc => pc.IsReady == false).ToList().Count >= 2;
     }
 
     /// <summary>
@@ -676,7 +676,7 @@ public class GameData : NetworkBehaviour {
     private void CallOnAnyChange()
     {
         int playerId = _setupLocalPlayer.PlayerIdentity.PlayerId;
-        _playerDebug.DebugPlayer(playerId, _setupLocalPlayer.GameData.GetPlayerNameById(playerId),_setupLocalPlayer.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart());
+        _playerDebug.DebugPlayer(playerId, _setupLocalPlayer.GameData.GetPlayerNameById(playerId),_setupLocalPlayer.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart(), GetPlayerAreaById(GetAreaIdFromSomePlayer(playerId)).GetPlayerColor());
     }
     #endregion
 }
