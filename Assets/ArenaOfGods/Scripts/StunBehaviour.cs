@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class StunBehaviour : NetworkBehaviour {
+public class StunBehaviour : MonoBehaviour {
 
 	[Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
@@ -60,30 +60,6 @@ public class StunBehaviour : NetworkBehaviour {
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de status do Is Stuned com valor: " + value);
 
-        if (isServer)
-        {
-            RpcChangeStunedValue(value);
-            return;
-        }
-
-        if (isClient)
-        {
-            CmdChangeStunedValue(value);
-        }
-    }
-
-    #region Stuned Stats
-    [Command]
-    private void CmdChangeStunedValue(bool value)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando status do Is Stuned para: " + value);
-        RpcChangeStunedValue(value);
-    }
-
-    [ClientRpc]
-    private void RpcChangeStunedValue(bool value)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Mudando status do Is Stuned para: " + value);
         ChangeStunedValueNow(value);
     }
 
@@ -109,5 +85,4 @@ public class StunBehaviour : NetworkBehaviour {
         Vector3 position = new Vector3(transform.position.x, _particleSpawnY, transform.position.z);
         Instantiate(_stunParticle, position, Quaternion.identity);
     }
-    #endregion
 }

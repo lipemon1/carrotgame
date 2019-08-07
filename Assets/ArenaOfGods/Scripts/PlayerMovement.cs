@@ -5,13 +5,14 @@ using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : NetworkBehaviour
+public class PlayerMovement : MonoBehaviour
 {
 
     public enum InputMode
     {
         Standard,
-        CrossPlatform
+        CrossPlatform,
+        Controller
     }
 
     [Header("Debug Options")]
@@ -30,12 +31,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float _horizontalStandard;
     [SerializeField] private float _verticalStandard;
-
-    [Header("Inputs CrossPlatform")]
-    [SerializeField]
-    private EasyJoystick _easyJoystick;
-    [SerializeField] private float _horizontalCrossPlatform;
-    [SerializeField] private float _verticalCrossPlatform;
+    public string HorizontalInputString;
+    public string VerticalInputString;
 
     [Header("Character Controller")]
     [HideInInspector]
@@ -66,6 +63,8 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Stun Controller")]
     [SerializeField] private StunBehaviour _stunBehaviour;
 
+    [Header("Setup")] public SetupLocalPlayer setupLocalPlayer;
+
     // Use this for initialization
     void Start()
     {
@@ -79,34 +78,17 @@ public class PlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_easyJoystick != null)
+        RecieveInput();
+
+        if (_stunBehaviour.GetStunedValue() == false)
         {
-            RecieveInput();
-
-            if (_stunBehaviour.GetStunedValue() == false)
-            {
-                MovePlayer();
-                UpdateCharAnimations();
-            }
-
-            // TODO Barulho dos passos
-            //UpdateMoveStatus();
-            //SoundManager.Instance.UpdateRunningAudio(GetSpeedToUseOnMoveCheck());
-
-        }
-        else
-        {
-            if (GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>() != null)
-                _easyJoystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>();
+            MovePlayer();
+            UpdateCharAnimations();
         }
 
-        #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Fire();
-        }
-        #endif
-
+        // TODO Barulho dos passos
+        //UpdateMoveStatus();
+        SoundManager.Instance.UpdateRunningAudio(GetSpeedToUseOnMoveCheck());
     }
 
     /// <summary>
@@ -128,7 +110,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     void UpdateCharAnimations()
     {
-        float biggestInput = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform));
+        float biggestInput = Mathf.Abs(GetBiggestCurInput(_horizontalStandard, _verticalStandard));
 
          if(_showDebugMessages) print("" + biggestInput);
          
@@ -180,7 +162,14 @@ public class PlayerMovement : NetworkBehaviour
                 //}
 
                 //new and better
-                Vector3 directionOnScreen = new Vector3(_horizontalCrossPlatform, _verticalCrossPlatform);
+//                Vector3 directionOnScreen = new Vector3(_horizontalCrossPlatform, _verticalCrossPlatform);
+//                Vector3 directionOnWorld = Camera.main.ScreenToWorldPoint(directionOnScreen + Vector3.forward) - Camera.main.ScreenToWorldPoint(Vector3.forward);
+//                Vector3 directionOnPlane = Vector3.ProjectOnPlane(directionOnWorld, Vector3.up);
+//                directionToMove = directionOnPlane;
+                break;
+            
+            case InputMode.Controller:
+                Vector3 directionOnScreen = new Vector3(_horizontalStandard, _verticalStandard);
                 Vector3 directionOnWorld = Camera.main.ScreenToWorldPoint(directionOnScreen + Vector3.forward) - Camera.main.ScreenToWorldPoint(Vector3.forward);
                 Vector3 directionOnPlane = Vector3.ProjectOnPlane(directionOnWorld, Vector3.up);
                 directionToMove = directionOnPlane;
@@ -202,78 +191,39 @@ public class PlayerMovement : NetworkBehaviour
         switch (_inputType)
         {
             case InputMode.Standard:
-                _horizontalStandard = Input.GetAxis("Horizontal");
-                _verticalStandard = Input.GetAxis("Vertical");
+                _horizontalStandard = Input.GetAxis("HorizontalStandard");
+                _verticalStandard = Input.GetAxis("VerticalStandard");
                 break;
             case InputMode.CrossPlatform:
-                if (_easyJoystick == null)
-                {
-                    if (_showDebugMessages) Debug.Log("Searching for EasyJoystick script");
-                    _easyJoystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>();
-                }
-                else
-                {
-                    if (_showDebugMessages) Debug.Log("Getting input values");
-                    _horizontalCrossPlatform = _easyJoystick.MoveInput().x;
-                    _verticalCrossPlatform = _easyJoystick.MoveInput().z;
-                }
+//                if (_easyJoystick == null)
+//                {
+//                    if (_showDebugMessages) Debug.Log("Searching for EasyJoystick script");
+//                    _easyJoystick = GameObject.Find("ScreenJoystick").GetComponentInChildren<EasyJoystick>();
+//                }
+//                else
+//                {
+//                    if (_showDebugMessages) Debug.Log("Getting input values");
+//                    _horizontalCrossPlatform = _easyJoystick.MoveInput().x;
+//                    _verticalCrossPlatform = _easyJoystick.MoveInput().z;
+//                }
                 break;
 
+            case InputMode.Controller:
+                _horizontalStandard = Input.GetAxis(HorizontalInputString);
+                _verticalStandard = Input.GetAxis(VerticalInputString);
+                break;
+            
             default:
                 if (_showDebugMessages) Debug.LogError("Input Type Unkown: " + _inputType);
                 break;
         }
     }
 
-    /// <summary>
-    /// Método que tenta realizar o pulo do jogador
-    /// </summary>
-    private void Jump()
-    {
-        switch (_inputType)
-        {
-            case InputMode.Standard:
-                if (Input.GetButton("Jump"))
-                {
-                    if (_characterController.isGrounded == true)
-                    {
-                        _vectorDirection.y = _jumpForce;
-                    }
-                }
-                break;
-            case InputMode.CrossPlatform:
-                if (CrossPlatformInputManager.GetButton("Jump"))
-                {
-                    if (_showDebugMessages) Debug.Log("Jumping with crossplatform input");
-
-                    if (_characterController.isGrounded == true)
-                    {
-                        _vectorDirection.y = _jumpForce;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-
-        _vectorDirection.y -= _jumpGravity * Time.deltaTime;
-        _characterController.Move(_vectorDirection * Time.deltaTime);
-    }
-
     public void Fire()
     {
         if (_showDebugMessages) Debug.Log("Iniciando tiro");
 
-        if (isServer)
-        {
-            RpcSpawnBullet();
-            return;
-        }
-
-        if (isClient)
-        {
-            CmdFire();
-        }
+        SpawnBullet();
     }
 
     /// <summary>
@@ -281,7 +231,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void UpdateMoveStatus()
     {
-        _isMoving = Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform)) > 0f && Mathf.Abs(GetBiggestCurInput(_horizontalCrossPlatform, _verticalCrossPlatform)) < 1f;
+        _isMoving = Mathf.Abs(GetBiggestCurInput(_horizontalStandard, _verticalStandard)) > 0f && Mathf.Abs(GetBiggestCurInput(_horizontalStandard, _verticalStandard)) < 1f;
     }
 
     /// <summary>
@@ -290,30 +240,13 @@ public class PlayerMovement : NetworkBehaviour
     /// <returns></returns>
     private float GetSpeedToUseOnMoveCheck()
     {
-        return Mathf.Abs(_horizontalCrossPlatform) + Mathf.Abs(_verticalCrossPlatform);
+        return Mathf.Abs(_horizontalStandard) + Mathf.Abs(_verticalStandard);
     }
 
 
     public void SetHasGun(bool hasGun)
     {
         _hasGun = hasGun;
-    }
-
-    /// <summary>
-    /// Realiza o tiro do fazendeiro
-    /// </summary>
-    [Command]
-    public void CmdFire()
-    {
-        if (_showDebugMessages) Debug.LogWarning("COMAND > Atirando");
-        RpcSpawnBullet();
-    }
-
-    [ClientRpc]
-    public void RpcSpawnBullet()
-    {
-        if (_showDebugMessages) Debug.LogWarning("RPC > Atirando");
-        SpawnBullet();
     }
 
     public void SpawnBullet()

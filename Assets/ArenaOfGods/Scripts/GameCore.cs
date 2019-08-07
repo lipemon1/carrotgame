@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameCore : NetworkBehaviour
+public class GameCore : MonoBehaviour
 {
     public enum LoopStatus
     {
@@ -17,6 +18,8 @@ public class GameCore : NetworkBehaviour
         RoundPlaying,
         RoundEnding
     }
+    
+    public static GameCore Instance { get; set; }
 
     [System.Serializable]
     public struct MovementEnableOptions
@@ -44,8 +47,6 @@ public class GameCore : NetworkBehaviour
 
     [Space(8)]
     public float CarrotYPos;
-
-
     
     [Header("Loop Configs")]
     [Space(8)]
@@ -75,11 +76,24 @@ public class GameCore : NetworkBehaviour
     [SerializeField]
     private SetupLocalPlayer _setupLocalPlayer;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         _startGameWait = new WaitForSeconds(_startGameDelay);
         _startMatchWait = new WaitForSeconds(_startMatchDelay);
         _endWait = new WaitForSeconds(_endDelay);
+        
+        Invoke(nameof(StartGameLoop), 0.5f);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void StartGameLoop()
@@ -135,7 +149,7 @@ public class GameCore : NetworkBehaviour
         ChangeCurMessage(_waitingConnections);
 
         // While there is not one tank left...
-        while (!_setupLocalPlayer.GameData.IsOnlyThisNumberOfPlayers(PlayersAmountWanted))
+        while (!GameData.Instance.IsOnlyThisNumberOfPlayers(PlayersAmountWanted))
         {
             if (_showDebugMessageGameLoop) Debug.Log("O número de jogadores ainda não é válido para começar a partida");
             // ... return on the next frame.
@@ -163,7 +177,7 @@ public class GameCore : NetworkBehaviour
         ChangeCurMessage(string.Empty);
 
         // While there is not one tank left...
-        while (!_setupLocalPlayer.GameData.IsPlayerReady(_setupLocalPlayer.PlayerIdentity.PlayerId))
+        while (!GameData.Instance.IsPlayerReady(_setupLocalPlayer.PlayerId))
         {
             if (_showDebugMessageGameLoop) Debug.Log("Ainda não selecionei uma área");
             // ... return on the next frame.
@@ -179,7 +193,7 @@ public class GameCore : NetworkBehaviour
         ChangeCurMessage(_waitingOthersArea);
 
         // While there is not one tank left...
-        while (!_setupLocalPlayer.GameData.EveryoneIsReady())
+        while (!GameData.Instance.EveryoneIsReady())
         {
             if (_showDebugMessageGameLoop) Debug.Log("Ainda faltam jogadores a ficarem prontos");
             // ... return on the next frame.
@@ -300,15 +314,7 @@ public class GameCore : NetworkBehaviour
     private void ChangeMovementStatus(bool newStatus)
     {
         if (_showDebugMessage) Debug.Log("Iniciando a troca de status de movimento do jogador: " + newStatus);
-        if (isServer)
-        {
-            RpcChangeMovementStatus(newStatus);
-        }
-
-        if (isClient)
-        {
-            CmdChangeMovementStatus(newStatus);
-        }
+        ChangeMovementStatusNow(newStatus);
     }
 
     /// <summary>
@@ -318,16 +324,7 @@ public class GameCore : NetworkBehaviour
     private void CallTimerOnScreen(float newMatchTime)
     {
         if (_showDebugMessage) Debug.Log("Iniciando chamada de tempo para Match Timer com tempo de: " + newMatchTime);
-
-        if (isServer)
-        {
-            RpcCallTimerStart(newMatchTime);
-        }
-
-        if (isClient)
-        {
-            CmdCallTimerStart(newMatchTime);
-        }
+        CallTimerStartNow(newMatchTime);
     }
 
     /// <summary>
@@ -337,23 +334,7 @@ public class GameCore : NetworkBehaviour
     private void UpdateMessageUI(string newMessage)
     {
         if (_showDebugMessage) Debug.Log("Iniciando troca de message na tela: " + newMessage);
-        if (isServer)
-        {
-            RpcUpdateMessageUI(newMessage);
-        }
-
-        if (isClient)
-        {
-            CmdUpdateMessageUI(newMessage);
-        }
-    }
-
-    public void RecieveMessageFromServer()
-    {
-        if (isClient)
-        {
-            CmdUpdateMessageUIServerToClient();
-        }
+        UpdateMessageUINow(_curMessageToShow);
     }
 
     /// <summary>
@@ -363,87 +344,23 @@ public class GameCore : NetworkBehaviour
     private void CallHudGameOver(bool win)
     {
         if (_showDebugMessage) Debug.Log("Iniciando chamada de gameover pro canvas com resultado: " + win);
-
-        if (isServer)
-        {
-            RpcCallHudGameOver(win);
-        }
-
-        if (isClient)
-        {
-            CmdCallHudGameOver(win);
-        }
+        CallHudGameOver(win);
     }
 
     #region GAME CORE HOOKS
-    #region Control PlayerMovement
-    [Command]
-    private void CmdChangeMovementStatus(bool newStatus)
-    {
-        if (_showDebugMessage) Debug.Log("COMAND > Chamando troca de status de movimento: " + newStatus);
-        RpcChangeMovementStatus(newStatus);
-        ChangeMovementStatusNow(newStatus);
-    }
-
-    [ClientRpc]
-    private void RpcChangeMovementStatus(bool newStatus)
-    {
-        if (_showDebugMessage) Debug.Log("RPC > Chamando troca de status de movimento: " + newStatus);
-        ChangeMovementStatusNow(newStatus);
-    }
-
     private void ChangeMovementStatusNow(bool newStatus)
     {
         if (_showDebugMessage) Debug.Log("LOCAL > Chamando troca de status de movimento: " + newStatus);
-        if (isLocalPlayer)
-            _setupLocalPlayer.PlayerMovement.enabled = newStatus;
-        else
-            if (_showDebugMessage) Debug.Log("Como não sou local player não vou trocar meu status de movimento para: " + newStatus);
     }
     #endregion
     #region UpdateMessage
-    [Command]
-    private void CmdUpdateMessageUI(string newMessage)
-    {
-        if (_showDebugMessage) Debug.Log("COMAND > Chamando update message: " + newMessage);
-        RpcUpdateMessageUI(newMessage);
-        UpdateMessageUINow(newMessage);
-    }
-
-    [Command]
-    private void CmdUpdateMessageUIServerToClient()
-    {
-        if (_showDebugMessage) Debug.Log("COMAND > Chamando update message do servidor para clientes: " + _curMessageToShow);
-        RpcUpdateMessageUI(_curMessageToShow);
-    }
-
-    [ClientRpc]
-    private void RpcUpdateMessageUI(string newMessage)
-    {
-        if (_showDebugMessage) Debug.Log("RPC > Chamando update message: " + newMessage);
-        UpdateMessageUINow(newMessage);
-    }
-
     private void UpdateMessageUINow(string newMessage)
     {
         if (_showDebugMessage) Debug.Log("LOCAL > Chamando update message: " + newMessage);
-        GameHud.Instance.SetNewMessage(newMessage);
+//        GameHud.Instance.SetNewMessage(newMessage);
     }
     #endregion
     #region TimerCall
-    [Command]
-    private void CmdCallTimerStart(float newTimer)
-    {
-        if (_showDebugMessage) Debug.Log("COMAND > Chamando início de contagem de tempo: " + newTimer);
-        RpcCallTimerStart(newTimer);
-    }
-
-    [ClientRpc]
-    private void RpcCallTimerStart(float newTimer)
-    {
-        if (_showDebugMessage) Debug.Log("RPC > Chamando início de contagem de tempo: " + newTimer);
-        CallTimerStartNow(newTimer);
-    }
 
     private void CallTimerStartNow(float newTimer)
     {
@@ -452,26 +369,11 @@ public class GameCore : NetworkBehaviour
     }
     #endregion
     #region GameOverCall
-    [Command]
-    private void CmdCallHudGameOver(bool win)
-    {
-        if (_showDebugMessage) Debug.Log("COMAND > Chamando tela de game over com resultado: " + win);
-        RpcCallHudGameOver(win);
-    }
-
-    [ClientRpc]
-    private void RpcCallHudGameOver(bool win)
-    {
-        if (_showDebugMessage) Debug.Log("RPC > Chamando tela de game over com resultado: " + win);
-        CallHudGameOverNow(win);
-    }
-
     private void CallHudGameOverNow(bool win)
     {
         if (_showDebugMessage) Debug.Log("LOCAL > Chamando tela de game over com resultado: " + win);
         //GameHud.Instance.GameIsOver(win);
-        WinnerHolder.Instance.CheckNewWinners(_setupLocalPlayer.GameData);
+        WinnerHolder.Instance.CheckNewWinners(GameData.Instance);
     }
-    #endregion
     #endregion
 }

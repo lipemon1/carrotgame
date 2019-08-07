@@ -56,7 +56,7 @@ public class ItemPicker : MonoBehaviour {
             if (_showDebugMessages) Debug.Log("Consegui guardar no inventário, mudar no servidor agora");
             GettingAwayFromCarrot();
 
-            PickCarrotFromServer(carrotToPick, 0, _playerConfig.PlayerIdentity.PlayerId);
+            PickCarrot(carrotToPick, 0, _playerConfig.PlayerId);
             SoundManager.Instance.CarrotPickUp();
         }
     }
@@ -76,10 +76,10 @@ public class ItemPicker : MonoBehaviour {
     /// <param name="carrotToPick"></param>
     /// <param name="areaToStore"></param>
     /// <param name="playerToPick"></param>
-    private void PickCarrotFromServer(int carrotToPick, int areaToStore, int playerToPick)
+    private void PickCarrot(int carrotToPick, int areaToStore, int playerToPick)
     {
-        _playerConfig.GameData.ChangeCarrotPlayerOwner(carrotToPick, playerToPick);
-        _playerConfig.GameData.ChangeCarrotActiveValue(carrotToPick, false);
-        _playerConfig.GameData.ChangeCarrotPlayerArea(carrotToPick, areaToStore, GameData.Operation.Remove);
+        GameData.Instance.ChangeCarrotPlayerOwner(carrotToPick, playerToPick);
+        GameData.Instance.ChangeCarrotActiveValue(carrotToPick, false);
+        GameData.Instance.ChangeCarrotPlayerArea(carrotToPick, areaToStore, GameData.Operation.Remove);
     }
 }

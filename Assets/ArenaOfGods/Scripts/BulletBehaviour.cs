@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class BulletBehaviour : NetworkBehaviour {
+public class BulletBehaviour : MonoBehaviour {
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
@@ -16,6 +16,6 @@ public class BulletBehaviour : NetworkBehaviour {
         }
 
         if (_showDebugMessages) Debug.Log("Iniciando Destruição da Bala...");
-        NetworkServer.Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class SetupLocalPlayer : NetworkBehaviour {
+public class SetupLocalPlayer : MonoBehaviour {
 
     [System.Serializable]
     public struct SetupConfig
@@ -15,10 +15,6 @@ public class SetupLocalPlayer : NetworkBehaviour {
         public bool ItemDropper;
         public bool Inventory;
         public bool ActionButtonHandler;
-        public bool GameData;
-        public bool PlayerIdentity;
-        public bool NetworkIdentity;
-        public bool GameCore;
     }
 
     [Header("Debug")]
@@ -33,10 +29,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
     [SerializeField] public ItemDropper ItemDropper;
     [SerializeField] public Inventory Inventory;
     [SerializeField] public ActionButtonHandler ActionButtonHandler;
-    [SerializeField] public GameData GameData;
-    [SerializeField] public PlayerIdentity PlayerIdentity;
-    [SerializeField] public NetworkIdentity NetworkIdentity;
-    [SerializeField] public GameCore GameCore;
+    [SerializeField] public int PlayerId;
 
     [Header("Spawn Configs")]
     [SerializeField] private float _spawnYOffset = 5f;
@@ -46,46 +39,18 @@ public class SetupLocalPlayer : NetworkBehaviour {
 
     public void ConfigureAllScripts()
     {
-        if (_showDebugMessages) Debug.Log("Iniciando configuração de setup: " + gameObject.name + "(is local player: " + isLocalPlayer + " )");
+        if (_showDebugMessages) Debug.Log("Iniciando configuração de setup: " + gameObject.name);
 
-        if (isLocalPlayer)
-        {
-            if(_componentsToActive.PlayerMovement) PlayerMovement.enabled = true;
-            if (_componentsToActive.ItemPicker) ItemPicker.enabled = true;
-            if (_componentsToActive.ItemDropper) ItemDropper.enabled = true;
-            if (_componentsToActive.Inventory) Inventory.enabled = true;
-            if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = true;
-            if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = true;
-            if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = true;
-            if (_componentsToActive.GameCore) GameCore.enabled = true;
+        if(_componentsToActive.PlayerMovement) PlayerMovement.enabled = true;
+        if (_componentsToActive.ItemPicker) ItemPicker.enabled = true;
+        if (_componentsToActive.ItemDropper) ItemDropper.enabled = true;
+        if (_componentsToActive.Inventory) Inventory.enabled = true;
+        if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = true;
 
-            if (_showDebugMessages) Debug.Log("Configuração realizada de setup local player de: " + gameObject.name);
-        }
-        else
-        {
-            if (_componentsToActive.PlayerMovement) PlayerMovement.enabled = false;
-            if (_componentsToActive.ItemPicker) ItemPicker.enabled = false;
-            if (_componentsToActive.ItemDropper) ItemDropper.enabled = false;
-            if (_componentsToActive.Inventory) Inventory.enabled = false;
-            if (_componentsToActive.ActionButtonHandler) ActionButtonHandler.enabled = false;
-            if (_componentsToActive.PlayerIdentity) PlayerIdentity.enabled = false;
-            if (_componentsToActive.NetworkIdentity) NetworkIdentity.enabled = false;
-            if (_componentsToActive.GameCore) GameCore.enabled = false;
-
-            if (_showDebugMessages) Debug.Log("Não é o local player, configuração não foi feita: " + gameObject.name);
-        }
+        if (_showDebugMessages) Debug.Log("Configuração realizada de setup local player de: " + gameObject.name);
 
         transform.SetParent(GameObject.Find("Arena").gameObject.transform);
         transform.position = new Vector3(transform.position.x, transform.position.y + _spawnYOffset, transform.position.z);
-    }
-
-    public void StartLoop()
-    {
-        if (isServer)
-        {
-            if (_showDebugMessages) Debug.Log("Chamando início de loop de jogo...");
-            GameCore.StartGameLoop();
-        }
     }
 
     /// <summary>

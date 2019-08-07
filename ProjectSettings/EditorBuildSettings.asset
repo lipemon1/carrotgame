@@ -8,6 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ArenaOfGods/_Scenes/Main.unity
     guid: 85271b4a540f77c43982bd390cd6c060
-  - enabled: 1
+  - enabled: 0
     path: Assets/ArenaOfGods/_Scenes/OnLostConnection.unity
     guid: db2f3103e6842ef449e237a899dc301f
+  m_configObjects: {}

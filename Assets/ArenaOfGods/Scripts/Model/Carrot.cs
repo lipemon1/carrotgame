@@ -4,17 +4,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 [System.Serializable]
-public class Carrot : NetworkBehaviour{
+public class Carrot : MonoBehaviour{
 
 	[Header("Carrot Game Instance")]
     [SerializeField] public GameObject GameInstance;
 
     [Header("Info")]
     [SerializeField] public int Id;
-    [SyncVar(hook = "OnPlayerOwnerIdChanged")]
     [SerializeField] public int PlayerOwnerId = -1;
 
-    [SyncVar(hook = "OnActiveChanged")]
     [SerializeField] public bool IsActive;
 
     private void Start()
@@ -26,28 +24,6 @@ public class Carrot : NetworkBehaviour{
     }
 
     #region PlayerOwnerChange
-    private void OnPlayerOwnerIdChanged(int newId)
-    {
-        //Debug.Log("SERVER HOOK > Mudando dono da cenoura: " + Id);
-        //CmdChangePlayerOwnerId(newId);
-        //RpcChangePlayerOwnerId(newId);
-        //ChangePlayerOwnerId(newId);
-    }
-
-    [ClientRpc]
-    private void RpcChangePlayerOwnerId(int id)
-    {
-        Debug.Log("RPC OWNER ID");
-        ChangePlayerOwnerId(id);
-    }
-
-    [Command]
-    private void CmdChangePlayerOwnerId(int id)
-    {
-        Debug.Log("CMD OWNER ID");
-        ChangePlayerOwnerId(id);
-    }
-
     private void ChangePlayerOwnerId(int id)
     {
         Debug.Log("Mudando dono da cenoura: " + Id);
@@ -56,28 +32,7 @@ public class Carrot : NetworkBehaviour{
     #endregion
 
     #region ActiveChange
-    private void OnActiveChanged(bool newValue)
-    {
-        //Debug.Log("SERVER HOOK > Mudando status do objeto da cenoura: " + Id);
-        //CmdChangeActiveValue(newValue);
-        //RpcChangeActiveValue(newValue);
-        //ChangeActiveValue(newValue);
-    }
-
-    [ClientRpc]
-    private void RpcChangeActiveValue(bool value)
-    {
-        Debug.Log("RPC ACTIVE");
-        ChangeActiveValue(value);
-    }
-
-    [Command]
-    private void CmdChangeActiveValue(bool value)
-    {
-        Debug.Log("CMD ACTIVE");
-        ChangeActiveValue(value);
-    }
-
+    
     private void ChangeActiveValue(bool value)
     {
         Debug.Log("Changing Active");

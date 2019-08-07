@@ -115,6 +115,8 @@ public class Inventory : MonoBehaviour {
         HaveSomeCarrot = (_inventorySlots.Where(s => s.Busy == true).ToList().FirstOrDefault() != null);
 
         IsFull = !(_inventorySlots.Where(s => s.Busy == false).ToList().FirstOrDefault() != null);
+        
+        UpdateCarrotsFeedback();
         return !IsFull;
     }
 }

@@ -2181,6 +2181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455460d6cece74b46bd55b6f93436f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 0
   _myAnimator: {fileID: 95275050969906902}
   _speed: 0
   WithGun: 1
@@ -2192,6 +2193,7 @@ MonoBehaviour:
   - {fileID: 198133861398459434}
   - {fileID: 198590214611827776}
   - {fileID: 198709748687143250}
+  _syncAnimation: {fileID: 0}
 --- !u!137 &137009065280838896
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

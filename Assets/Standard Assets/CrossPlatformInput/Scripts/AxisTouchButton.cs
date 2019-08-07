@@ -8,7 +8,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 	{
 		// designed to work in a pair with another axis touch button
 		// (typically with one having -1 and one having 1 axisValues)
-		public string axisName = "Horizontal"; // The name of the axis
+		public string axisName = ""; // The name of the axis
 		public float axisValue = 1; // The axis that the value has
 		public float responseSpeed = 3; // The speed at which the axis touch button responds
 		public float returnToCentreSpeed = 3; // The speed at which the button will return to its centre

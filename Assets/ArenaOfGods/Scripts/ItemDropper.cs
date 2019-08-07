@@ -22,7 +22,7 @@ public class ItemDropper : MonoBehaviour {
         if (carrotIdRemovedFromInventory != -1)
         {
             if (_showDebugMessages) Debug.Log("Consegui retirar do inventário, mudar no servidor agora");
-            _playerConfig.GameData.AddCarrotToArea(carrotIdRemovedFromInventory, _playerConfig.ActionButtonHandler.GetCurPlayerArea().Id, transform.position);
+            GameData.Instance.AddCarrotToArea(carrotIdRemovedFromInventory, _playerConfig.ActionButtonHandler.GetCurPlayerArea().Id, transform.position);
             SoundManager.Instance.CarrotPlaced();
         }
     }

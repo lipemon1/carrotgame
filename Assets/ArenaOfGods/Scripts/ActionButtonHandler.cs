@@ -38,16 +38,20 @@ public class ActionButtonHandler : MonoBehaviour {
     [SerializeField] private bool _isTouchingCarrot;
 
     [Header("Buttons Configurations")]
-    [SerializeField] private ButtonConfiguration _plantConfiguration;
-    [SerializeField] private ButtonConfiguration _pickConfiguration;
-    [SerializeField] private ButtonConfiguration _shootConfiguration;
+    [SerializeField] public ButtonConfiguration _plantConfiguration;
+    [SerializeField] public ButtonConfiguration _pickConfiguration;
+    [SerializeField] public ButtonConfiguration _shootConfiguration;
 
-    [Header("Interface Button")]
+    [Header("Interface Button")] [SerializeField]
+    private System.Action _action;
     [SerializeField] private Button _actionButton;
     [SerializeField] private Text _actionButtonText;
     [SerializeField] private Image _actionButtonImage;
+    public ItemDropper itemDropper;
+    public ItemPicker itemPicker;
+    public PlayerMovement playerMovement;
+    public string inputTrigger;
     [Space]
-    [SerializeField] private ButtonData _buttonData;
 
     [Header("Aim Sprite")]
     [SerializeField] private GameObject _aimSign;
@@ -57,21 +61,7 @@ public class ActionButtonHandler : MonoBehaviour {
 
     private void Update()
     {
-        if(GameObject.Find("ScreenJoystick").gameObject != null)
-        {
-            if (_buttonData.ActionButton == null)
-            {
-                GameObject actionButton = GameObject.Find("ScreenJoystick").gameObject;
-                _buttonData.ActionButton = actionButton.transform.GetChild(0).GetComponent<Button>();
-                _buttonData.ActionImage = actionButton.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
-                _buttonData.ActionText = actionButton.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>();
-
-                UpdateActionButtonValues(_buttonData);
-            }
-        }
-
-        if(_playerConfig.isLocalPlayer)
-            CheckButtonToShow();
+        CheckButtonToShow();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -81,7 +71,7 @@ public class ActionButtonHandler : MonoBehaviour {
             Debug.Log("Colliding with some player area: " + other.gameObject.name);
             _curPlayerArea = other.GetComponent<PlayerArea>();
 
-            _playerConfig.GameData.CanIBeTheOwner(_curPlayerArea.Id, _playerConfig.PlayerIdentity.PlayerId);
+            GameData.Instance.CanIBeTheOwner(_curPlayerArea.Id, _playerConfig.PlayerId);
 
             CheckButtonToShow();
         }
@@ -111,34 +101,38 @@ public class ActionButtonHandler : MonoBehaviour {
 
         if (_showDebugMessages) Debug.Log("Status verificados");
 
-        if(_actionButton != null)
+        if (_onMyArea)
         {
-            if (_onMyArea)
+            if (_haveCarrots == false)
             {
-                if (_haveCarrots == false)
-                {
-                    ChangeGunStatus(true);
-                    ChangeButton(_shootConfiguration);
-                }
-                else
-                {
-                    ChangeGunStatus(false);
-                    ChangeButton(_plantConfiguration);
-                }
+                ChangeGunStatus(true);
+                ChangeButton(_shootConfiguration, () => playerMovement.Fire());
             }
             else
             {
                 ChangeGunStatus(false);
-                if (_fullCarrots == false && _isTouchingCarrot)
-                {
-                    ChangeButton(_pickConfiguration);
-                }
-                else
-                {
-                    if (_playerConfig.isLocalPlayer)
-                        _actionButton.interactable = false;
-                }
+                ChangeButton(_plantConfiguration, () => itemDropper.TryToPlantCarrot());
             }
+        }
+        else
+        {
+            ChangeGunStatus(false);
+            if (_fullCarrots == false && _isTouchingCarrot)
+            {
+                ChangeButton(_pickConfiguration, () => itemPicker.TryToPickCarrot());
+            }
+            else
+            {
+                _action = null;
+//                _actionButton.interactable = false;
+            }
+        }
+            
+        Debug.Log("Aguardando input de tiro");
+        if (Input.GetButtonDown(inputTrigger))
+        {
+            _action?.Invoke();
+            Debug.Log("Deve atirar");
         }
     }
 
@@ -147,21 +141,20 @@ public class ActionButtonHandler : MonoBehaviour {
     /// Método que atualiza o botão que será liberado para o jogador
     /// </summary>
     /// <param name="newButtonConfiguration"></param>
-    private void ChangeButton(ButtonConfiguration newButtonConfiguration)
+    private void ChangeButton(ButtonConfiguration newButtonConfiguration, System.Action action)
     {
-        if (_playerConfig.isLocalPlayer)
-        {
-            _actionButton.onClick.RemoveAllListeners();
-            _actionButton.onClick = newButtonConfiguration.ButtonEvent;
+        _action = action;
+//        _actionButton.onClick.RemoveAllListeners();
+//        _actionButton.onClick = newButtonConfiguration.ButtonEvent;
+//
+//        _actionButtonText.text = newButtonConfiguration.ButtonText;
+//
+//        _actionButtonImage.sprite = newButtonConfiguration.ButtonSprite;
 
-            _actionButtonText.text = newButtonConfiguration.ButtonText;
+//        _aimSign.SetActive(newButtonConfiguration.ShowAimSign);
+        _aimSign.SetActive(false);
 
-            _actionButtonImage.sprite = newButtonConfiguration.ButtonSprite;
-
-            _aimSign.SetActive(newButtonConfiguration.ShowAimSign);
-
-            _actionButton.interactable = true;
-        }
+//        _actionButton.interactable = true;
     }
 
     public void ChangeGunStatus(bool hasGun)
@@ -176,7 +169,7 @@ public class ActionButtonHandler : MonoBehaviour {
     {
         if(_curPlayerArea != null)
         {
-            _onMyArea = _playerConfig.GameData.IsThisMyArea(_playerConfig.PlayerIdentity.PlayerId, _curPlayerArea.Id);
+            _onMyArea = GameData.Instance.IsThisMyArea(_playerConfig.PlayerId, _curPlayerArea.Id);
             _playerConfig.ItemPicker.SetOnMyArea(_onMyArea);
             if (_showDebugMessages) Debug.Log("Verificando area: " + _onMyArea);
         }
@@ -197,17 +190,6 @@ public class ActionButtonHandler : MonoBehaviour {
         if (_showDebugMessages) Debug.Log("Verificando se esta tocando alguma cenoura: " + _isTouchingCarrot);
     }
 
-    /// <summary>
-    /// Recebe um novo botão como o botão de action que será utilizado
-    /// </summary>
-    /// <param name="newButton"></param>
-    private void RecieveButtonData(ButtonData newButton)
-    {
-        _buttonData = newButton;
-
-        UpdateActionButtonValues(_buttonData);
-    }
-
     private void UpdateActionButtonValues(ButtonData newButtonData)
     {
         _actionButton = newButtonData.ActionButton;
@@ -222,7 +204,7 @@ public class ActionButtonHandler : MonoBehaviour {
     public PlayerArea GetCurPlayerArea()
     {
         if(_centerPlayerArea == null)
-            _centerPlayerArea = _playerConfig.GameData.GetPlayerAreaById(0);
+            _centerPlayerArea = GameData.Instance.GetPlayerAreaById(0);
 
         if (_curPlayerArea != null)
             return _curPlayerArea;

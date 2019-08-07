@@ -4,22 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GameData : NetworkBehaviour {
+public class GameData : MonoBehaviour {
 
     public enum Operation
     {
         Add,
         Remove
     }
+    
+    public static GameData Instance { get; set; }
 
     [Header("Debug")]
     [SerializeField] private bool _showDebugMessages;
-    [SerializeField] private PlayerDebug _playerDebug;
+    [SerializeField] private List<PlayerDebug> _playerDebugList = new List<PlayerDebug>();
 
     [Header("Players Connected")]
     [SerializeField] public static int PlayersGamingNow = 0;
-    [SerializeField] public static List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
-    [SerializeField] public List<PlayerConnected> CopyOfPlayersConnectedsList = new List<PlayerConnected>();
+    [SerializeField] public List<PlayerConnected> PlayersConnectedsList = new List<PlayerConnected>();
 
     [Header("Game Data")]
     [SerializeField] public List<PlayerArea> PlayerAreaList = new List<PlayerArea>();
@@ -29,36 +30,27 @@ public class GameData : NetworkBehaviour {
     [SerializeField] private List<string> _namesAvailable = new List<string>();
 
     [Header("Scripts")]
-    [SerializeField] private SetupLocalPlayer _setupLocalPlayer;
+    [SerializeField] private List<SetupLocalPlayer> _setupLocalPlayerList = new List<SetupLocalPlayer>();
 
-    public override void OnStartClient()
+    private void Awake()
     {
-        base.OnStartClient();
-
-        Invoke("StartWithDelay", 0.1f);
+        Instance = this;
+        
+        Invoke(nameof(StartWithDelay), 0.25f);
     }
 
     private void StartWithDelay()
     {
-        _setupLocalPlayer.ConfigureAllScripts();
+        _setupLocalPlayerList.ForEach(slp => slp.ConfigureAllScripts());
 
         ConfigureNewStart();
     }
 
     public void ConfigureNewStart()
     {
-        this.gameObject.tag = "Player";
         SearchCarrots();
         SearchPlayerAreas();
-        NewPlayerOnServer(++PlayersGamingNow);
-        LobbyController.Instance.SetAsGameStarted();
         SearchPlayerDebug();
-
-        if (!isServer)
-            _setupLocalPlayer.GameCore.RecieveMessageFromServer();
-
-        if (isServer)
-            _setupLocalPlayer.StartLoop();
     }
 
     /// <summary>
@@ -79,10 +71,9 @@ public class GameData : NetworkBehaviour {
 
     private void Update()
     {
-        if(_playerDebug != null)
+        if(_playerDebugList != null)
         {
-            if (isLocalPlayer && _playerDebug.gameObject.activeInHierarchy)
-                CallOnAnyChange();
+            CallOnAnyChange();
         }
     }
 
@@ -106,26 +97,7 @@ public class GameData : NetworkBehaviour {
 
     private void SearchPlayerDebug()
     {
-        _playerDebug = GameObject.Find("DebugCanvas").GetComponent<PlayerDebug>();
-    }
-
-    /// <summary>
-    /// Registra um novo jogador dentro do servidor
-    /// </summary>
-    /// <param name="newId"></param>
-    private void NewPlayerOnServer(int newId)
-    {
-        if (_showDebugMessages) Debug.Log("Registrando novo jogador com id: " + newId);
-        int myNewId = PlayersGamingNow;
-        PlayerConnected newPlayer = new PlayerConnected();
-        newPlayer.PlayerId = myNewId;
-        newPlayer.GameInstance = this.gameObject;
-        newPlayer.PlayerName = GetRandomName(myNewId);
-        newPlayer.IsConnected = true;
-        PlayersConnectedsList.Add(newPlayer);
-        CopyOfPlayersConnectedsList = PlayersConnectedsList;
-
-        _setupLocalPlayer.PlayerIdentity.SetPlayerId(myNewId);
+//        _playerDebugList = GameObject.Find("DebugCanvas").GetComponents()<PlayerDebug>();
     }
 
     #region PUBLIC METHODS
@@ -138,16 +110,7 @@ public class GameData : NetworkBehaviour {
     public void ChangeCarrotPlayerOwner(int carrotId, int newOwner)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de dono de cenoura");
-
-        if (isServer)
-        {
-            RpcChangeCarrotOwner(carrotId, newOwner);
-        }
-
-        if (isClient)
-        {
-            CmdChangeCarrotOwner(carrotId, newOwner);
-        }
+        ChangeCarrotOwnerNow(carrotId, newOwner);
     }
 
     /// <summary>
@@ -158,12 +121,7 @@ public class GameData : NetworkBehaviour {
     public void ChangeCarrotActiveValue(int carrotId, bool value)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de estado de gameobject da cenoura<" + carrotId + ">");
-
-        if(isServer)
-            RpcChangeCarrotActiveValue(carrotId, value);
-
-        if(isClient)
-            CmdChangeCarrotActiveValue(carrotId, value);
+        ChangeCarrotActiveValueNow(carrotId, value);
     }
 
     /// <summary>
@@ -174,16 +132,7 @@ public class GameData : NetworkBehaviour {
     public void ChangeCarrotPlayerArea(int carrotId, int newPlayerArea, Operation operation)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca área dona da cenoura");
-
-        if (isServer)
-        {
-            RpcChangeCarrotPlayerArea(carrotId, newPlayerArea, operation);
-        }
-
-        if (isClient)
-        {
-            CmdChangeCarrotPlayerArea(carrotId, newPlayerArea, operation);
-        }
+        ChangeCarrotPlayerAreaNow(carrotId, newPlayerArea, operation);
     }
 
     /// <summary>
@@ -194,16 +143,7 @@ public class GameData : NetworkBehaviour {
     public void ChangeCarrotGameInstancePosition(int carrotId, Vector3 newPosition)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de posição de uma cenoura<" + carrotId + ">");
-
-        if (isServer)
-        {
-            RpcChangeCarrotPosition(carrotId, newPosition);
-        }
-
-        if (isClient)
-        {
-            CmdChangeCarrotPosition(carrotId, newPosition);
-        }
+        ChangeCarrotPositionNow(carrotId, newPosition);
     }
 
     /// <summary>
@@ -216,7 +156,7 @@ public class GameData : NetworkBehaviour {
         ChangeCarrotActiveValue(carrotId, true);
         ChangeCarrotPlayerArea(carrotId, newAreaId, Operation.Add);
 
-        newPosition = new Vector3(newPosition.x, _setupLocalPlayer.GameCore.CarrotYPos, newPosition.z);
+        newPosition = new Vector3(newPosition.x, GameCore.Instance.CarrotYPos, newPosition.z);
         
         ChangeCarrotGameInstancePosition(carrotId, newPosition);
     }
@@ -247,16 +187,7 @@ public class GameData : NetworkBehaviour {
     public void ChangePlayerAreaOwner(int areaToChangeOwner, int newOwner)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de dono de uma área(" + areaToChangeOwner + ")");
-
-        if (isServer)
-        {
-            RpcChangePlayerAreaOwner(areaToChangeOwner, newOwner);
-        }
-
-        if (isClient)
-        {
-            CmdChangePlayerAreaOwner(areaToChangeOwner, newOwner);
-        }
+        ChangePlayerAreaOwner(areaToChangeOwner, newOwner);
     }
 
     /// <summary>
@@ -374,16 +305,7 @@ public class GameData : NetworkBehaviour {
     public void SetPlayerAsReady(int playerId)
     {
         if (_showDebugMessages) Debug.Log("Iniciando troca de estado de pronto do jogador<" + playerId + ">");
-
-        if (isServer)
-        {
-            RpcChangePlayerReadyValue(playerId);
-        }
-
-        if (isClient)
-        {
-            CmdChangePlayerReadyValue(playerId);
-        }
+        ChangePlayerReadyValue(playerId);
     }
 
     /// <summary>
@@ -482,20 +404,6 @@ public class GameData : NetworkBehaviour {
 
     #region CARROTS HOOKS
     #region Carrots PlayerArea
-    [Command]
-    private void CmdChangeCarrotPlayerArea(int carrotIdToChange, int newAreaOwner, Operation operation)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
-        RpcChangeCarrotPlayerArea(carrotIdToChange, newAreaOwner, operation);
-    }
-
-    [ClientRpc]
-    private void RpcChangeCarrotPlayerArea(int carrotIdToChange, int newAreaOwner, Operation operation)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Mudando a area da cenoura: " + carrotIdToChange + "para a área: " + newAreaOwner);
-        ChangeCarrotPlayerAreaNow(carrotIdToChange, newAreaOwner, operation);
-    }
-
     void ChangeCarrotPlayerAreaNow(int carrotIdToChange, int newAreaOwner, Operation operation)
     {
         if (_showDebugMessages) Debug.Log("LOCAL > Mudando a area da cenoura<" + carrotIdToChange + ">");
@@ -534,21 +442,8 @@ public class GameData : NetworkBehaviour {
     }
     #endregion
     #region Carrots Owners
-    [Command]
-    private void CmdChangeCarrotOwner(int carrotIdToChange, int newOwner)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando o dono da cenoura: " + carrotIdToChange + "para o jogador: " + newOwner);
-        RpcChangeCarrotOwner(carrotIdToChange, newOwner);
-    }
 
-    [ClientRpc]
-    private void RpcChangeCarrotOwner(int carrotIdToChange, int newOwner)
-    {
-        if (_showDebugMessages) Debug.Log("RPC >Mudando o dono da cenoura<" + carrotIdToChange + "> para o jogador: " + newOwner);
-        ChangeCarrotOwner(carrotIdToChange, newOwner);
-    }
-
-    void ChangeCarrotOwner(int carrotIdToChange, int newOwner)
+    void ChangeCarrotOwnerNow(int carrotIdToChange, int newOwner)
     {
         if (_showDebugMessages) Debug.Log("A cenoura " + carrotIdToChange + " tem um novo dono: " + newOwner);
         //colocando novo dono
@@ -556,19 +451,6 @@ public class GameData : NetworkBehaviour {
     }
     #endregion
     #region Carrots Active
-    [Command]
-    private void CmdChangeCarrotActiveValue(int carrotIdToChange, bool value)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando status do objeto da cenoura: " + carrotIdToChange);
-        RpcChangeCarrotActiveValue(carrotIdToChange, value);
-    }
-
-    [ClientRpc]
-    private void RpcChangeCarrotActiveValue(int carrotIdToChange, bool value)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Mudando status do objeto da cenoura: " + carrotIdToChange);
-        ChangeCarrotActiveValueNow(carrotIdToChange, value);
-    }
 
     void ChangeCarrotActiveValueNow(int carrotIdToChange, bool value)
     {
@@ -578,19 +460,6 @@ public class GameData : NetworkBehaviour {
     }
     #endregion
     #region Carrots Position
-    [Command]
-    private void CmdChangeCarrotPosition(int carrotIdToMove, Vector3 newPosition)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando posição da cenoura<" + carrotIdToMove + ">");
-        RpcChangeCarrotPosition(carrotIdToMove, newPosition);
-    }
-
-    [ClientRpc]
-    private void RpcChangeCarrotPosition(int carrotIdToMove, Vector3 newPosition)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Mudando posição da cenoura<" + carrotIdToMove + ">");
-        ChangeCarrotPositionNow(carrotIdToMove, newPosition);
-    }
 
     void ChangeCarrotPositionNow(int carrotIdToMove, Vector3 newPosition)
     {
@@ -603,19 +472,6 @@ public class GameData : NetworkBehaviour {
 
     #region PLAYER AREAS HOOKS
     #region PlayerAreas Owners
-    [Command]
-    private void CmdChangePlayerAreaOwner(int playerAreaIdToChange, int newOwner)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Mudando o dono da area: " + playerAreaIdToChange + ", para o jogador: " + newOwner);
-        RpcChangePlayerAreaOwner(playerAreaIdToChange, newOwner);
-    }
-
-    [ClientRpc]
-    private void RpcChangePlayerAreaOwner(int playerAreaIdToChange, int newOwner)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Mudando o dono da area: " + playerAreaIdToChange + ", para o jogador: " + newOwner);
-        ChangePlayerAreaOwnerNow(playerAreaIdToChange, newOwner);
-    }
 
     void ChangePlayerAreaOwnerNow(int playerAreaIdToChange, int newOwner)
     {
@@ -624,47 +480,19 @@ public class GameData : NetworkBehaviour {
     }
     #endregion
     #region Players Ready
-    [Command]
-    private void CmdChangePlayerReadyValue(int playerToBeReady)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Marcando jogador como pronto: " + playerToBeReady);
-        RpcChangePlayerReadyValue(playerToBeReady);
-    }
-
-    [ClientRpc]
-    private void RpcChangePlayerReadyValue(int playerToBeReady)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Marcando jogador como pronto: " + playerToBeReady);
-        ChangePlayerReadyValue(playerToBeReady);
-    }
 
     void ChangePlayerReadyValue(int playerToBeReady)
     {
         if (_showDebugMessages) Debug.Log("LOCAL > Marcando jogador como pronto: " + playerToBeReady);
         GetPlayerById(playerToBeReady).IsReady = true;
-
-        //UpdateGameStartCondition();
     }
     #endregion
     #region Players Materials
-    [Command]
-    private void CmdChangeMaterial(int playerToChange, int areaToGetMaterial)
-    {
-        if (_showDebugMessages) Debug.Log("COMAND > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
-        RpcChangeMaterial(playerToChange, areaToGetMaterial);
-    }
-
-    [ClientRpc]
-    private void RpcChangeMaterial(int playerToChange, int areaToGetMaterial)
-    {
-        if (_showDebugMessages) Debug.Log("RPC > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
-        ChangeMaterialNow(playerToChange, areaToGetMaterial);
-    }
 
     private void ChangeMaterialNow(int playerToChange, int areaToGetMaterial)
     {
         if (_showDebugMessages) Debug.Log("LOCAL > Trocando material do jogador: " + playerToChange + " para o material que está na área: " + areaToGetMaterial);
-        _setupLocalPlayer.ChangePlayerMaterial(GetPlayerAreaById(areaToGetMaterial).GetMaterialToPlayer());
+        _setupLocalPlayerList?.FirstOrDefault(slp => slp.PlayerId == playerToChange)?.ChangePlayerMaterial(GetPlayerAreaById(areaToGetMaterial).GetMaterialToPlayer());
     }
     #endregion
     #endregion
@@ -675,8 +503,8 @@ public class GameData : NetworkBehaviour {
     /// </summary>
     private void CallOnAnyChange()
     {
-        int playerId = _setupLocalPlayer.PlayerIdentity.PlayerId;
-        _playerDebug.DebugPlayer(playerId, _setupLocalPlayer.GameData.GetPlayerNameById(playerId),_setupLocalPlayer.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart(), GetPlayerAreaById(GetAreaIdFromSomePlayer(playerId)).GetPlayerColor());
+//        int playerId = _setupLocalPlayerList.PlayerId;
+//        _playerDebugList.DebugPlayer(playerId, _setupLocalPlayerList.GameData.GetPlayerNameById(playerId),_setupLocalPlayerList.GameData.IsPlayerReady(playerId), GetAreaIdFromSomePlayer(playerId), GetCarrotsIdListFromPlayerArea(GetAreaIdFromSomePlayer(playerId)), GameData.PlayersConnectedsList.Count, MatchCanStart(), GetPlayerAreaById(GetAreaIdFromSomePlayer(playerId)).GetPlayerColor());
     }
     #endregion
 }
